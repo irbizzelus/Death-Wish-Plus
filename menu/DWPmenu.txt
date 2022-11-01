@@ -1,0 +1,207 @@
+{
+	"menu_id": "DWPmenu",
+	"parent_menu_id": "blt_options",
+	"title": "DWP_title",
+	"description": "DWP_desc",
+	"back_callback": "DWPsave",
+	"items":
+	[
+		{
+			"type" : "divider",
+			"size" : 22
+		},
+		{
+			"type" : "button",
+			"id" : "gameplay_header",
+			"title" : "DWP_gameplay_header",
+			"description" : "DWP_gameplay_header_desc",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "DSdozer",
+			"title" : "DWP_DSdozer",
+			"description" : "DWP_DSdozer_desc",
+			"callback" : "DWPcb_DSdozer",
+			"value" : "DSdozer",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "bAmMarsh",
+			"title" : "DWP_bAmMarsh",
+			"description" : "DWP_bAmMarsh_desc",
+			"callback" : "DWPcb_bAmMarsh",
+			"value" : "bAmMarsh",
+			"default_value" : true
+		},
+		{
+			"type" : "slider",
+			"id" : "respawns",
+			"title" : "DWP_respawns",
+			"description" : "DWP_respawns_desc",
+			"callback" : "DWPcb_respawns",
+			"value" : "respawns",
+			"default_value" : 4,
+			"min" : 0.5,
+			"max" : 4,
+			"step" : 0.1
+		},
+		{
+			"type" : "slider",
+			"id" : "assforce_pool",
+			"title" : "DWP_assforce_pool",
+			"description" : "DWP_assforce_pool_desc",
+			"callback" : "DWPcb_assforce_pool",
+			"value" : "assforce_pool",
+			"default_value" : 400,
+			"min" : 400,
+			"max" : 700,
+			"step" : 10
+		},
+		{
+			"type" : "slider",
+			"id" : "assduration",
+			"title" : "DWP_assduration",
+			"description" : "DWP_assduration_desc",
+			"callback" : "DWPcb_assduration",
+			"value" : "assduration",
+			"default_value" : 350,
+			"min" : 350,
+			"max" : 600,
+			"step" : 10
+		},
+		{
+			"type" : "button",
+			"id" : "gameplay_defaults",
+			"title" : "DWP_gameplay_defaults",
+			"description" : "DWP_gameplay_defaults_desc",
+			"callback" : "DWPcb_gameplay_defaults"
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "button",
+			"id" : "privacy_header",
+			"title" : "DWP_privacy_header",
+			"description" : "DWP_blank",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "infomsgpublic",
+			"title" : "DWP_infomsgpublic",
+			"description" : "DWP_infomsgpublic_desc",
+			"callback" : "DWPcb_infomsgpublic",
+			"value" : "infomsgpublic",
+			"default_value" : true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "button",
+			"id" : "endstat_header",
+			"title" : "DWP_endstat_header",
+			"description" : "DWP_blank",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "endstattoggle",
+			"title" : "DWP_endstattoggle",
+			"description" : "DWP_endstattoggle_desc",
+			"callback" : "DWPcb_endstattoggle",
+			"value" : "endstattoggle",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "endstatSPkills",
+			"title" : "DWP_endstatSPkills",
+			"description" : "DWP_endstatSPkills_desc",
+			"callback" : "DWPcb_endstatSPkills",
+			"value" : "endstatSPkills",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "endstatheadshots",
+			"title" : "DWP_endstatheadshots",
+			"description" : "DWP_endstatheadshots_desc",
+			"callback" : "DWPcb_endstatheadshots",
+			"value" : "endstatheadshots",
+			"default_value" : false
+		},
+		{
+			"type" : "toggle",
+			"id" : "endstataccuarcy",
+			"title" : "DWP_endstataccuarcy",
+			"description" : "DWP_endstataccuarcy_desc",
+			"callback" : "DWPcb_endstataccuarcy",
+			"value" : "endstataccuarcy",
+			"default_value" : false
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "button",
+			"id" : "chat_header",
+			"title" : "DWP_chat_header",
+			"description" : "DWP_blank",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "skillinfo",
+			"title" : "DWP_skillinfo",
+			"description" : "DWP_skillinfo_desc",
+			"callback" : "DWPcb_skillinfo",
+			"value" : "skillinfo",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "hourinfo",
+			"title" : "DWP_hourinfo",
+			"description" : "DWP_hourinfo_desc",
+			"callback" : "DWPcb_hourinfo",
+			"value" : "hourinfo",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "infamy",
+			"title" : "DWP_infamy",
+			"description" : "DWP_infamy_desc",
+			"callback" : "DWPcb_infamy",
+			"value" : "infamy",
+			"default_value" : true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "button",
+			"id" : "misc_header",
+			"title" : "DWP_misc_header",
+			"description" : "DWP_blank",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "lobbyname",
+			"title" : "DWP_enablelobbyname",
+			"description" : "DWP_lobbyname_desc",
+			"callback" : "DWPcb_lobbyname",
+			"value" : "lobbyname",
+			"default_value" : true
+		}
+	]
+}

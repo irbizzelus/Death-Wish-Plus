@@ -1,0 +1,40 @@
+Hooks:Add("NetworkManagerOnPeerAdded", "DWP_onpeeradded", function(peer, peer_id)
+	DWP:plyerjoin(peer_id)
+	DWP.players[peer_id][2] = true
+end)
+
+Hooks:Add("BaseNetworkSessionOnPeerRemoved", "DWP_onpeerremoved", function(peer, peer_id, reason)
+	for i=1,2 do
+		DWP.players[peer_id][i] = 0
+	end
+end)
+	
+Hooks:Add("BaseNetworkSessionOnLoadComplete", "DWP_onloadcomplete", function(peer, id) -- after loading into a game send to all allready synched clients skill information
+	DWP.loadcomplete = true
+	DelayedCalls:Add("DWP_skilsforpeer_" .. tostring(id), 0.5 , function()
+		if managers.network._session and #managers.network:session():peers() > 0 then
+			DWP:skills(id)
+			for i=1,#DWP.synced do
+				DWP:infomessages(DWP.synced[i])
+			end
+		end
+	end)
+end)
+
+Hooks:PostHook(NetworkPeer, "set_outfit_string", "DWP_on_outfitset", function(self, outfit_string, outfit_version, outfit_signature)
+	DelayedCalls:Add("DWP_skills_for" .. tostring(self:id()), 0.5 , function()
+		if managers.network._session and managers.network:session():peer(self:id()) then
+			DWP:returnplayerhours(self:id(), managers.network:session():peer(self:id()):user_id())
+		end
+		DWP:skills(self:id())
+	end)
+end)
+
+Hooks:PostHook(NetworkPeer, "set_loading", "DWP_onloaddone", function(self, state) -- print welcomemsg's to joined clients if in game
+	if self._loaded == true then
+		if Utils:IsInGameState() then
+			DWP:welcomemsg1(self:id())
+			DWP:welcomemsg2(self:id())
+		end
+	end
+end)
