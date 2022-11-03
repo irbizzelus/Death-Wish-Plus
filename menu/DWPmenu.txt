@@ -36,6 +36,15 @@
 			"default_value" : true
 		},
 		{
+			"type" : "toggle",
+			"id" : "arrestbeta",
+			"title" : "DWP_arrestbeta",
+			"description" : "DWP_arrestbeta_desc",
+			"callback" : "DWPcb_arrestbeta",
+			"value" : "arrestbeta",
+			"default_value" : false
+		},
+		{
 			"type" : "slider",
 			"id" : "respawns",
 			"title" : "DWP_respawns",

@@ -15,6 +15,11 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		--nothingness
 	end
 	
+	MenuCallbackHandler.DWPcb_arrestbeta = function(this, item)
+		DWP.settings[item:name()] = item:value() == 'on'
+		DWP:Save()
+	end
+	
 	MenuCallbackHandler.DWPcb_DSdozer = function(this, item)
 		DWP.settings[item:name()] = item:value() == 'on'
 		DWP:Save()
@@ -47,13 +52,16 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.menu_node._items_list[4].selected = 1
 		DWP.settings.bAmMarsh = true
 		
-		DWP.menu_node._items_list[5]._value = 4
+		DWP.menu_node._items_list[5].selected = 2
+		DWP.settings.arrestbeta = false
+		
+		DWP.menu_node._items_list[6]._value = 4
 		DWP.settings.respawns = 4
 		
-		DWP.menu_node._items_list[6]._value = 400
+		DWP.menu_node._items_list[7]._value = 400
 		DWP.settings.assforce_pool = 400
 		
-		DWP.menu_node._items_list[7]._value = 350
+		DWP.menu_node._items_list[8]._value = 350
 		DWP.settings.assduration = 350
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()

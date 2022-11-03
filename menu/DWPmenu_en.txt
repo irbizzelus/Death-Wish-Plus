@@ -18,6 +18,9 @@
 	"DWP_gameplay_defaults": "Reset to defaults",
 	"DWP_gameplay_defaults_desc": "Click this button to reset all gameplay options to deafult settings.",
 	
+	"DWP_arrestbeta": "Agressive player cuffing (BETA)",
+	"DWP_arrestbeta_desc": "Test feature: please leave feedback on this mechanic.\nIn addition to sending a cop to arrest a player, other cops can also arrest players if they get close enough during an interaction. May cause minor performance issues.",
+	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
 	"DWP_infomsgpublic": "Enable public messages",
 	"DWP_infomsgpublic_desc": "If you are a host, information related messages from 'game end statistis options' and 'chat options' will be transmitted to all players in the lobby",

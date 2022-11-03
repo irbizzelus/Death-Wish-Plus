@@ -70,7 +70,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.02) 'Death Wish +' difficulty with gameplay changes listed below:")
+			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.1) 'Death Wish +' difficulty with gameplay changes listed below:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -94,8 +94,8 @@ function DWP:welcomemsg2(peer_id)
 				if peer then
 					peer:send("send_chat_message", ChatManager.GAME, message)
 					if DWP.settings.respawns < 4 then
-						DelayedCalls:Add("DWP:DWwelcomemsg3topeer" .. tostring(peer_id), 1, function()
-							local msg = string.format("Also note that host is running 'Death Wish +' with increased respawn rates compared to default DW+ settings. Enemies will overwhelm you quicker then in the base DW+.")
+						DelayedCalls:Add("DWP:DWwelcomemsg3topeer" .. tostring(peer_id), 0.6, function()
+							local msg = string.format("Also note that host is running 'Death Wish +' with quicker respawn rates compared to default DW+ settings. Enemies will overwhelm you quicker then in the base DW+. Host's respawn delay: %s",math.floor(DWP.settings.respawns*100) / 100)
 							if peer then
 								peer:send("send_chat_message", ChatManager.GAME, msg)
 							end
@@ -185,14 +185,14 @@ end
 
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.02 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.1 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.02 update changelog:\nAdded marshal shields to 'Lost in Transit' heist."
+			local message = "2.1 update changelog:\n - Added a new BETA feature: agressive cuffing. Disabled by default. For more info check the changelog.\n - Added host's delay setting value to welcome messages for clients."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.02
+			DWP.settings.changelog_msg_shown = 2.1
 			DWP:Save()
 		end
 	end)

@@ -8,5 +8,12 @@ if DWP.DWdifficultycheck == true then
 			return
 		end
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
+		
+		if DWP.settings.arrestbeta then
+			DelayedCalls:Add("delay_for_cuff_scan_husk", 1.05, function()
+				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
+			end)
+		end
+		
 	end)
 end

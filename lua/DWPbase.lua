@@ -23,7 +23,8 @@ if not DWP then
 		respawns = 4,
 		assforce_pool = 400,
 		assduration = 350,
-		bAmMarsh = true
+		bAmMarsh = true,
+		arrestbeta = false
     }
 	DWP.players = {}
 	for i=1,4 do -- peer skills/hours prints

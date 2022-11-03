@@ -170,3 +170,53 @@ function DWPMod.CopUtils:AreUnitsEnemies(unit_a, unit_b)
 
     return unit_a:movement():team().foes[unit_b:movement():team().id] and true or false
 end
+
+function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
+
+	if Network and Network:is_client() then
+        return
+    end
+
+    -- Stealth phase check
+    if managers.groupai:state():whisper_mode() then
+        return
+    end
+
+	function ContinuousInteractionCheck()
+		-- Check if target is valid and interacting
+		local is_interacting = true
+		if islocal == true then
+			local state = player_unit:movement():current_state()
+			is_interacting = state._interacting and state:_interacting()
+			if is_interacting then -- it's a timer, reset to value
+				is_interacting = true
+			end
+		elseif not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
+			is_interacting = false
+		end
+
+		if not is_interacting then
+			return
+		else
+			DelayedCalls:Add("check_for_husk_interaction_and_arrest", 0.05, function()
+				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 150, managers.slot:get_mask("enemies"))
+				if enemies and #enemies >= 1 then
+					-- Check every enemy in radius, make sure its actually an enemy
+					for i, enemy in pairs(enemies) do
+						if self:AreUnitsEnemies(player_unit, enemy) then
+							local enemy_chartweak = enemy:base():char_tweak()
+							if enemy_chartweak.access ~= "gangster" then
+								player_unit:movement():on_cuffed()
+								enemy:sound():say("i03", true, false)
+							end
+						end
+					end
+				end
+				ContinuousInteractionCheck()
+			end)
+		end
+	end
+	
+	ContinuousInteractionCheck()
+	
+end
