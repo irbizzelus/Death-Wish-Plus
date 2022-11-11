@@ -18,7 +18,7 @@ if DWP.DWdifficultycheck == true then
 	Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)
 	local active_hostages_mul = 1
 	local killed_hostages_mul = 1
-	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 4 then
+	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 3 then
 		active_hostages_mul = 1.2
 	end
 	if DWP.settings.hostagesbeta == true and DWP.hostagekillcount and DWP.hostagekillcount >= 3 then

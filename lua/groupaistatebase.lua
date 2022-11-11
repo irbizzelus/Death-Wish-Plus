@@ -91,15 +91,15 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 		DWP.hostagekillcount = self._hostages_killed
 		
 		if self._hostages_killed < 3 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP]Stop killing civilians "..killer_name.."!")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] Stop killing civilians "..killer_name.."!")
 		elseif self._hostages_killed == 3 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP]3 civilians were killed! Enemy respawn rates were increased.")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] 3 civilians were killed! Enemy respawn rates were increased.")
 		elseif self._hostages_killed == 4 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP]STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
 		elseif self._hostages_killed == 5 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP]Another civilian was killed... You've doomed us all "..killer_name.."...")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] Another civilian was killed... You've doomed us all "..killer_name.."...")
 		elseif self._hostages_killed == 7 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP]7 civilians killed. Enemy respawn rates are now doubled.")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] 7 civilians killed. Enemy respawn rates are now doubled.")
 		end
 		
 		if self._hostages_killed == 5 then
