@@ -1,7 +1,7 @@
 {
     "name": "Death Wish +",
     "description": "Modifies Death Wish to make it a bit harder.",
-    "version": "2.1",
+    "version": "2.2",
     "author": "irbizzelus",
     "contact": "Steam profile link is on my modworkshop account",
 	"image" : "dwp.dds",
@@ -85,5 +85,9 @@
 		"hook_id" : "lib/managers/group_ai_states/groupaistatebesiege",
 		"script_path" : "lua/groupaistatebesiege.lua"
 		},
+		{
+		"hook_id" : "lib/managers/dialogmanager",
+		"script_path" : "lua/dialogmanager.lua"
+		}
     ]
 }

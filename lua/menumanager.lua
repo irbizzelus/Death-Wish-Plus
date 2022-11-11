@@ -70,7 +70,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.1) 'Death Wish +' difficulty with gameplay changes listed below:")
+			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.2) 'Death Wish +' difficulty with gameplay changes listed below:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -86,9 +86,13 @@ function DWP:welcomemsg2(peer_id)
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 2.5, function()
-			local cuffs = "\n- Cops WILL TRY TO CUFF YOU during any interaction: /cuffs"
-			local dominations = "\n- All cops are harder to dominate: /dom"
-			local message = string.format("\n- Enemies have slightly quicker respawn times and more unit variety: /assault%s%s\n For more info on chat commands: /help", cuffs, dominations)
+			local cuffs = "\n- Cops WILL TRY TO CUFF YOU during interactions: /cuffs"
+			local dominations = "\n- Cops are harder to intimidate: /dom"
+			local hostages = ""
+			if DWP.settings.hostagesbeta == true then
+				hostages = "\n- Hostage control is enabled: /civi"
+			end
+			local message = string.format("\n- Enemies have quicker respawns and have more unit variety: /assault%s%s%s\n More info on chat commands: /help", cuffs, dominations, hostages)
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -185,21 +189,21 @@ end
 
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.1 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.2 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.1 update changelog:\n - Added a new BETA feature: agressive cuffing. Disabled by default. For more info check the changelog.\n - Added host's delay setting value to welcome messages for clients."
+			local message = "2.2 update changelog:\n- Adjustments and fixes to agressive cuffs\n- Dozer limits were tweaked\n- Added more unit variety\n- Added a new BETA feature: Hostage control\nPlease check changelog for more details on this patch."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.1
+			DWP.settings.changelog_msg_shown = 2.2
 			DWP:Save()
 		end
 	end)
 end
 
 function DWP_linkchangelog()
-	Steam:overlay_activate("url", "https://modworkshop.net/mod/39113#changelog")
+	Steam:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases/latest")
 end
 
 Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node) -- clear player's skill print check if in main menu

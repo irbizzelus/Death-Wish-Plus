@@ -42,6 +42,15 @@
 			"description" : "DWP_arrestbeta_desc",
 			"callback" : "DWPcb_arrestbeta",
 			"value" : "arrestbeta",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
+			"id" : "hostagesbeta",
+			"title" : "DWP_hostagesbeta",
+			"description" : "DWP_hostagesbeta_desc",
+			"callback" : "DWPcb_hostagesbeta",
+			"value" : "hostagesbeta",
 			"default_value" : false
 		},
 		{

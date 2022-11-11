@@ -49,6 +49,16 @@ DWP_CM:add_command("dom", {
 		end
 	end,
 })
+
+DWP_CM:add_command("civi", {
+	callback = function(args, sender)
+		if sender:id() ~= 1 then
+			DWP_CM:send_message(sender:id(), string.format("Having hostages increases delay between assaults. Having more then 3 hostages reduces enemy respawn rates. Killing hostages increases respawn rates. Killing enough hostages will cause new enemies to appear."))
+		else
+			DWP_CM:message(string.format("Having hostages increases delay between assaults. Having more then 3 hostages reduces enemy respawn rates. Killing hostages increases respawn rates. Killing enough hostages will cause new enemies to appear."), nil, nil, true)
+		end
+	end,
+})
 end
 
 DWP_CM:add_command("med", {

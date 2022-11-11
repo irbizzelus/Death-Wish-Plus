@@ -20,6 +20,8 @@
 	
 	"DWP_arrestbeta": "Agressive player cuffing (BETA)",
 	"DWP_arrestbeta_desc": "Test feature: please leave feedback on this mechanic.\nIn addition to sending a cop to arrest a player, other cops can also arrest players if they get close enough during an interaction. May cause minor performance issues.",
+	"DWP_hostagesbeta": "Hostage control(BETA)",
+	"DWP_hostagesbeta_desc": "Test feature: please leave feedback on this mechanic.\nWhen enabled, having hostages increases assault breaks and enemy respawn delays. Killing hostages reduces respawn delays and adds new enemies.",
 	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
 	"DWP_infomsgpublic": "Enable public messages",

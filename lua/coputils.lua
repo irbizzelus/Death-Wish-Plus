@@ -168,6 +168,10 @@ function DWPMod.CopUtils:AreUnitsEnemies(unit_a, unit_b)
         return false
     end
 
+	if unit_b:brain()._current_logic_name == "trade" then
+		return false
+	end
+
     return unit_a:movement():team().foes[unit_b:movement():team().id] and true or false
 end
 
@@ -198,8 +202,8 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		if not is_interacting then
 			return
 		else
-			DelayedCalls:Add("check_for_husk_interaction_and_arrest", 0.05, function()
-				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 150, managers.slot:get_mask("enemies"))
+			DelayedCalls:Add("check_for_unit_interaction_and_arrest"..tostring(player_unit), 0.05, function()
+				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 125, managers.slot:get_mask("enemies"))
 				if enemies and #enemies >= 1 then
 					-- Check every enemy in radius, make sure its actually an enemy
 					for i, enemy in pairs(enemies) do
