@@ -202,7 +202,7 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		if not is_interacting then
 			return
 		else
-			DelayedCalls:Add("check_for_unit_interaction_and_arrest"..tostring(player_unit), 0.05, function()
+			DelayedCalls:Add("check_for_unit_interaction_and_arrest"..tostring(player_unit), 0.15, function()
 				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 125, managers.slot:get_mask("enemies"))
 				if enemies and #enemies >= 1 then
 					-- Check every enemy in radius, make sure its actually an enemy

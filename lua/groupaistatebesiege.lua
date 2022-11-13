@@ -23,7 +23,8 @@ if DWP.DWdifficultycheck == true then
 	end
 	if DWP.settings.hostagesbeta == true and DWP.hostagekillcount and DWP.hostagekillcount >= 3 then
 		killed_hostages_mul = 0.8
-	elseif DWP.settings.hostagesbeta == true and DWP.hostagekillcount and DWP.hostagekillcount >= 7 then
+	end
+	if DWP.settings.hostagesbeta == true and DWP.hostagekillcount and DWP.hostagekillcount >= 7 then
 		killed_hostages_mul = 0.5
 	end
 		if self._spawning_groups and #self._spawning_groups >= 1 then

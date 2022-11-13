@@ -76,37 +76,78 @@ end
 if DWP.settings.hostagesbeta == true then
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function(self, killer_unit)
 	if DWP.DWdifficultycheck == true then
-		local killer_name = "Player"
+	
+		if not alive(killer_unit) then
+			return
+		end
+
+		if killer_unit:base() and killer_unit:base().thrower_unit then
+			killer_unit = killer_unit:base():thrower_unit()
+
+			if not alive(killer_unit) then
+				return
+			end
+		end
+
+		local key = killer_unit:key()
+		local criminal = self._criminals[key]
+
+		if not criminal then
+			return
+		end
+		
+		local killer_name = "Someone"
+		local peer = 1
 		
 		-- i have no idea how to get player's name from killer_unit so we will have this nasty looking mess
 		if killer_unit:base().is_local_player then
 			killer_name = managers.network:session():peer(killer_unit:base()._id):name()
-		elseif managers.network:session():peer(2):unit() == killer_unit then
+		elseif managers.network:session():peer(2) and managers.network:session():peer(2):unit() == killer_unit then
 			killer_name = managers.network:session():peer(2):name()
-		elseif managers.network:session():peer(3):unit() == killer_unit then
+			peer = managers.network:session():peer(2)
+		elseif managers.network:session():peer(3) and managers.network:session():peer(3):unit() == killer_unit then
 			killer_name = managers.network:session():peer(3):name()
-		elseif managers.network:session():peer(4):unit() == killer_unit then
+			peer = managers.network:session():peer(3)
+		elseif managers.network:session():peer(4) and managers.network:session():peer(4):unit() == killer_unit then
 			killer_name = managers.network:session():peer(4):name()
+			peer = managers.network:session():peer(4)
 		end
 		DWP.hostagekillcount = self._hostages_killed
 		
 		if self._hostages_killed < 3 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] Stop killing civilians "..killer_name.."!")
+			if peer == 1 then
+				managers.hud:show_hint({text = "You killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			else
+				managers.network:session():send_to_peer(peer, "send_chat_message", 1, "[DW+ Hostage Control] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
+				managers.hud:show_hint({text = tostring(killer_name).." killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			end	
 		elseif self._hostages_killed == 3 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] 3 civilians were killed! Enemy respawn rates were increased.")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 3 civilians were killed! Enemy respawn rates were increased.")
 		elseif self._hostages_killed == 4 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
+			if peer == 1 then
+				managers.hud:show_hint({text = "You killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			else
+				managers.network:session():send_to_peer(peer, "send_chat_message", 1, "[DW+ Hostage Control] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
+				managers.hud:show_hint({text = tostring(killer_name).." killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			end
 		elseif self._hostages_killed == 5 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] Another civilian was killed... You've doomed us all "..killer_name.."...")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 5 civilian ware killed. You've doomed us all "..killer_name.."...")
+		elseif self._hostages_killed == 6 then
+			if peer == 1 then
+				managers.hud:show_hint({text = "You killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			else
+				managers.network:session():send_to_peer(peer, "send_chat_message", 1, "[DW+ Hostage Control] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?")
+				managers.hud:show_hint({text = tostring(killer_name).." killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
+			end
 		elseif self._hostages_killed == 7 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DWP] 7 civilians killed. Enemy respawn rates are now doubled.")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 7 civilians killed. Enemy respawn rates are now doubled.")
 		end
 		
 		if self._hostages_killed == 5 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
-				0.45,
-				0.45,
-				0.45
+				0.42,
+				0.42,
+				0.42
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
 				0.1,
