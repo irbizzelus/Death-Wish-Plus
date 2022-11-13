@@ -131,7 +131,7 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 				managers.hud:show_hint({text = tostring(killer_name).." killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
 			end
 		elseif self._hostages_killed == 5 then
-			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 5 civilian ware killed. You've doomed us all "..killer_name.."...")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 5 civilians were killed. You've doomed us all "..killer_name.."...")
 		elseif self._hostages_killed == 6 then
 			if peer == 1 then
 				managers.hud:show_hint({text = "You killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
