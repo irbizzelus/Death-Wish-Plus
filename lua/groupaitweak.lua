@@ -430,7 +430,12 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	end
 
-	local squadmul = 4 / DWP.settings.respawns or 1
+	local squadmul = 1
+	if DWP.settings.respawns then
+		squadmul = 4 / DWP.settings.respawns
+	else
+		log("[DW+] Respawn value doesn't exists, using defaults.")
+	end
 	
 
 	self.enemy_spawn_groups.CS_defend_a = {

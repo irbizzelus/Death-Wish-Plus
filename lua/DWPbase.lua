@@ -35,6 +35,8 @@ if not DWP then
 		end
 	end
 	DWP.synced = {}
+	DWP.HostageControl = {}
+	DWP.HostageControl.PeerHostageKillCount = {}
 	DWP.color = Color(255,217,0,217) / 255
 	DWP.statprefix = "[DWP_Stats]"
 

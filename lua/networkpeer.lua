@@ -7,6 +7,10 @@ Hooks:Add("BaseNetworkSessionOnPeerRemoved", "DWP_onpeerremoved", function(peer,
 	for i=1,2 do
 		DWP.players[peer_id][i] = 0
 	end
+	-- if hostage control is enabled, reset hostage kill count whenever player disconects
+	if DWP.HostageControl.PeerHostageKillCount[peer_id] and DWP.HostageControl.PeerHostageKillCount[peer_id] >= 1 then
+		DWP.HostageControl.PeerHostageKillCount[peer_id] = 0
+	end
 end)
 	
 Hooks:Add("BaseNetworkSessionOnLoadComplete", "DWP_onloadcomplete", function(peer, id) -- after loading into a game send to all allready synched clients skill information
