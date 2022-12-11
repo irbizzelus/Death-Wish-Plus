@@ -14,7 +14,7 @@ Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", functio
 	end
 end)
 
-function DWP:infotopeers(message) -- if host with public messagin on, send whatever msg we get
+function DWP:infotopeers(message) -- if host with public messagin on, send whatever msg we get with a prefix
 	if Network:is_server() and DWP.settings.infomsgpublic == true then
 		for i=2,4 do
 			local peer = managers.network:session():peer(i)
@@ -35,22 +35,20 @@ function DWP:infomessages(message, private) -- send ourselves a message
 end
 
 function DWP:statspublicmessage(message) -- quick fix before release, read below
-	if Network:is_server() and DWP.settings.infomsgpublic == true then
+	if Network:is_server() and DWP.settings.statsmsgpublic == true then
 		for i=2,4 do
 			local peer = managers.network:session():peer(i)
 			if peer then
-				peer:send("send_chat_message", ChatManager.GAME,message)
+				peer:send("send_chat_message", ChatManager.GAME, message)
 			end
 		end
 	end
 end
 
-function DWP:statsmessage(message, private) -- send end game stats, quick fix before release. make sure that clients with mod recieve this message, by chaning the prefix
+function DWP:statsmessage(message) -- send end game stats, but make sure that clients with mod recieve this message, by not adding the prefix
 	if Global.game_settings.single_player == false then
 		managers.chat:_receive_message(1, "[DWP]", message, DWP.color)
-		if not private then
-			DWP:statspublicmessage(message)
-		end
+		DWP:statspublicmessage(message)
 	end
 end
 
@@ -70,7 +68,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3) 'Death Wish +' difficulty with gameplay changes listed below:")
+			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.1) 'Death Wish +' difficulty with gameplay changes listed below:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then

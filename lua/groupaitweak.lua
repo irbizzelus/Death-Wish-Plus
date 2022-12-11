@@ -491,8 +491,8 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			{
 				unit = "CS_swat_R870",
 				freq = 0.5,
-				amount_min = 2,
-				amount_max = 3,
+				amount_min = 1,
+				amount_max = 2,
 				tactics = self._tactics.CS_swat_shotgun,
 				rank = 1
 			},
@@ -527,7 +527,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			{
 				unit = "CS_heavy_R870",
 				freq = 0.75,
-				amount_min = 2,
+				amount_min = 1,
 				amount_max = 3,
 				tactics = self._tactics.CS_swat_rifle_flank,
 				rank = 3

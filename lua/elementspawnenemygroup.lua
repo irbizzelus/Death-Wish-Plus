@@ -14,6 +14,20 @@ local groupsOLD = {
 	"marshal_squad"
 }
 
+if Global.level_data and Global.level_data.level_id == "hardware_store" then
+	table.insert(groupsOLD,"single_spooc")
+	
+	-- i deem this map too hard due to scripted spawns (at least that's why i think there is so many more cops (85+))
+	if tweak_data and tweak_data.group_ai and tweak_data.group_ai.besiege.assault.force_balance_mul then
+		tweak_data.group_ai.besiege.assault.force_balance_mul = {
+			1.8, -- base is 2.8 or 56 total, now its 36
+			1.8,
+			1.8,
+			1.8
+		}
+	end
+end
+
 -- Make the captain and single cloakers not spawn in weird places
 local disallowed_groups = {
 	Phalanx = true,

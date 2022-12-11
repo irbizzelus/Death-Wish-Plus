@@ -109,6 +109,15 @@
 		},
 		{
 			"type" : "toggle",
+			"id" : "statsmsgpublic",
+			"title" : "DWP_statsmsgpublic",
+			"description" : "DWP_statsmsgpublic_desc",
+			"callback" : "DWPcb_statsmsgpublic",
+			"value" : "statsmsgpublic",
+			"default_value" : true
+		},
+		{
+			"type" : "toggle",
 			"id" : "infomsgpublic",
 			"title" : "DWP_infomsgpublic",
 			"description" : "DWP_infomsgpublic_desc",

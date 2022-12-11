@@ -16,7 +16,7 @@ Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats",
 			end
 		end)
 	end
-	DelayedCalls:Add("DWP:endstatsforpeer" .. tostring(peer_id) , 1.5, function()
+	DelayedCalls:Add("DWP:endstatsforpeer" .. tostring(peer_id) , 1.25, function()
 		if DWP.settings.endstattoggle == true then
 			local peer = managers.network:session():peer(peer_id)
 			if peer and peer:has_statistics() then

@@ -3,6 +3,7 @@
 local orig_send = ChatManager.send_message
 function ChatManager:send_message(channel_id, sender, message)
 	if channel_id ~= 1 then
+		orig_send(self, channel_id, sender, message)
 		return
 	end
 	

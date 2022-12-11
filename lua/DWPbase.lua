@@ -25,7 +25,8 @@ if not DWP then
 		assduration = 350,
 		bAmMarsh = true,
 		arrestbeta = true,
-		hostagesbeta = false
+		hostagesbeta = false,
+		statsmsgpublic = true
     }
 	DWP.players = {}
 	for i=1,4 do -- peer skills/hours prints

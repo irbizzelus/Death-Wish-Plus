@@ -119,6 +119,11 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.settings[item:name()] = item:value() == 'on'
 		DWP:Save()
 	end
+	
+	MenuCallbackHandler.DWPcb_statsmsgpublic = function(this, item)
+		DWP.settings[item:name()] = item:value() == 'on'
+		DWP:Save()
+	end
 
 	DWP:Load()
 

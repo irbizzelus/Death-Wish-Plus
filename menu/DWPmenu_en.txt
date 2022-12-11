@@ -10,7 +10,7 @@
 	"DWP_bAmMarsh": "Black american marshals",
 	"DWP_bAmMarsh_desc": "Replace american marshals with their black uniform counterparts used by other factions.\nOnly works on Death Wish difficulty.",
 	"DWP_respawns": "DW respawn speed",
-	"DWP_respawns_desc": "Set delay before next squad is allowed to spawn in. This setting also affects enemy squad amounts: lower delays mean more enemy squads on the map.\n DWP default 4. Pre DWP 2.0 default was 1. Base game default: 5. Slider min and max values: 0.5; 4",
+	"DWP_respawns_desc": "Set delay before next squad is allowed to spawn in. This setting also affects enemy squad amounts: lower delays mean more enemy squads on the map.\n DWP default 4. Base game default: 5. Slider min and max values: 0.5; 4",
 	"DWP_assforce_pool": "DW Assault pool",
 	"DWP_assforce_pool_desc": "Set amount of cops that you have to kill for assault to be over. DWP default 400. Base game default: 900. Slider min and max values: 400; 700",
 	"DWP_assduration": "DW assault duration",
@@ -19,13 +19,15 @@
 	"DWP_gameplay_defaults_desc": "Click this button to reset all gameplay options to deafult settings.",
 	
 	"DWP_arrestbeta": "Agressive player cuffing (BETA)",
-	"DWP_arrestbeta_desc": "Test feature: please leave feedback on this mechanic.\nIn addition to sending a cop to arrest a player, other cops can also arrest players if they get close enough during an interaction. May cause minor performance issues.",
+	"DWP_arrestbeta_desc": "Test feature: please leave feedback on this mechanic.\nIn addition to sending a cop to arrest a player, other cops can also arrest players if they get close enough during an interaction.",
 	"DWP_hostagesbeta": "Hostage control(BETA)",
 	"DWP_hostagesbeta_desc": "Test feature: please leave feedback on this mechanic.\nWhen enabled, having hostages increases assault breaks and enemy respawn delays. Killing hostages reduces respawn delays and adds new enemies.",
 	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
-	"DWP_infomsgpublic": "Enable public messages",
-	"DWP_infomsgpublic_desc": "If you are a host, information related messages from 'game end statistis options' and 'chat options' will be transmitted to all players in the lobby",
+	"DWP_infomsgpublic": "Player info public messages",
+	"DWP_infomsgpublic_desc": "If you are a host, information related messages from 'chat options' will be transmitted to all players in the lobby. If you are a client, these message will be private regardless of this setting.",
+	"DWP_statsmsgpublic": "End stats public messages",
+	"DWP_statsmsgpublic_desc": "If you are a host, messages from 'game end statistis options' will be transmitted to all players in the lobby.",
 	
 	"DWP_endstat_header": "---- GAME END STATISTICS OPTIONS ----",
 	"DWP_endstattoggle": "Enable post game KDR",

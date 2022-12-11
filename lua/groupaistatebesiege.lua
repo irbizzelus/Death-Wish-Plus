@@ -51,6 +51,13 @@ if DWP.DWdifficultycheck == true then
 							sp.interval = DWP.settings.respawns * 2 * killed_hostages_mul * active_hostages_mul
 						end
 					end
+					-- test for 2.3.1
+					if sp.delay_t then
+						local newdelay = (4 / DWP.settings.respawns) * 7.5
+						--log("BEFORE: "..tostring(sp.delay_t))
+						sp.delay_t = sp.delay_t - newdelay
+						--log("AFTER: "..tostring(sp.delay_t))
+					end
 				end
 			end
 		end
@@ -174,7 +181,9 @@ if DWP.DWdifficultycheck == true then
 		local unit = ""
 		
 		if spawntarget_id == 1 then
-			mvector3.set(posi,managers.player:player_unit():position())
+			if managers.player:player_unit():position() then -- make sure host ain't dead
+				mvector3.set(posi,managers.player:player_unit():position())
+			end
 		else
 			if managers.network:session():peer(spawntarget_id) then
 				peer = managers.network:session():peer(spawntarget_id)
