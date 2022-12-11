@@ -200,7 +200,7 @@ if DWP.DWdifficultycheck == true then
 			end
 			mvector3.set(posi,unit:position())
 			World:spawn_unit(Idstring("units/payday2/characters/ene_spook_1/ene_spook_1"), posi, rot)
-		elseif spawntarget_id == 1 then
+		elseif spawntarget_id == 1 and managers.player:player_unit():position() then -- make sure host ain't dead
 			World:spawn_unit(Idstring("units/payday2/characters/ene_spook_1/ene_spook_1"), posi, rot)
 		end
 	end

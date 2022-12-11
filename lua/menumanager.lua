@@ -187,14 +187,14 @@ end
 
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.3 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.31 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3 update changelog:\n- Squad amounts should now be more consistent with respawn delay values\n- A lot of changes to Hostage Control mechanic, including new penalties/bonuses and rebalances. Check the changelog for more information."
+			local message = "2.3.1 update changelog:\n- Fixed an issue where DW+ users would not send info to other players via chat channels that are not visible to the player. This includes mods like Tailor Expansion or Better Assault Indicator\n- Added separate privacy option for chat messages regarding end game stats\n- Added support for custom heist 'Hardware Store'\n- Added new respawn delay code that might fix inconsistencies when played at low respawn delay settings, this feature might get reverted if default settings will get harder due to this change\n- A few more fixes/adjustments"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.3
+			DWP.settings.changelog_msg_shown = 2.31
 			DWP:Save()
 		end
 	end)
