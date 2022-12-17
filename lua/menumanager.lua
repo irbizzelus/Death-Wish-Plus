@@ -126,7 +126,7 @@ function DWP:skills(peer_id) -- get peer's id, get their skills, print messages 
 					skillsum = skillsum + v
 				end
 				local message = string.format("%s: |%s skill points used| |%s %s/9|", peer:name(), skillsum, managers.localization:text("menu_st_spec_" .. perk_deck_id), perk_deck_completion)
-				if perk_deck_id > 22 then -- update this when, if ever, a new perk is added
+				if perk_deck_id > 23 then -- update this when, if ever, a new perk is added
 					message = string.format("%s: |%s skill points used| |%s %s/9|", peer:name(), skillsum, "Custom perk deck", perk_deck_completion)
 				end
 				if DWP.settings.skillinfo == true then
