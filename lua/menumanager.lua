@@ -194,7 +194,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.2 update: \n- Christmas event support was added. New 'christmas chaos' gameplay option was added, enabled by default\n- Diff and drama changes\n- More stuff"
+			local message = "2.3.2 update: \n- Christmas event support was added. New 'christmas chaos' gameplay option was added, enabled by default\n- Changes to 'diff' and 'drama' that will change how assaults are played out, more info in the changelog\n- Bulldozer limit was reduced from 5 to 4\n- Removed smokes/flashes on 'No Mercy' heist. Might be reverted later"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.32
