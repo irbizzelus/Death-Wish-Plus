@@ -63,9 +63,9 @@ DWP_CM:add_command("civi", {
 DWP_CM:add_command("xmas", {
 	callback = function(args, sender)
 		if sender:id() ~= 1 then
-			DWP_CM:send_message(sender:id(), string.format("(!!)Only works in a lobby with christmas event enabled(!!) Snowmen will spawn in pairs after every present is secured. Merry christmas!"))
+			DWP_CM:send_message(sender:id(), string.format("(!!)Only works in a lobby with christmas event enabled(!!) Snowmen will spawn after every 3rd present is secured. Normal bulldozer amounts are reduced. Merry christmas!"))
 		else
-			DWP_CM:message(string.format("(!!)Only works in a lobby with christmas event enabled(!!) Snowmen will spawn in pairs after every present is secured. Merry christmas!"), nil, nil, true)
+			DWP_CM:message(string.format("(!!)Only works in a lobby with christmas event enabled(!!) Snowmen will spawn after every 3rd present is secured. Normal bulldozer amounts are reduced. Merry christmas!"), nil, nil, true)
 		end
 	end,
 })

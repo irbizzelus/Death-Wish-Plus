@@ -25,7 +25,7 @@
 	
 	"DWP_event_header": "---- EVENT SETTINGS ----",
 	"DWP_xmas_chaos": "Christmas chaos",
-	"DWP_xmas_chaos_desc": "While playing in the new christmas event mode, snowmen will spawn in packs of 2, and will spawn after every present is secured. This setting disables hostage control. Requres a heist restart to apply.",
+	"DWP_xmas_chaos_desc": "While playing in the new christmas event mode, snowman will spawn after every 3rd bag you secure. Normal bulldozer amounts reduced. This setting disables hostage control. Requres a heist restart to apply.",
 	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
 	"DWP_infomsgpublic": "Player info public messages",
