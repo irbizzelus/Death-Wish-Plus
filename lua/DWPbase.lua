@@ -26,7 +26,8 @@ if not DWP then
 		bAmMarsh = true,
 		arrestbeta = true,
 		hostagesbeta = false,
-		statsmsgpublic = true
+		statsmsgpublic = true,
+		xmas_chaos = true
     }
 	DWP.players = {}
 	for i=1,4 do -- peer skills/hours prints

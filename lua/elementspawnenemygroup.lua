@@ -11,7 +11,8 @@ local groupsOLD = {
 	"tac_swat_rifle_flank",
 	"tac_shield_wall_ranged",
 	"tac_bull_rush",
-	"marshal_squad"
+	"marshal_squad",
+	"snowman_boss" -- remove later
 }
 
 if Global.level_data and Global.level_data.level_id == "hardware_store" then

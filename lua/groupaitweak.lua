@@ -106,7 +106,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			shield = 6,
 			medic = 5,
 			taser = 6,
-			tank = 5,
+			tank = 4,
 			spooc = 3
 		}
 		
@@ -344,7 +344,12 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		marshal_marksman = {
 			"ranged_fire",
 			"flank"
-		}
+		},
+		-- tactics for snowman specifically
+		tank_rush = {
+			"charge",
+			"murder"
+		},
 	}
 	-- commented are defualt marshal unit values we will buff em up a 'bit'
 	if Global.level_data and Global.level_data.level_id == "trai" or Global.game_settings and Global.game_settings.level_id == "trai" then
@@ -908,6 +913,27 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	}
+	
+	-- snowman, prob should be removed later
+	self.enemy_spawn_groups.snowman_boss = {
+		amount = {
+			1,
+			1
+		},
+		spawn = {
+			{
+				freq = 1,
+				amount_min = 1,
+				rank = 1,
+				unit = "snowman_boss",
+				tactics = self._tactics.tank_rush
+			}
+		},
+		spawn_point_chk_ref = table.list_to_set({
+			"tac_bull_rush"
+		})
+	}
+	
 end
 end)
 
@@ -935,19 +961,19 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		1,
 		1
 	}
-	
+
 	-- Make the assault breaks substantially longer if players have hostages
-	if DWP.settings.hostagesbeta == false then
-		self.besiege.assault.hostage_hesitation_delay = {
-			25,
-			25,
-			25
-		}
-	else
+	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
 		self.besiege.assault.hostage_hesitation_delay = {
 			60,
 			60,
 			60
+		}
+	else
+		self.besiege.assault.hostage_hesitation_delay = {
+			25,
+			25,
+			25
 		}
 	end
 
@@ -1049,6 +1075,19 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 		0
 	}
 
+	-- snowman, prob should be removed later
+	self.besiege.assault.groups.snowman_boss = {
+		0,
+		0,
+		0
+	}
+	
+	self.besiege.recon.groups.snowman_boss = {
+		0,
+		0,
+		0
+	}
+
 	self.besiege.assault.groups.CS_swats = {
 		0.18,
 		0.18,
@@ -1099,28 +1138,27 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 		0.2
 	}
 
-	self.besiege.recon.groups = {
-		FBI_stealth_a = {
-			1,
-			1,
-			1
-		},
-		FBI_stealth_b = {
-			0.5,
-			0.5,
-			0.5
-		},
-		FBI_stealth_c = {
-			0.4,
-			0.4,
-			0.4
-		},
-		single_spooc = {
-			0,
-			0,
-			0
-		}
+	self.besiege.recon.groups.FBI_stealth_a = {
+		1,
+		1,
+		1
 	}
+	self.besiege.recon.groups.FBI_stealth_b = {
+		0.5,
+		0.5,
+		0.5
+	}
+	self.besiege.recon.groups.FBI_stealth_c = {
+		0.4,
+		0.4,
+		0.4
+	}
+	self.besiege.recon.groups.single_spooc = {
+		0,
+		0,
+		0
+	}
+	
 
 	self.besiege.assault.delay = {
 		25,

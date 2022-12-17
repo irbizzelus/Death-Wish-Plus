@@ -20,6 +20,11 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
+	MenuCallbackHandler.DWPcb_xmas_chaos = function(this, item)
+		DWP.settings[item:name()] = item:value() == 'on'
+		DWP:Save()
+	end
+	
 	MenuCallbackHandler.DWPcb_hostagesbeta = function(this, item)
 		DWP.settings[item:name()] = item:value() == 'on'
 		DWP:Save()

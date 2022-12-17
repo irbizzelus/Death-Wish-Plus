@@ -68,7 +68,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.11) 'Death Wish +' difficulty with gameplay changes listed below:")
+			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.2) 'Death Wish +' difficulty with gameplay changes listed below:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -87,8 +87,11 @@ function DWP:welcomemsg2(peer_id)
 			local cuffs = "\n- Cops WILL TRY TO CUFF YOU during interactions: /cuffs"
 			local dominations = "\n- Cops are harder to intimidate: /dom"
 			local hostages = ""
-			if DWP.settings.hostagesbeta == true then
+			if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
 				hostages = "\n- Hostage control is enabled: /civi"
+			end
+			if DWP.settings.xmas_chaos == true then
+				hostages = "\n- Christmas chaos is enabled: /xmas"
 			end
 			local message = string.format("\n- Enemies have quicker respawns and have more unit variety: /assault%s%s%s\n More info on chat commands: /help", cuffs, dominations, hostages)
 			if managers.network:session() and managers.network:session():peers() then
@@ -187,14 +190,14 @@ end
 
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.311 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.32 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.11 bug fix: \nFixed a small issue whith cloakers from hostage control still crashing the game after 2.3.1\n\n2.3.1 update changelog:\n- Fixed an issue where DW+ users would not send info to other players via chat channels that are not visible to the player. This includes mods like Tailor Expansion or Better Assault Indicator\n- Added separate privacy option for chat messages regarding end game stats\n- Added support for custom heist 'Hardware Store'\n- Added new respawn delay code that might fix inconsistencies when played at low respawn delay settings, this feature might get reverted if default settings will get harder due to this change\n- A few more fixes/adjustments"
+			local message = "2.3.2 update: \n- Christmas event support was added. New 'christmas chaos' gameplay option was added, enabled by default\n- Diff and drama changes\n- More stuff"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.311
+			DWP.settings.changelog_msg_shown = 2.32
 			DWP:Save()
 		end
 	end)

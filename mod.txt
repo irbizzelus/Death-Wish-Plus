@@ -1,7 +1,7 @@
 {
     "name": "Death Wish +",
     "description": "Modifies Death Wish difficulty to make it a bit harder.",
-    "version": "2.3.11",
+    "version": "2.3.2",
     "author": "irbizzelus",
     "contact": "Steam profile link is on my modworkshop account",
 	"image" : "dwp.dds",
@@ -88,6 +88,10 @@
 		{
 		"hook_id" : "lib/managers/dialogmanager",
 		"script_path" : "lua/dialogmanager.lua"
+		},
+		{
+		"hook_id" : "lib/mutators/mutatorcg22",
+		"script_path" : "lua/mutatorcg22.lua"
 		}
     ]
 }

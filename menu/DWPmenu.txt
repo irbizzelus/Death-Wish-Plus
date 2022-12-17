@@ -102,6 +102,26 @@
 		},
 		{
 			"type" : "button",
+			"id" : "event_header",
+			"title" : "DWP_event_header",
+			"description" : "DWP_blank",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "xmas_chaos",
+			"title" : "DWP_xmas_chaos",
+			"description" : "DWP_xmas_chaos_desc",
+			"callback" : "DWPcb_xmas_chaos",
+			"value" : "xmas_chaos",
+			"default_value" : true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "button",
 			"id" : "privacy_header",
 			"title" : "DWP_privacy_header",
 			"description" : "DWP_blank",
