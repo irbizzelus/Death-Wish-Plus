@@ -77,32 +77,38 @@ end
 
 local add_drama_orig = GroupAIStateBase._add_drama
 function GroupAIStateBase:_add_drama(amount)
-	-- prevent drama from goin over 95 so we never skip anticipation. reason: longer breaks are needed with this mod
-	-- also i like when bain tells me it's 10 seconds before assaults starts (thx mods), but hate when assault immediately begins right after this voice line
-	-- also some of my custom music's anticipation tracks are 11/10, yet i almost never hear them because of this (useless for this mod) mechanic 
-	if self._drama_data.amount >= 0.74 then
-		self._drama_data.amount = 0.55
-	end
-	-- also prevent drama from beeing to low to make fade last as long as possible. 
-	-- thanks to update 181, this is not exploitable and gives 1 minute of free time at best
-	if self._drama_data.amount <= 0.55 then
-		self._drama_data.amount = 0.55
+	if DWP.DWdifficultycheck == true then
+		-- prevent drama from goin over 95 so we never skip anticipation. reason: longer breaks are needed with this mod
+		-- also i like when bain tells me it's 10 seconds before assaults starts (thx mods), but hate when assault immediately begins right after this voice line
+		-- also some of my custom music's anticipation tracks are 11/10, yet i almost never hear them because of this (useless for this mod) mechanic 
+		if self._drama_data.amount >= 0.74 then
+			self._drama_data.amount = 0.55
+		end
+		-- also prevent drama from beeing to low to make fade last as long as possible. 
+		-- thanks to update 181, this is not exploitable and gives 1 minute of free time at best
+		if self._drama_data.amount <= 0.55 then
+			self._drama_data.amount = 0.55
+		end
 	end
 	add_drama_orig(self,amount)
 end
 
 local detonate_world_smoke_grenade_orig = GroupAIStateBase.detonate_world_smoke_grenade
 function GroupAIStateBase:detonate_world_smoke_grenade(id)
-	-- disables smokes/flashes on 'No Mercy' - remove if too easy or broken, testing for now
-	if Global.level_data and Global.level_data.level_id == "nmh" then
-		return
+	if DWP.DWdifficultycheck == true then
+		-- disables smokes/flashes on 'No Mercy' - remove if too easy or broken, testing for now
+		if Global.level_data and Global.level_data.level_id == "nmh" then
+			return
+		end
 	end
 	detonate_world_smoke_grenade_orig(self,id)
 end
 
 Hooks:PostHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(self, value)
-	if value < 1 and value > 0 then
-		self:set_difficulty(1)
+	if DWP.DWdifficultycheck == true then
+		if value < 1 and value > 0 then
+			self:set_difficulty(1)
+		end
 	end
 end)
 
