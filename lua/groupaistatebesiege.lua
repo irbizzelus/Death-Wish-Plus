@@ -3,7 +3,7 @@ if DWP.DWdifficultycheck == true then
 	
 	Hooks:PostHook(GroupAIStateBesiege, "init", "DWP_spawngroups", function(self)
 		self._MAX_SIMULTANEOUS_SPAWNS = 4
-		if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
+		if DWP.settings.hostagesbeta == true then
 			--self._special_unit_types.tank_mini = true
 			--self._special_unit_types.tank_medic = true
 			self._special_unit_types.tank_hw = true
@@ -27,16 +27,16 @@ if DWP.DWdifficultycheck == true then
 	Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)
 	local active_hostages_mul = 1
 	local killed_hostages_mul = 1
-	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false and self._hostage_headcount >= 3 then
+	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 3 then
 		active_hostages_mul = 1.2
 	end
-	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false and self._hostage_headcount >= 6 then
+	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 6 then
 		active_hostages_mul = 1.4
 	end
-	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 3 then
+	if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 3 then
 		killed_hostages_mul = 0.75
 	end
-	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 5 then
+	if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 5 then
 		killed_hostages_mul = 0.5
 	end
 		if self._spawning_groups and #self._spawning_groups >= 1 then

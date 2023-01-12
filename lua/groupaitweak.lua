@@ -914,7 +914,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	}
 	
-	-- snowman, prob should be removed later
+	-- snowman, prob will be removed later, ovkl kept him for now
 	self.enemy_spawn_groups.snowman_boss = {
 		amount = {
 			1,
@@ -963,7 +963,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	}
 
 	-- Make the assault breaks substantially longer if players have hostages
-	if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
+	if DWP.settings.hostagesbeta == true then
 		self.besiege.assault.hostage_hesitation_delay = {
 			60,
 			60,
@@ -1075,7 +1075,7 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 		0
 	}
 
-	-- snowman, prob should be removed later
+	-- snowman, prob will be removed later
 	self.besiege.assault.groups.snowman_boss = {
 		0,
 		0,

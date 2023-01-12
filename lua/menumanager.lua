@@ -68,17 +68,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.21) 'Death Wish +' difficulty with gameplay changes listed below:")
-			if managers.network:session() and managers.network:session():peers() then
-				local peer = managers.network:session():peer(peer_id)
-				if peer then
-					peer:send("send_chat_message", ChatManager.GAME, message)
-				end
-			end
-		end)
-	elseif Network:is_server() and DWP.settings.xmas_chaos == true then
-		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running 'Death Wish +' mod (version 2.3.21) with 'Christmas Chaos' setting enabled. For more info on what this gameplay setting does, type /xmas")
+			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.22) 'Death Wish +' difficulty with gameplay changes listed below:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -97,11 +87,8 @@ function DWP:welcomemsg2(peer_id)
 			local cuffs = "\n- Cops WILL TRY TO CUFF YOU during interactions: /cuffs"
 			local dominations = "\n- Cops are harder to intimidate: /dom"
 			local hostages = ""
-			if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
+			if DWP.settings.hostagesbeta == true then
 				hostages = "\n- Hostage control is enabled: /civi"
-			end
-			if DWP.settings.xmas_chaos == true then
-				hostages = "\n- Christmas chaos is enabled: /xmas"
 			end
 			local message = string.format("\n- Enemies have quicker respawns and have more unit variety: /assault%s%s%s\n More info on chat commands: /help", cuffs, dominations, hostages)
 			if managers.network:session() and managers.network:session():peers() then
@@ -200,14 +187,14 @@ end
 
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.321 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.322 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.21 bug-fix: \n- Updated xmas chaos event description in settngs\n- Xmas chaos chat command now works on all difficulties\n- Xmas chaos no longer adjusts dozer limits on other difficulties then DW\n- Drama and dif changes from 2.3.2 no longer affect other difficulties then DW\n\n2.3.2 update: \n- Christmas event support was added. New 'christmas chaos' gameplay option was added, enabled by default\n- Changes to 'diff' and 'drama' that will change how assaults are played out, more info in the changelog\n- Bulldozer limit was reduced from 5 to 4\n- Removed smokes/flashes on 'No Mercy' heist. Might be reverted later"
+			local message = "2.3.22 update: \n- Removed christmas chaos event"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.321
+			DWP.settings.changelog_msg_shown = 2.322
 			DWP:Save()
 		end
 	end)

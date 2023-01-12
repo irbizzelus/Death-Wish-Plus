@@ -114,7 +114,7 @@ end)
 
 -- 2.3.2 ends here
 
-if DWP.settings.hostagesbeta == true and DWP.settings.xmas_chaos == false then
+if DWP.settings.hostagesbeta == true then
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function(self, killer_unit)
 	if DWP.DWdifficultycheck == true then
 	

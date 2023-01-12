@@ -23,10 +23,6 @@
 	"DWP_hostagesbeta": "Hostage control(BETA)",
 	"DWP_hostagesbeta_desc": "Test feature: please leave feedback on this mechanic.\nWhen enabled, having hostages increases assault breaks and enemy respawn delays. Killing hostages reduces respawn delays and adds new enemies.",
 	
-	"DWP_event_header": "---- EVENT SETTINGS ----",
-	"DWP_xmas_chaos": "Christmas chaos",
-	"DWP_xmas_chaos_desc": "While playing in the new christmas event mode, snowman will spawn after every 3rd bag you secure. This works on all difficulties. While playing on Death Wish difficulty standard bulldozer limits are reduced. This setting also disables hostage control. Requres a heist restart to apply.",
-	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
 	"DWP_infomsgpublic": "Player info public messages",
 	"DWP_infomsgpublic_desc": "If you are a host, information related messages from 'chat options' will be transmitted to all players in the lobby. If you are a client, these message will be private regardless of this setting.",
