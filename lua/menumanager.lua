@@ -191,7 +191,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.22 update: \n- Removed christmas chaos event"
+			local message = "2.3.22 update: \n- Removed christmas chaos event\n- Removed BETA tags from agressive cuffing and hostage control, and also updated their descriptions in settings"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.322

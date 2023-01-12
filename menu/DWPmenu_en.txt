@@ -5,7 +5,7 @@
 
 	"DWP_gameplay_header": "---- GAMEPLAY OPTIONS ----",
 	"DWP_gameplay_header_desc": "Gameplay changes can only be applied by lobby's leader(AKA host).",
-	"DWP_DSdozer": "Zeal minigun dozer",
+	"DWP_DSdozer": "Zeal minigun dozers",
 	"DWP_DSdozer_desc": "Replace minigun dozers with DS Zeal counterparts for american faction.\nOnly works on Death Wish difficulty.",
 	"DWP_bAmMarsh": "Black american marshals",
 	"DWP_bAmMarsh_desc": "Replace american marshals with their black uniform counterparts used by other factions.\nOnly works on Death Wish difficulty.",
@@ -18,10 +18,10 @@
 	"DWP_gameplay_defaults": "Reset to defaults",
 	"DWP_gameplay_defaults_desc": "Click this button to reset all gameplay options to deafult settings.",
 	
-	"DWP_arrestbeta": "Agressive player cuffing (BETA)",
-	"DWP_arrestbeta_desc": "Test feature: please leave feedback on this mechanic.\nIn addition to sending a cop to arrest a player, other cops can also arrest players if they get close enough during an interaction.",
-	"DWP_hostagesbeta": "Hostage control(BETA)",
-	"DWP_hostagesbeta_desc": "Test feature: please leave feedback on this mechanic.\nWhen enabled, having hostages increases assault breaks and enemy respawn delays. Killing hostages reduces respawn delays and adds new enemies.",
+	"DWP_arrestbeta": "Agressive player cuffing",
+	"DWP_arrestbeta_desc": "In addition to sending one specific cop to arrest a player, all other enemy units can also arrest players during interactions, if they get to them faster then the selected cop.",
+	"DWP_hostagesbeta": "Hostage control",
+	"DWP_hostagesbeta_desc": "If enabled, having hostages will increase assault breaks and slow down enemy respawns. However, killing certain ammounts of civilian hostages will speed up enemy respawn speeds, as well as add new enemy types.",
 	
 	"DWP_privacy_header": "---- PRIVACY OPTIONS ----",
 	"DWP_infomsgpublic": "Player info public messages",
