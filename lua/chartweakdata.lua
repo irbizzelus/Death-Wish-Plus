@@ -103,11 +103,14 @@ function DWP.setnewdoms()
 		end
 	end
 end
--- this is an extremly dumb way of making sure that our doms are properly adjusted based on what difficulty we are on. should be reworked. why is it so bad?
--- cuz we cant make a hook like down below without altering other difficulties, so we have to only tweak values when we are sure we are on DW using groupaitweakdata
+
+-- this is a dumb way of making sure that our doms are properly adjusted based on what difficulty we are on. should be reworked.
+-- the whole problem comes out of the fact that enemy surrender presets dont change based on difficulty, but this mod should only affect DW difficulty, so let the pain begin
+-- why is it so bad?
+-- cuz we cant make a hook like down below without altering other difficulties, so we have to only tweak values when we are sure we are on DW difficulty using groupaitweakdata
 -- P.S i actually think this post hook below is not even needed if you just set values once, like in the function above.
 -- but while testing this mod on Custom Grounds, i noticed that they change their presets when you enter the arena
--- i dont care if all of this is unnesasary and only fixes custom grounds, it works well regardless
+-- i dont care if all of this is unnesasary and only fixes custom grounds, it might prevent issues that i havent even seen yet, so keep it
 if DWP.newdomshook then
 	Hooks:PostHook(CharacterTweakData, "init", "DWP_newdoms", function(self)
 		local surrender_preset_easy = {

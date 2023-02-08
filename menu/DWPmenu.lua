@@ -1,10 +1,11 @@
 dofile(ModPath .. "lua/DWPbase.lua")
 
-Hooks:Add('LocalizationManagerPostInit', 'DWP_option_loc', function(loc)--maybe translations will be added in the future
+Hooks:Add('LocalizationManagerPostInit', 'DWP_option_loc', function(loc)--maybe translations will be added in the future, but i doubt it
 	DWP:Load()
 	loc:load_localization_file(DWP._path .. 'menu/DWPmenu_en.txt', false)
 end)
 
+-- all the setting that can be changes in the mod's settings in game
 Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 
 	MenuCallbackHandler.DWPsave = function(this, item)

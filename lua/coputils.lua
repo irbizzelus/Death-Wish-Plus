@@ -75,6 +75,7 @@ function DWPMod.CopUtils:SendCopToArrestPlayer(player_unit)
         return
     end
 
+	-- Check for enemies in radius
     local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), self._arrest_search_radius, managers.slot:get_mask("enemies"))
     if not enemies or #enemies <= 0 then
         return
@@ -164,7 +165,7 @@ end
 
 -- Find out if unit A is an enemy of unit B
 function DWPMod.CopUtils:AreUnitsEnemies(unit_a, unit_b)
-    if not unit_a or not unit_b or not unit_a:movement() or not unit_b:movement() then
+    if not unit_a or not unit_b or not unit_a:movement() or not unit_b:movement() or not unit_a:movement():team() or not unit_b:movement():team() then
         return false
     end
 

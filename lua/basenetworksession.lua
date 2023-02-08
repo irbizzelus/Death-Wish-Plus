@@ -1,10 +1,16 @@
+-- print stats at the end of the match
+
+-- 1st msg only once
 DWP_stats_printed = false
+
 Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats", function(self, peer_id, peer_kills, peer_specials_kills, peer_head_shots, accuracy, downs)
-	-- if enabled print stats in post game chat, with customizable settings
+	-- if enabled, print stats in post game chat with customizable settings
+	-- this part is the first message that creates a "header" explaining each value below
 	if DWP_stats_printed == false then
 		DWP_stats_printed = true
 		DelayedCalls:Add("DWP:endstatannounce", 0.5, function()
 			if DWP.settings.endstattoggle == true then
+				-- create empty strings for settings in case these customization options are disabled
 				local specials = ""
 				local headshoots = ""
 				local acc = ""
@@ -16,6 +22,8 @@ Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats",
 			end
 		end)
 	end
+	
+	-- same as above, but print actual numerical values that we have for each existing player
 	DelayedCalls:Add("DWP:endstatsforpeer" .. tostring(peer_id) , 1.25, function()
 		if DWP.settings.endstattoggle == true then
 			local peer = managers.network:session():peer(peer_id)

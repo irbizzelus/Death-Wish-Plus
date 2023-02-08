@@ -2,7 +2,7 @@ dofile(ModPath .. "lua/DWPbase.lua")
 if rawget(_G, "DWP_CM") then
 	rawset(_G, "DWP_CM", nil)
 end
-
+-- Globals and utility functions
 if not rawget(_G, "DWP_CM") then
 	rawset(_G, "DWP_CM", {
 		_path = ModPath .. "commands/",
@@ -124,7 +124,7 @@ if not rawget(_G, "DWP_CM") then
 			end
 		end
 		
-		-- prob will never be used
+		-- leftover from an extremely old version of chat commands
 		if command.command_lock then
 			self:send_message(sender:id(), "Command temporarily disabled by host.")
 			return false

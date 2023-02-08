@@ -1,4 +1,4 @@
--- Sometimes HRT's spawn without a team set which crashes the game
+-- Sometimes HRT units spawn without a team set which crashes the game
 -- Set a default team for cop units if they dont have a team
 Hooks:PreHook(CopMovement, "team", "setcopteamifnoteam", function(self)
 	if not self._team then

@@ -1,5 +1,6 @@
 --dofile(ModPath .. "lua/DWPbase.lua")
 
+-- process send messages to activate chat commands if prefix exists
 local orig_send = ChatManager.send_message
 function ChatManager:send_message(channel_id, sender, message)
 	if channel_id ~= 1 then
@@ -28,6 +29,7 @@ function ChatManager:send_message(channel_id, sender, message)
 	orig_send(self, channel_id, sender, message)
 end
 
+-- same check for messages from other peers/players
 local orig_receive = ChatManager.receive_message_by_peer
 function ChatManager:receive_message_by_peer(channel_id, peer, message)
 	if peer:id() == 1 and Network:is_client() then -- if host sends us a message starting with dwp_stats, we ignore it. why? to not have duplicated messages

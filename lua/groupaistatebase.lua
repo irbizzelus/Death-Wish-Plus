@@ -73,7 +73,7 @@ function GroupAIStateBase:check_gameover_conditions()
 	return gameover
 end
 
--- 2.3.2 starts here
+-- 2.3.2 update starts here
 
 local add_drama_orig = GroupAIStateBase._add_drama
 function GroupAIStateBase:_add_drama(amount)
@@ -97,6 +97,8 @@ local detonate_world_smoke_grenade_orig = GroupAIStateBase.detonate_world_smoke_
 function GroupAIStateBase:detonate_world_smoke_grenade(id)
 	if DWP.DWdifficultycheck == true then
 		-- disables smokes/flashes on 'No Mercy' - remove if too easy or broken, testing for now
+		-- it does make the easiest heist even easier tbh, BUT i feel like most people would go to this heist to test max settings of this mod
+		-- and with smokes it becomes waaaay to hard, and not due to this mod's tweaks but rather due to poor visibility, which is not fun
 		if Global.level_data and Global.level_data.level_id == "nmh" then
 			return
 		end
@@ -104,6 +106,7 @@ function GroupAIStateBase:detonate_world_smoke_grenade(id)
 	detonate_world_smoke_grenade_orig(self,id)
 end
 
+-- keep diff value always at max. wouldnt change much since DWP allready used identical enemy spawn rates regardless of this value before
 Hooks:PostHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(self, value)
 	if DWP.DWdifficultycheck == true then
 		if value < 1 and value > 0 then
@@ -114,6 +117,7 @@ end)
 
 -- 2.3.2 ends here
 
+-- hostage control - on civi death 
 if DWP.settings.hostagesbeta == true then
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function(self, killer_unit)
 	if DWP.DWdifficultycheck == true then
@@ -141,12 +145,14 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 		local peer = 1
 		local killer_id = 1
 		
+		-- on first civi kill set player's kill count values to 0, otherwise just keep track of them
 		DWP.HostageControl.PeerHostageKillCount[1] = DWP.HostageControl.PeerHostageKillCount[1] or 0
 		DWP.HostageControl.PeerHostageKillCount[2] = DWP.HostageControl.PeerHostageKillCount[2] or 0
 		DWP.HostageControl.PeerHostageKillCount[3] = DWP.HostageControl.PeerHostageKillCount[3] or 0
 		DWP.HostageControl.PeerHostageKillCount[4] = DWP.HostageControl.PeerHostageKillCount[4] or 0
 		
-		-- i have no idea how to get player's name from killer_unit so we will have this nasty looking mess
+		-- i have no idea how to get player's name from killer_unit for PEERS so we will have this nasty looking mess
+		-- basically checks who killed the hostage, adds that to their kill count and remembers their name for chat messages later
 		if killer_unit:base().is_local_player then
 			killer_name = managers.network:session():peer(killer_unit:base()._id):name()
 			DWP.HostageControl.PeerHostageKillCount[1] = DWP.HostageControl.PeerHostageKillCount[1] + 1
@@ -176,6 +182,8 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 				local message_2 = "[DW+ Hostage Control] They're gonna come down harder on us if you kill civilians "..killer_name.."!"
 				local message_3 = "[DW+ Hostage Control] STOP KILLING CIVILIANS "..string.upper(killer_name).."! YOU THINK THEY'RE GONNA LET YOU GO WITH ALL THAT INNOCENT BLOOD ON YOUR HANDS?"
 				
+				-- creates different messages for clients depending on how many civis they have killed so far
+				-- these messages only appear when there is no global message, and is only sent to the killer player
 				if DWP.HostageControl.PeerHostageKillCount[killer_id] == 1 then
 					managers.network:session():send_to_peer(peer, "send_chat_message", 1, message_1)
 				elseif DWP.HostageControl.PeerHostageKillCount[killer_id] == 2 then
@@ -186,6 +194,7 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 				
 				managers.hud:show_hint({text = tostring(killer_name).." killed a civilian! Civilian kills: "..tostring(self._hostages_killed)})
 			end
+		-- global messages that dont care for who killed the hostage, except for the dooming one at the end
 		elseif self._hostages_killed == 3 then
 			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 3 civilians murdered. Enemy respawn rates were increased.")
 		elseif self._hostages_killed == 5 then
@@ -194,6 +203,7 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 			managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 7 civilians murdered. You've doomed us all "..killer_name.."...")
 		end
 		
+		-- activates special enemy mechanics after 5 and 7 civi kills
 		if self._hostages_killed == 5 then
 			DWP.CloakerReinforce(killer_id)
 		end
@@ -208,7 +218,7 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 				0.22,
 				0.22
 			}
-			tweak_data.group_ai.special_unit_spawn_limits.tank = 14
+			tweak_data.group_ai.special_unit_spawn_limits.tank = 14 -- LOL
 		end
 	end
 end)

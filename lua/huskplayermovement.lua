@@ -9,6 +9,7 @@ if DWP.DWdifficultycheck == true then
 		end
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
 		
+		-- agro cuffing with 1 second delay
 		if DWP.settings.arrestbeta then
 			DelayedCalls:Add("delay_for_cuff_scan_husk"..tostring(self._unit), 1.05, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)

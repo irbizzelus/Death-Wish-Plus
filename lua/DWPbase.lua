@@ -3,6 +3,7 @@ if not DWPMod then
     dofile(ModPath .. "lua/coputils.lua")
 end
 
+-- Main global vars, default settings and utility functions
 if not DWP then
     _G.DWP = {}
     DWP._path = ModPath

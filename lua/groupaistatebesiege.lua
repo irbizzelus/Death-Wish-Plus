@@ -3,6 +3,7 @@ if DWP.DWdifficultycheck == true then
 	
 	Hooks:PostHook(GroupAIStateBesiege, "init", "DWP_spawngroups", function(self)
 		self._MAX_SIMULTANEOUS_SPAWNS = 4
+		-- add headless dozers to the tank limit so they dont spawn indefinetly
 		if DWP.settings.hostagesbeta == true then
 			--self._special_unit_types.tank_mini = true
 			--self._special_unit_types.tank_medic = true
@@ -25,6 +26,7 @@ if DWP.DWdifficultycheck == true then
 	end
 
 	Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)
+	-- respawn rates multipliers
 	local active_hostages_mul = 1
 	local killed_hostages_mul = 1
 	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 3 then
@@ -42,6 +44,7 @@ if DWP.DWdifficultycheck == true then
 		if self._spawning_groups and #self._spawning_groups >= 1 then
 			for i=1, #self._spawning_groups do
 				for _, sp in ipairs(self._spawning_groups[i].spawn_group.spawn_pts) do
+					-- respawn rates for normal units and 2x for dozers/cloakers
 					if DWP.grouptypecheck(self._spawning_groups[i].group) == false then
 						if sp.interval then
 							sp.interval = DWP.settings.respawns * killed_hostages_mul * active_hostages_mul
@@ -51,7 +54,7 @@ if DWP.DWdifficultycheck == true then
 							sp.interval = DWP.settings.respawns * 2 * killed_hostages_mul * active_hostages_mul
 						end
 					end
-					-- test for 2.3.1
+					-- test for 2.3.1 -- doesnt seem to make any difference
 					if sp.delay_t then
 						local newdelay = (4 / DWP.settings.respawns) * 7.5
 						--log("BEFORE: "..tostring(sp.delay_t))
@@ -63,6 +66,7 @@ if DWP.DWdifficultycheck == true then
 		end
 	end )
 	
+	-- add minigun/medic/headless dozers to special limits
 	function GroupAIStateBesiege:_get_special_unit_type_count(special_type)
 		
 		if not self._special_units[special_type] then
@@ -90,6 +94,7 @@ if DWP.DWdifficultycheck == true then
 		end
 	end
 	
+	-- cloaker suprise after 5 civi kills from hostage control
 	function DWP.CloakerReinforce(killer_id)
 		-- put delayedcall on top so killing 5 hostages in stealth doesnt disable cloaker respawns
 		local next_spawn_min = 40
@@ -109,6 +114,7 @@ if DWP.DWdifficultycheck == true then
 			return
 		end
 		
+		-- Decide who gets the lucky cloaker spawn on top of them. More civi kills = higher the chance
 		-- TODO: refactor this mess to be a bit more readable
 		local player_1_weight = 25
 		local player_2_weight = 25
@@ -150,7 +156,7 @@ if DWP.DWdifficultycheck == true then
 		end
 		
 		-- change weights into percentages, with their values beeing the last value they can take
-		-- for example: if value for 1 is 20, for 2 is 30, for 3 is 20 and for 4 is 30,
+		-- for example: if chances for 1 is 20%, for 2 is 30, for 3 is 20 and for 4 is 30,
 		-- they will result in 1 = 0.2; 2 = 0.5; 3 = 0.7; and 4 = 1
 		-- then we can use math.random to roll a number from 0 to 1 and decide the target
 		player_1_weight = player_1_weight / 100

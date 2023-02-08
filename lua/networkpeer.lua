@@ -25,6 +25,7 @@ Hooks:Add("BaseNetworkSessionOnLoadComplete", "DWP_onloadcomplete", function(pee
 	end)
 end)
 
+-- print skills when player joins. yes, it needs the outfit to load first idek anymore
 Hooks:PostHook(NetworkPeer, "set_outfit_string", "DWP_on_outfitset", function(self, outfit_string, outfit_version, outfit_signature)
 	DelayedCalls:Add("DWP_skills_for" .. tostring(self:id()), 0.5 , function()
 		if managers.network._session and managers.network:session():peer(self:id()) then

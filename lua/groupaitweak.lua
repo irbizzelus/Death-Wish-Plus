@@ -19,6 +19,7 @@ local access_type_all = {
 	walk = true
 }
 
+-- units themselves
 Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcategories", function(self, difficulty_index)
 	if difficulty_index == 7 then
 		DWP.DWdifficultycheck = true
@@ -439,7 +440,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	if DWP.settings.respawns then
 		squadmul = 4 / DWP.settings.respawns
 	else
-		log("[DW+] Respawn value doesn't exists, using defaults.")
+		log("[DW+] Respawn value doesn't exist, using defaults.")
 	end
 	
 

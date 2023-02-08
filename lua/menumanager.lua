@@ -1,4 +1,5 @@
-Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", function(self, job_data)-- whenever a contract is bought, check for it's difficulty to apply welcome messages and lobby rename
+-- whenever a contract is bought, check for it's difficulty to apply welcome messages and lobby rename
+Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", function(self, job_data)
 	if job_data.difficulty == "overkill_290" then
 		DWP.DWdifficultycheck = true
 		if DWP.settings.lobbyname then
@@ -45,7 +46,7 @@ function DWP:statspublicmessage(message) -- quick fix before release, read below
 	end
 end
 
-function DWP:statsmessage(message) -- send end game stats, but make sure that clients with mod recieve this message, by not adding the prefix
+function DWP:statsmessage(message) -- send end game stats, but make sure that clients with mod recieve this message, by not adding the 'banned' prefix
 	if Global.game_settings.single_player == false then
 		managers.chat:_receive_message(1, "[DWP]", message, DWP.color)
 		DWP:statspublicmessage(message)
@@ -109,7 +110,7 @@ function DWP:welcomemsg2(peer_id)
 	end
 end
 
-function DWP:skills(peer_id) -- get peer's id, get their skills, print messages with info, only once pleeeease
+function DWP:skills(peer_id) -- get peer's id, get their skills, print messages with info, only once
 	if managers.network:session() and managers.network:session():peers() then
 		local peer = managers.network:session():peer(peer_id)
 		if peer then
@@ -185,16 +186,17 @@ if DWP.players[peer_id][2] ~= 0 then
 end
 end
 
+-- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.322 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.323 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.22 update: \n- Removed christmas chaos event\n- Removed BETA tags from agressive cuffing and hostage control, and also updated their descriptions in settings"
+			local message = "2.3.23 update: \n- Fixed potential crashes with player cuffing"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.322
+			DWP.settings.changelog_msg_shown = 2.323
 			DWP:Save()
 		end
 	end)
@@ -204,7 +206,8 @@ function DWP_linkchangelog()
 	Steam:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases/latest")
 end
 
-Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node) -- clear player's skill print check if in main menu
+Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node)
+	-- clear player's skill print check, if in main menu
 	if type(node) == "table" and node._parameters.name == "main" then
 		DWP.changelog_message()
 		for i=1,4 do
@@ -217,6 +220,7 @@ Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_na
 		DWP.menu_node = node
 	end
 	if type(node) == "table" and node._parameters.name == "lobby" then
+		-- whenever in the lobby as host make sure to set lobby name to whatever it should be, depending on current contract difficulty and such
 		if DWP.settings.lobbyname then
 			if managers.network.matchmake._lobby_attributes then
 				if Network:is_server() then

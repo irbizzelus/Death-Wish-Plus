@@ -1,4 +1,4 @@
--- HRT's sometimes spawn without a team set
+-- HRT units sometimes spawn without a team set
 -- this function is called to sync the units to late joiners and substitutes a default team if none is set
 	Hooks:PreHook(CopBrain, "save", "setcopbrainteam", function(self, save_data)
 		if not self._logic_data.team then

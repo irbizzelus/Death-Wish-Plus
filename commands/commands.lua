@@ -1,6 +1,8 @@
 dofile("mods/Death Wish Plus/lua/DWPbase.lua")
 
--- clear existing commands
+-- all chat commands with their propeties 
+
+-- clear existing commands if we have them. Only used for host/client checks in the lobby. During testing this would help test command's code w/o restarting the game session, since we could just reload this file
 DWP_CM.commands = {}
 
 if Network:is_server() then
@@ -91,6 +93,8 @@ DWP_CM:add_command("say", {
 	end,
 })
 
+-- constant check for game state to prevent host/client commands getting mixed, since you cant do certain things as a client 
+-- this is outdated, since client commands are now gone. might remove it later, but it doesnt hurt anything so let em be for now
 if not Utils:IsInGameState() then
 DelayedCalls:Add("updatecommandfilewhenhost", 0.5, function() -- if we are a host, and not in game, check every 0.5 seconds that we still are a host - in case you leave your lobby
 	dofile(DWP_CM._path .. "commands.lua")

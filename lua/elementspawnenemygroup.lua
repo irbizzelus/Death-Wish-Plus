@@ -15,6 +15,7 @@ local groupsOLD = {
 	"snowman_boss" -- probably will be used next year or removed later, idk, but keep him for now
 }
 
+-- hardware store cutsom heist fix
 if Global.level_data and Global.level_data.level_id == "hardware_store" then
 	table.insert(groupsOLD,"single_spooc")
 	
@@ -35,7 +36,7 @@ local disallowed_groups = {
 	single_spooc = true
 }
 
--- Will break custom heists that dont have standard spawngroups.
+-- Will break custom heists that dont have standard spawngroups. Replaces spawn groups to our own
 Hooks:PostHook(ElementSpawnEnemyGroup, "_finalize_values", "elementspawnenemygroup_replacespawngroups", function(self)
 	if self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD and table.contains_all(self._values.preferred_spawn_groups, groupsOLD) then
 		self._values.preferred_spawn_groups = {}

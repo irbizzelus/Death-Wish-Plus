@@ -1,7 +1,9 @@
 dofile(ModPath .. "lua/DWPbase.lua")
 
 if DWP.DWdifficultycheck == true then
-	-- Cops arrest local player if we are interacting with something
+	-- Cops arrest local player (mod user) if they are interacting with something when hit with a melee. sadly can not be applyied to clients because
+	-- they handle recieved melee damage by themselves and only report on amount of damage recieved,
+	-- not the fact that that dmg was from enemy melee. or maybe im just stupid and didnt find it, but i doubt it
 	local playerdamage_damagemelee_orig = PlayerDamage.damage_melee
 	function PlayerDamage:damage_melee(attack_data)
 
