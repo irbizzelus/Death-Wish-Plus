@@ -115,6 +115,9 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			self.unit_categories.marshal_marksman.unit_types.america = {
 				Idstring("units/pd2_dlc_usm1/characters/ene_male_marshal_marksman_2/ene_male_marshal_marksman_2")
 			}
+			self.unit_categories.marshal_shield.unit_types.america = {
+				Idstring("units/pd2_dlc_usm2/characters/ene_male_marshal_shield_2/ene_male_marshal_shield_2")
+			}
 		end
 		
 		self.unit_categories.UnDeadHostageAvengers = {
@@ -355,24 +358,24 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	-- commented are defualt marshal unit values we will buff em up a 'bit'
 	if Global.level_data and Global.level_data.level_id == "trai" or Global.game_settings and Global.game_settings.level_id == "trai" then
 		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 20, -- 60
+			spawn_cooldown = 15, -- 60
 			max_nr_simultaneous_groups = 3, -- 2
 			initial_spawn_delay = 30, -- 90
 			amount = {
-				1, -- 2
+				2, -- 2
 				3 -- 2
 			},
 			spawn = {
 				{
-					respawn_cooldown = 20, -- 30
-					amount_min = 2, -- 1
+					respawn_cooldown = 15, -- 30
+					amount_min = 4, -- 1
 					rank = 2,
 					freq = 1,
 					unit = "marshal_shield",
 					tactics = self._tactics.marshal_shield
 				},
 				{
-					respawn_cooldown = 20, -- 30
+					respawn_cooldown = 15, -- 30
 					amount_min = 2, -- 1
 					rank = 1,
 					freq = 1,
@@ -388,40 +391,24 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	elseif Global.level_data and Global.level_data.level_id == "ranc" or Global.game_settings and Global.game_settings.level_id == "ranc" then
 		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 20, -- 60
-			max_nr_simultaneous_groups = 2, -- 1
+			spawn_cooldown = 15, -- 60
+			max_nr_simultaneous_groups = 3, -- 2
 			initial_spawn_delay = 30, -- 90
 			amount = {
-				1, -- 2
+				2, -- 2
 				3 -- 2
 			},
 			spawn = {
 				{
-					respawn_cooldown = 20, -- 30
-					amount_min = 2,
-					rank = 1,
+					respawn_cooldown = 15, -- 30
+					amount_min = 2, -- 2
+					rank = 2,
 					freq = 1,
-					unit = "marshal_marksman",
-					tactics = self._tactics.marshal_marksman
-				}
-			},
-			spawn_point_chk_ref = table.list_to_set({
-				"tac_swat_rifle_flank",
-				"tac_swat_rifle"
-			})
-		}
-	else
-		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 20, -- 60
-			max_nr_simultaneous_groups = 2, -- 1
-			initial_spawn_delay = 90, -- 480
-			amount = {
-				1, -- 2
-				2 -- 2
-			},
-			spawn = {
+					unit = "marshal_shield",
+					tactics = self._tactics.marshal_shield
+				},
 				{
-					respawn_cooldown = 20, -- 30
+					respawn_cooldown = 15, -- 30
 					amount_min = 3, -- 2
 					rank = 1,
 					freq = 1,
@@ -430,8 +417,42 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				}
 			},
 			spawn_point_chk_ref = table.list_to_set({
-				"tac_swat_rifle_flank",
-				"tac_swat_rifle"
+				"tac_shield_wall",
+				"tac_shield_wall_ranged",
+				"tac_shield_wall_charge"
+			})
+		}
+	else
+		self.enemy_spawn_groups.marshal_squad = {
+			spawn_cooldown = 15, -- 60
+			max_nr_simultaneous_groups = 3, -- 2
+			initial_spawn_delay = 75, -- 480
+			amount = {
+				2, -- 2
+				2 -- 2
+			},
+			spawn = {
+				{
+					respawn_cooldown = 15,
+					amount_min = 3, -- 1
+					rank = 2,
+					freq = 1,
+					unit = "marshal_shield",
+					tactics = self._tactics.marshal_shield
+				},
+				{
+					respawn_cooldown = 15,
+					amount_min = 2, -- 1
+					rank = 1,
+					freq = 1,
+					unit = "marshal_marksman",
+					tactics = self._tactics.marshal_marksman
+				}
+			},
+			spawn_point_chk_ref = table.list_to_set({
+				"tac_shield_wall",
+				"tac_shield_wall_ranged",
+				"tac_shield_wall_charge"
 			})
 		}
 	end
