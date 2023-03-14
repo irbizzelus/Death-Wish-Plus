@@ -103,14 +103,6 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		end
 		
-		self.special_unit_spawn_limits = {
-			shield = 6,
-			medic = 5,
-			taser = 6,
-			tank = 4,
-			spooc = 3
-		}
-		
 		if DWP.settings.bAmMarsh == true then
 			self.unit_categories.marshal_marksman.unit_types.america = {
 				Idstring("units/pd2_dlc_usm1/characters/ene_male_marshal_marksman_2/ene_male_marshal_marksman_2")
@@ -141,6 +133,42 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			},
 			access = access_type_all
 		}
+		
+		if DWP.settings.difficulty == 1 then
+			self.special_unit_spawn_limits = {
+				shield = 6,
+				medic = 4,
+				taser = 6,
+				tank = 4,
+				spooc = 3
+			}
+		elseif DWP.settings.difficulty == 2 then
+			self.special_unit_spawn_limits = {
+				shield = 6,
+				medic = 5,
+				taser = 6,
+				tank = 5,
+				spooc = 3
+			}
+		elseif DWP.settings.difficulty == 3 then
+			self.special_unit_spawn_limits = {
+				shield = 7,
+				medic = 5,
+				taser = 7,
+				tank = 6,
+				spooc = 4
+			}
+		elseif DWP.settings.difficulty == 4 then
+			self.special_unit_spawn_limits = {
+				shield = 8,
+				medic = 6,
+				taser = 8,
+				tank = 7,
+				spooc = 5
+			}
+		else
+			log("DWP difficulty setting not found, special limits not adjusted properly.")
+		end
 	
 	else
 		DWP.DWdifficultycheck = false
@@ -458,8 +486,8 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	end
 
 	local squadmul = 1
-	if DWP.settings.respawns then
-		squadmul = 4 / DWP.settings.respawns
+	if DWP.settings.difficulty then
+		squadmul = math.clamp(DWP.settings.difficulty / 2, 1, 2)
 	else
 		log("[DW+] Respawn value doesn't exist, using defaults.")
 	end
@@ -504,70 +532,138 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	}
-	self.enemy_spawn_groups.CS_swats = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "CS_swat_MP5",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.CS_swat_rifle,
-				rank = 2
-			},
-			{
-				unit = "CS_swat_R870",
-				freq = 0.5,
-				amount_min = 1,
-				amount_max = 2,
-				tactics = self._tactics.CS_swat_shotgun,
-				rank = 1
-			},
-			{
-				unit = "CS_swat_MP5",
-				freq = 0.33,
-				amount_min = 2,
-				amount_max = 2,
-				tactics = self._tactics.CS_swat_rifle_flank,
-				rank = 3
-			},
-			{
-				unit = "medic_M4",
-				freq = 0.15,
-				amount_max = 1,
-				tactics = self._tactics.CS_swat_rifle_flank,
-				rank = 3
+	if DWP.settings.difficulty <= 2 then
+		self.enemy_spawn_groups.CS_swats = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "CS_swat_MP5",
+					freq = 1,
+					amount_min = 2,
+					amount_max = 3,
+					tactics = self._tactics.CS_swat_rifle,
+					rank = 2
+				},
+				{
+					unit = "CS_swat_R870",
+					freq = 0.5,
+					amount_min = 1,
+					amount_max = 2,
+					tactics = self._tactics.CS_swat_shotgun,
+					rank = 1
+				},
+				{
+					unit = "CS_swat_MP5",
+					freq = 0.33,
+					amount_min = 2,
+					amount_max = 2,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				},
+				{
+					unit = "medic_M4",
+					freq = 0.15,
+					amount_max = 1,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				}
 			}
 		}
-	}
-	self.enemy_spawn_groups.CS_heavys = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "CS_heavy_M4",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.CS_swat_rifle,
-				rank = 2
-			},
-			{
-				unit = "CS_heavy_R870",
-				freq = 0.75,
-				amount_min = 1,
-				amount_max = 3,
-				tactics = self._tactics.CS_swat_rifle_flank,
-				rank = 3
-			},
-			{
-				unit = "medic_R870",
-				freq = 0.2,
-				amount_max = 1,
-				tactics = self._tactics.CS_swat_shotgun,
-				rank = 3
+		self.enemy_spawn_groups.CS_heavys = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "CS_heavy_M4",
+					freq = 1,
+					amount_min = 2,
+					amount_max = 3,
+					tactics = self._tactics.CS_swat_rifle,
+					rank = 2
+				},
+				{
+					unit = "CS_heavy_R870",
+					freq = 0.75,
+					amount_min = 1,
+					amount_max = 3,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				},
+				{
+					unit = "medic_R870",
+					freq = 0.2,
+					amount_max = 1,
+					tactics = self._tactics.CS_swat_shotgun,
+					rank = 3
+				}
 			}
 		}
-	}
+	else
+		self.enemy_spawn_groups.CS_swats = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "CS_swat_MP5",
+					freq = 1,
+					amount_min = 2,
+					amount_max = 2,
+					tactics = self._tactics.CS_swat_rifle,
+					rank = 2
+				},
+				{
+					unit = "CS_swat_R870",
+					freq = 0.5,
+					amount_min = 3,
+					amount_max = 4,
+					tactics = self._tactics.CS_swat_shotgun,
+					rank = 1
+				},
+				{
+					unit = "CS_swat_MP5",
+					freq = 0.33,
+					amount_min = 1,
+					amount_max = 2,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				},
+				{
+					unit = "medic_M4",
+					freq = 0.15,
+					amount_max = 1,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				}
+			}
+		}
+		self.enemy_spawn_groups.CS_heavys = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "CS_heavy_M4",
+					freq = 1,
+					amount_min = 1,
+					amount_max = 3,
+					tactics = self._tactics.CS_swat_rifle,
+					rank = 2
+				},
+				{
+					unit = "CS_heavy_R870",
+					freq = 0.75,
+					amount_min = 2,
+					amount_max = 4,
+					tactics = self._tactics.CS_swat_rifle_flank,
+					rank = 3
+				},
+				{
+					unit = "medic_R870",
+					freq = 0.2,
+					amount_max = 2,
+					tactics = self._tactics.CS_swat_shotgun,
+					rank = 3
+				}
+			}
+		}
+	end
+	
 	self.enemy_spawn_groups.CS_shields = {
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
@@ -675,186 +771,186 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	}
 
-		self.enemy_spawn_groups.FBI_stealth_a = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_suit_stealth_MP5",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 2
-				},
-				{
-					unit = "CS_tazer",
-					freq = 1,
-					amount_max = 1,
-					tactics = self._tactics.CS_tazer,
-					rank = 1
-				}
+	self.enemy_spawn_groups.FBI_stealth_a = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_suit_stealth_MP5",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 3,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 2
+			},
+			{
+				unit = "CS_tazer",
+				freq = 1,
+				amount_max = 1,
+				tactics = self._tactics.CS_tazer,
+				rank = 1
 			}
 		}
+	}
 
 
-		self.enemy_spawn_groups.FBI_stealth_b = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_suit_stealth_MP5",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 1
-				},
-				{
-					unit = "FBI_suit_M4_MP5",
-					freq = 0.75,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 2
-				}
+	self.enemy_spawn_groups.FBI_stealth_b = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_suit_stealth_MP5",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 3,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 1
+			},
+			{
+				unit = "FBI_suit_M4_MP5",
+				freq = 0.75,
+				amount_min = 2,
+				amount_max = 3,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 2
 			}
 		}
+	}
 
 
-		self.enemy_spawn_groups.FBI_stealth_c = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_suit_stealth_MP5",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 1
-				},
-				{
-					unit = "FBI_suit_M4_MP5",
-					freq = 0.75,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 2
-				},
-				{
-					unit = "FBI_suit_C45_M4",
-					freq = 0.75,
-					amount_min = 1,
-					amount_max = 2,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 3
-				}
+	self.enemy_spawn_groups.FBI_stealth_c = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_suit_stealth_MP5",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 3,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 1
+			},
+			{
+				unit = "FBI_suit_M4_MP5",
+				freq = 0.75,
+				amount_min = 2,
+				amount_max = 3,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 2
+			},
+			{
+				unit = "FBI_suit_C45_M4",
+				freq = 0.75,
+				amount_min = 1,
+				amount_max = 2,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 3
 			}
 		}
+	}
 
 
-		self.enemy_spawn_groups.FBI_swats = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_swat_M4",
-					freq = 1,
-					amount_min = 4,
-					amount_max = 5,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 1
-				},
-				{
-					unit = "FBI_suit_M4_MP5",
-					freq = 1,
-					amount_max = 1,
-					tactics = self._tactics.FBI_swat_rifle_flank,
-					rank = 2
-				},
-				{
-					unit = "FBI_swat_R870",
-					amount_min = 1,
-					amount_max = 3,
-					freq = 1,
-					tactics = self._tactics.FBI_swat_shotgun,
-					rank = 3
-				},
-				{
-					unit = "spooc",
-					freq = 0.2,
-					amount_max = 1,
-					tactics = self._tactics.spooc,
-					rank = 1
-				},
-				{
-					unit = "medic_M4",
-					freq = 0.2,
-					amount_max = 1,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 3
-				}
+	self.enemy_spawn_groups.FBI_swats = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_swat_M4",
+				freq = 1,
+				amount_min = 4,
+				amount_max = 5,
+				tactics = self._tactics.FBI_swat_rifle,
+				rank = 1
+			},
+			{
+				unit = "FBI_suit_M4_MP5",
+				freq = 1,
+				amount_max = 1,
+				tactics = self._tactics.FBI_swat_rifle_flank,
+				rank = 2
+			},
+			{
+				unit = "FBI_swat_R870",
+				amount_min = 1,
+				amount_max = 3,
+				freq = 1,
+				tactics = self._tactics.FBI_swat_shotgun,
+				rank = 3
+			},
+			{
+				unit = "spooc",
+				freq = 0.2,
+				amount_max = 1,
+				tactics = self._tactics.spooc,
+				rank = 1
+			},
+			{
+				unit = "medic_M4",
+				freq = 0.2,
+				amount_max = 1,
+				tactics = self._tactics.FBI_swat_rifle,
+				rank = 3
 			}
 		}
+	}
 
 
-		self.enemy_spawn_groups.FBI_heavys = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_heavy_G36_w",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 4,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 1
-				},
-				{
-					unit = "FBI_swat_M4",
-					freq = 1,
-					amount_min = 3,
-					amount_max = 4,
-					tactics = self._tactics.FBI_heavy_flank,
-					rank = 2
-				}
+	self.enemy_spawn_groups.FBI_heavys = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_heavy_G36_w",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 4,
+				tactics = self._tactics.FBI_swat_rifle,
+				rank = 1
+			},
+			{
+				unit = "FBI_swat_M4",
+				freq = 1,
+				amount_min = 3,
+				amount_max = 4,
+				tactics = self._tactics.FBI_heavy_flank,
+				rank = 2
 			}
 		}
+	}
 
 
-		self.enemy_spawn_groups.FBI_shields = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_shield",
-					freq = 1,
-					amount_min = 1,
-					amount_max = 2,
-					tactics = self._tactics.FBI_shield,
-					rank = 3
-				},
-				{
-					unit = "FBI_suit_stealth_MP5",
-					freq = 1,
-					amount_min = 1,
-					amount_max = 2,
-					tactics = self._tactics.FBI_suit_stealth,
-					rank = 1
-				},
-				{
-					unit = "spooc",
-					freq = 0.2,
-					amount_max = 1,
-					tactics = self._tactics.spooc,
-					rank = 1
-				},
-				{
-					unit = "CS_tazer",
-					freq = 0.75,
-					amount_max = 1,
-					tactics = self._tactics.CS_swat_heavy,
-					rank = 2
-				}
+	self.enemy_spawn_groups.FBI_shields = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_shield",
+				freq = 1,
+				amount_min = 1,
+				amount_max = 2,
+				tactics = self._tactics.FBI_shield,
+				rank = 3
+			},
+			{
+				unit = "FBI_suit_stealth_MP5",
+				freq = 1,
+				amount_min = 1,
+				amount_max = 2,
+				tactics = self._tactics.FBI_suit_stealth,
+				rank = 1
+			},
+			{
+				unit = "spooc",
+				freq = 0.2,
+				amount_max = 1,
+				tactics = self._tactics.spooc,
+				rank = 1
+			},
+			{
+				unit = "CS_tazer",
+				freq = 0.75,
+				amount_max = 1,
+				tactics = self._tactics.CS_swat_heavy,
+				rank = 2
 			}
 		}
+	}
 
-
+	if DWP.settings.difficulty <= 2 then
 		self.enemy_spawn_groups.FBI_tanks = {
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {
@@ -882,20 +978,50 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				}
 			}
 		}
-		
-		self.enemy_spawn_groups.Undead = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "UnDeadHostageAvengers",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 2,
-					tactics = self._tactics.FBI_tank,
-					rank = 3
-				}
+	else
+		self.enemy_spawn_groups.FBI_tanks = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_tank",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 2,
+				tactics = self._tactics.FBI_tank,
+				rank = 3
+			},
+			{
+				unit = "CS_tazer",
+				freq = 0.5,
+				amount_max = 2,
+				tactics = self._tactics.FBI_swat_rifle,
+				rank = 2
+			},
+			{
+				unit = "medic_R870",
+				freq = 0.25,
+				amount_max = 1,
+				amount_max = 3,
+				tactics = self._tactics.FBI_swat_shotgun,
+				rank = 3
 			}
 		}
+	}
+	end
+	
+	self.enemy_spawn_groups.Undead = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "UnDeadHostageAvengers",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 2,
+				tactics = self._tactics.FBI_tank,
+				rank = 3
+			}
+		}
+	}
 
 	self.enemy_spawn_groups.single_spooc = {
 		amount = {2 * squadmul, 2 * squadmul},
@@ -965,7 +1091,18 @@ end)
 Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", function(self, difficulty_index, difficulty)
 	if difficulty_index == 7 then
 	
-	self:init_taskdata_deathwish(difficulty_index) -- it would be fun to rebalance other difficulties as well but thats for another mod
+	if DWP.settings.difficulty == 1 then
+		self:init_taskdata_deathwish_1()
+	elseif DWP.settings.difficulty == 2 then
+		self:init_taskdata_deathwish_2()
+	elseif DWP.settings.difficulty == 3 then
+		self:init_taskdata_deathwish_3()
+	elseif DWP.settings.difficulty == 4 then
+		self:init_taskdata_deathwish_4()
+	else
+		log("DWP difficulty setting not found, unit spawn rates were not set correctly.")
+	end
+	
 	
 	self.besiege.assault.sustain_duration_min = {
 		math.floor(DWP.settings.assduration),
@@ -1003,8 +1140,8 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	
 	-- Max cop amount per map
 	self.besiege.assault.force = {
-		16,
-		18,
+		20,
+		20,
 		20
 	}
 	-- Total max cop spawns per assault
@@ -1045,6 +1182,45 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		0,
 		0
 	}
+	
+	self.besiege.recon.groups.single_spooc = {
+		0,
+		0,
+		0
+	}
+	
+	self.besiege.assault.groups.Undead = {
+		0,
+		0,
+		0
+	}
+
+	-- snowman, prob will be removed later
+	self.besiege.assault.groups.snowman_boss = {
+		0,
+		0,
+		0
+	}
+	
+	self.besiege.recon.groups.snowman_boss = {
+		0,
+		0,
+		0
+	}
+	
+	self.besiege.assault.delay = {
+		25,
+		25,
+		25
+	}
+
+	-- Multiplier for assault pool
+	self.besiege.assault.force_pool_balance_mul = {
+		math.floor(DWP.settings.assforce_pool) / 200,
+		math.floor(DWP.settings.assforce_pool) / 200,
+		math.floor(DWP.settings.assforce_pool) / 200,
+		math.floor(DWP.settings.assforce_pool) / 200
+	}
 
 	-- Wtf is this?
 	self.street = deep_clone(self.besiege)
@@ -1052,7 +1228,15 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	end
 end)
 
-function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
+function GroupAITweakData:init_taskdata_deathwish_1()
+	--56
+	self.besiege.assault.force_balance_mul = {
+		2.8,
+		2.8,
+		2.8,
+		2.8
+	}
+	
 	self.besiege.assault.groups = {
 		FBI_swats = {
 			0.45,
@@ -1091,23 +1275,118 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 		}
 	}
 
-	self.besiege.assault.groups.Undead = {
-		0,
-		0,
-		0
+	self.besiege.assault.groups.CS_swats = {
+		0.18,
+		0.18,
+		0.18
+	}
+	self.besiege.assault.groups.CS_heavys = {
+		0.22,
+		0.22,
+		0.22
+	}
+	self.besiege.assault.groups.CS_shields = {
+		0.35,
+		0.35,
+		0.35
 	}
 
-	-- snowman, prob will be removed later
-	self.besiege.assault.groups.snowman_boss = {
-		0,
-		0,
-		0
+	self.besiege.reenforce.groups = {
+		FBI_defend_b = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_c = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_d = {
+			1,
+			1,
+			1
+		}
 	}
 	
-	self.besiege.recon.groups.snowman_boss = {
-		0,
-		0,
-		0
+	self.besiege.reenforce.groups.CS_defend_a = {
+		0.2,
+		0.2,
+		0.2
+	}
+	self.besiege.reenforce.groups.CS_defend_b = {
+		0.2,
+		0.2,
+		0.2
+	}
+	self.besiege.reenforce.groups.CS_defend_c = {
+		0.2,
+		0.2,
+		0.2
+	}
+
+	self.besiege.recon.groups.FBI_stealth_a = {
+		1,
+		1,
+		1
+	}
+	self.besiege.recon.groups.FBI_stealth_b = {
+		0.5,
+		0.5,
+		0.5
+	}
+	self.besiege.recon.groups.FBI_stealth_c = {
+		0.4,
+		0.4,
+		0.4
+	}
+end
+
+function GroupAITweakData:init_taskdata_deathwish_2()
+	--68
+	self.besiege.assault.force_balance_mul = {
+		3.4,
+		3.4,
+		3.4,
+		3.4
+	}
+	
+	self.besiege.assault.groups = {
+		FBI_swats = {
+			0.45,
+			0.45,
+			0.45
+		},
+		FBI_heavys = {
+			0.5,
+			0.5,
+			0.5
+		},
+		FBI_shields = {
+			0.35,
+			0.35,
+			0.35
+		},
+		FBI_tanks = {
+			0.31,
+			0.31,
+			0.31
+		},
+		CS_tazers = {
+			0.4,
+			0.4,
+			0.4
+		},
+		FBI_spoocs = {
+			0.1,
+			0.2,
+			0.2
+		},
+		single_spooc = {
+			0.1,
+			0.1,
+			0.1
+		}
 	}
 
 	self.besiege.assault.groups.CS_swats = {
@@ -1143,7 +1422,7 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 			1
 		}
 	}
-
+	
 	self.besiege.reenforce.groups.CS_defend_a = {
 		0.2,
 		0.2,
@@ -1175,30 +1454,232 @@ function GroupAITweakData:init_taskdata_deathwish(difficulty_index)
 		0.4,
 		0.4
 	}
-	self.besiege.recon.groups.single_spooc = {
-		0,
-		0,
-		0
+end
+
+function GroupAITweakData:init_taskdata_deathwish_3()
+	--86
+	self.besiege.assault.force_balance_mul = {
+		4.3,
+		4.3,
+		4.3,
+		4.3
 	}
 	
-
-	self.besiege.assault.delay = {
-		25,
-		25,
-		25
+	self.besiege.assault.groups = {
+		FBI_swats = {
+			0.55,
+			0.55,
+			0.55
+		},
+		FBI_heavys = {
+			0.5,
+			0.5,
+			0.5
+		},
+		FBI_shields = {
+			0.45,
+			0.45,
+			0.45
+		},
+		FBI_tanks = {
+			0.23,
+			0.23,
+			0.23
+		},
+		CS_tazers = {
+			0.35,
+			0.35,
+			0.35
+		},
+		FBI_spoocs = {
+			0.1,
+			0.2,
+			0.2
+		},
+		single_spooc = {
+			0.1,
+			0.1,
+			0.1
+		}
 	}
 
-	-- Multipliers for assault pools
+	self.besiege.assault.groups.CS_swats = {
+		0.18,
+		0.18,
+		0.18
+	}
+	self.besiege.assault.groups.CS_heavys = {
+		0.22,
+		0.22,
+		0.22
+	}
+	self.besiege.assault.groups.CS_shields = {
+		0.35,
+		0.35,
+		0.35
+	}
+
+	self.besiege.reenforce.groups = {
+		FBI_defend_b = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_c = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_d = {
+			1,
+			1,
+			1
+		}
+	}
+	
+	self.besiege.reenforce.groups.CS_defend_a = {
+		0.2,
+		0.2,
+		0.2
+	}
+	self.besiege.reenforce.groups.CS_defend_b = {
+		0.2,
+		0.2,
+		0.2
+	}
+	self.besiege.reenforce.groups.CS_defend_c = {
+		0.2,
+		0.2,
+		0.2
+	}
+
+	self.besiege.recon.groups.FBI_stealth_a = {
+		1,
+		1,
+		1
+	}
+	self.besiege.recon.groups.FBI_stealth_b = {
+		0.5,
+		0.5,
+		0.5
+	}
+	self.besiege.recon.groups.FBI_stealth_c = {
+		0.4,
+		0.4,
+		0.4
+	}
+end
+
+function GroupAITweakData:init_taskdata_deathwish_4()
+	--120
 	self.besiege.assault.force_balance_mul = {
-		2.8,
-		2.8,
-		2.8,
-		2.8
+		6,
+		6,
+		6,
+		6
 	}
-	self.besiege.assault.force_pool_balance_mul = {
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200
+	
+	self.besiege.assault.groups = {
+		FBI_swats = {
+			0.52,
+			0.52,
+			0.52
+		},
+		FBI_heavys = {
+			0.5,
+			0.5,
+			0.5
+		},
+		FBI_shields = {
+			0.45,
+			0.45,
+			0.45
+		},
+		FBI_tanks = {
+			0.26,
+			0.26,
+			0.26
+		},
+		CS_tazers = {
+			0.34,
+			0.34,
+			0.34
+		},
+		FBI_spoocs = {
+			0.1,
+			0.2,
+			0.2
+		},
+		single_spooc = {
+			0.1,
+			0.1,
+			0.1
+		}
+	}
+
+	self.besiege.assault.groups.CS_swats = {
+		0.18,
+		0.18,
+		0.18
+	}
+	self.besiege.assault.groups.CS_heavys = {
+		0.22,
+		0.22,
+		0.22
+	}
+	self.besiege.assault.groups.CS_shields = {
+		0.35,
+		0.35,
+		0.35
+	}
+
+	self.besiege.reenforce.groups = {
+		FBI_defend_b = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_c = {
+			1,
+			1,
+			1
+		},
+		FBI_defend_d = {
+			1,
+			1,
+			1
+		}
+	}
+	
+	self.besiege.reenforce.groups.CS_defend_a = {
+		0.12,
+		0.12,
+		0.12
+	}
+	self.besiege.reenforce.groups.CS_defend_b = {
+		0.12,
+		0.12,
+		0.12
+	}
+	self.besiege.reenforce.groups.CS_defend_c = {
+		0.12,
+		0.12,
+		0.12
+	}
+
+	self.besiege.recon.groups.FBI_stealth_a = {
+		1,
+		1,
+		1
+	}
+	self.besiege.recon.groups.FBI_stealth_b = {
+		0.5,
+		0.5,
+		0.5
+	}
+	self.besiege.recon.groups.FBI_stealth_c = {
+		0.4,
+		0.4,
+		0.4
 	}
 end

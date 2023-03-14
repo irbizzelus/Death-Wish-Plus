@@ -10,7 +10,7 @@ DWP_CM:add_command("help", {
 	callback = function(args, sender)
 		if sender:id() ~= 1 then
 			if DWP.DWdifficultycheck == true then
-				DWP_CM:send_message(sender:id(), string.format("This lobby runs 'Death Wish +' mod which includes a few chat commands you can use to get more info on this mod's changes using /dom and similar commands mentioned above. You can also use /med or /ammo to quickly ask for aid."))
+				DWP_CM:send_message(sender:id(), string.format("This mod includes a few chat commands you can use to get more info on gameplay changes using '/dom' and similar commands mentioned above. You can also use /med or /ammo to quickly ask for aid."))
 			else
 				DWP_CM:send_message(sender:id(), string.format("This lobby runs 'Death Wish +' mod which includes a few chat commands you can use like /med or /ammo to quickly ask for aid."))
 			end

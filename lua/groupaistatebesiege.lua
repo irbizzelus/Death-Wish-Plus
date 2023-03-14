@@ -26,40 +26,49 @@ if DWP.DWdifficultycheck == true then
 	end
 
 	Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)
-	-- respawn rates multipliers
-	local active_hostages_mul = 1
-	local killed_hostages_mul = 1
-	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 3 then
-		active_hostages_mul = 1.2
-	end
-	if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 6 then
-		active_hostages_mul = 1.4
-	end
-	if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 3 then
-		killed_hostages_mul = 0.75
-	end
-	if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 5 then
-		killed_hostages_mul = 0.5
-	end
+		-- respawn rates multipliers
+		local active_hostages_mul = 1
+		local killed_hostages_mul = 1
+		if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 3 then
+			active_hostages_mul = 1.2
+		end
+		if DWP.settings.hostagesbeta == true and self._hostage_headcount >= 6 then
+			active_hostages_mul = 1.4
+		end
+		if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 3 then
+			killed_hostages_mul = 0.75
+		end
+		if DWP.settings.hostagesbeta == true and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 5 then
+			killed_hostages_mul = 0.5
+		end
+		
+		local delay
+		if DWP.settings.difficulty == 1 then
+			delay = 4
+		elseif DWP.settings.difficulty == 2 then
+			delay = 3
+		elseif DWP.settings.difficulty == 3 then
+			delay = 1.75
+		elseif DWP.settings.difficulty == 4 then
+			delay = 0.25
+		end
+		
 		if self._spawning_groups and #self._spawning_groups >= 1 then
 			for i=1, #self._spawning_groups do
 				for _, sp in ipairs(self._spawning_groups[i].spawn_group.spawn_pts) do
 					-- respawn rates for normal units and 2x for dozers/cloakers
 					if DWP.grouptypecheck(self._spawning_groups[i].group) == false then
 						if sp.interval then
-							sp.interval = DWP.settings.respawns * killed_hostages_mul * active_hostages_mul
+							sp.interval = delay * killed_hostages_mul * active_hostages_mul
 						end
 					else
 						if sp.interval then
-							sp.interval = DWP.settings.respawns * 2 * killed_hostages_mul * active_hostages_mul
+							sp.interval = delay * 2 * killed_hostages_mul * active_hostages_mul
 						end
 					end
-					-- test for 2.3.1 -- doesnt seem to make any difference
 					if sp.delay_t then
-						local newdelay = (4 / DWP.settings.respawns) * 7.5
-						--log("BEFORE: "..tostring(sp.delay_t))
+						local newdelay = DWP.settings.difficulty * 7.5
 						sp.delay_t = sp.delay_t - newdelay
-						--log("AFTER: "..tostring(sp.delay_t))
 					end
 				end
 			end

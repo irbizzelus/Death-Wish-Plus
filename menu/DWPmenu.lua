@@ -36,8 +36,8 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
-	MenuCallbackHandler.DWPcb_respawns = function(this, item)
-		DWP.settings.respawns = tonumber(item:value())
+	MenuCallbackHandler.DWPcb_difficulty = function(this, item)
+		DWP.settings.difficulty = tonumber(item:value())
 		DWP:Save()
 	end
 	
@@ -64,8 +64,8 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.menu_node._items_list[6].selected = 2
 		DWP.settings.hostagesbeta = false
 		
-		DWP.menu_node._items_list[7]._value = 4
-		DWP.settings.respawns = 4
+		DWP.menu_node._items_list[7]._current_index = 1
+		DWP.settings.difficulty = 1
 		
 		DWP.menu_node._items_list[8]._value = 400
 		DWP.settings.assforce_pool = 400

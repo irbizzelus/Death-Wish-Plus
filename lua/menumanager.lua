@@ -69,7 +69,17 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local message = string.format("%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is running on a modded (version 2.3.3) 'Death Wish +' difficulty with gameplay changes listed below:")
+			local diff
+			if DWP.settings.difficulty == 1 then
+				diff = "which includes a few "
+			elseif DWP.settings.difficulty == 2 then
+				diff = "running on 'DW++' difficulty. High DPS builds recommended. This mod includes some "
+			elseif DWP.settings.difficulty == 3 then
+				diff = "running on 'Insanity' difficulty. DS difficulty builds STRONGLY recommended. This mod includes some "
+			elseif DWP.settings.difficulty == 4 then
+				diff = "running on 'Suicidal' difficulty. Nothing will help you. This mod includes some "
+			end
+			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4) mod installed, ", diff ,"gameplay changes:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -85,25 +95,17 @@ function DWP:welcomemsg2(peer_id)
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 2.5, function()
-			local cuffs = "\n- Cops WILL TRY TO CUFF YOU during interactions: /cuffs"
-			local dominations = "\n- Cops are harder to intimidate: /dom"
+			local cuffs = "\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs"
+			local dominations = "\n- All cops are harder to intimidate: /dom"
 			local hostages = ""
 			if DWP.settings.hostagesbeta == true then
-				hostages = "\n- Hostage control is enabled: /civi"
+				hostages = "\n- New bonuses/penalties for having/killing hostages: /civi"
 			end
-			local message = string.format("\n- Enemies have quicker respawns and have more unit variety: /assault%s%s%s\n More info on chat commands: /help", cuffs, dominations, hostages)
+			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault%s%s%s\nMore info on chat commands: /help", cuffs, dominations, hostages)
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
 					peer:send("send_chat_message", ChatManager.GAME, message)
-					if DWP.settings.respawns < 4 then
-						DelayedCalls:Add("DWP:DWwelcomemsg3topeer" .. tostring(peer_id), 0.6, function()
-							local msg = string.format("Also note that host is running 'Death Wish +' with quicker respawn rates compared to default DW+ settings. Enemies will overwhelm you quicker then in the base DW+. Host's respawn delay: %s",math.floor(DWP.settings.respawns*100) / 100)
-							if peer then
-								peer:send("send_chat_message", ChatManager.GAME, msg)
-							end
-						end)
-					end
 				end
 			end
 		end)
@@ -189,14 +191,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.33 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.4 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.3.3 update: \n- U234 compatibility\n- Black uniform for american marshals setting now also applies to marshal shields\n- Marshal amounts slightly increased"
+			local message = "2.4 update: \n- Enemy respawn delay setting removed\n- New difficulty presets setting was added\n- Medic spawn limit for default settings was reduced from 5 to 4\n\nRespawn delay setting was not as impactful/consistent for adjusting gameplay as some older settings did (like cop limit per map), so it was reworked into new difficulty presets to make 'die hard' players enjoy true chaos with some higher settings. Also makes it more consistent when joining other player lobbies."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.33
+			DWP.settings.changelog_msg_shown = 2.4
 			DWP:Save()
 		end
 	end)

@@ -21,7 +21,7 @@ if not DWP then
 		hourinfo = true,
 		infamy = true,
 		DSdozer = true,
-		respawns = 4,
+		difficulty = 1,
 		assforce_pool = 400,
 		assduration = 350,
 		bAmMarsh = true,
