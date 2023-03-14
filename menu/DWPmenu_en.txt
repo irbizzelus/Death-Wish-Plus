@@ -10,7 +10,7 @@
 	"DWP_bAmMarsh": "Black american marshals",
 	"DWP_bAmMarsh_desc": "Replace american marshals with their black uniform counterparts used by other factions.\nOnly works on Death Wish difficulty.",
 	"DWP_difficulty": "Difficulty",
-	"DWP_difficulty_desc": "Choose a difficulty preset. For info on their differences go to modworkshop's mod description.\n(!!) Will cause issues if changed mid game. Restart the heist to avoid issues.",
+	"DWP_difficulty_desc": "Choose a difficulty preset. For info on their differences go to modworkshop's mod description under gameplay customization.\n(!!) Will cause issues if changed mid game. Restart the heist to avoid issues.",
 	"DWP_difficulty_1": "DW+ classic",
 	"DWP_difficulty_2": "DW++",
 	"DWP_difficulty_3": "Insanity",
