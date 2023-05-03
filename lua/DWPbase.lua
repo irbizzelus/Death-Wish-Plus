@@ -12,7 +12,7 @@ if not DWP then
 	DWP.curlobbyname = nil
 	DWP.settings = {
 		lobbyname = true,
-		infomsgpublic = true,
+		infomsgpublic = false,
 		endstattoggle = true,
 		endstatSPkills = true,
 		endstatheadshots = false,
@@ -68,7 +68,7 @@ if not DWP then
     -- Notify the user if something went wrong
     if not configResult then
         Hooks:Add("MenuManagerOnOpenMenu", "DWP_configcorrupted", function(menu_manager, nodes)            
-            QuickMenu:new("Death With + Error", "Your 'Death With +' options file was corrupted, all the mod options have been reset to default.", {
+            QuickMenu:new("Death With + Error", "Your 'Death With +' options file was corrupted, all the mod options have been reset to defaults.", {
                 [1] = {
                     text = "OK",
                     is_cancel_button = true
