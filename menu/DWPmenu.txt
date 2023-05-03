@@ -126,7 +126,7 @@
 			"description" : "DWP_infomsgpublic_desc",
 			"callback" : "DWPcb_infomsgpublic",
 			"value" : "infomsgpublic",
-			"default_value" : true
+			"default_value" : false
 		},
 		{
 			"type" : "divider",
