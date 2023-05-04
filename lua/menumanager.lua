@@ -191,14 +191,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.41 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.411 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
 			local message = "2.4.1 update: \n- Re-wrote enemy squads from ground up, this should improve enemy variety, and fix moments where normal FBI units were present on murkywater/federales heists\n- Tweaked max limit of cops for all difficulties\n- Some maps will now have their own cop limit adjustments to prevent enemy overflow\n- Added new 'Death Squad' consisting of Winter's shields and field snipers, they spawn rarely compared to other units\n- Considerabley reduced amount of shotgun wiedling enemies on DW+ and DW++ difficulties\n- Slightly reduced amount of shotgunneres on Insanity and Suicidal difficulties"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.41
+			DWP.settings.changelog_msg_shown = 2.411
 			DWP:Save()
 		end
 	end)

@@ -292,7 +292,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 					Idstring("units/pd2_dlc_bex/characters/ene_swat_policia_sniper/ene_swat_policia_sniper")
 				}
 			},
-			access = access_type_walk_only
+			access = access_type_all
 		}
 		
 		-- winter's shield but without winter's properties
@@ -314,7 +314,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 					Idstring("units/pd2_dlc_vip/characters/ene_phalanx_1/ene_phalanx_1")
 				}
 			},
-			access = access_type_walk_only
+			access = access_type_all
 		}
 
 		-- Change dozer types
@@ -1713,9 +1713,9 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.18
 		},
 		Death_squad = {
-			0.15,
-			0.15,
-			0.15
+			0.13,
+			0.13,
+			0.13
 		},
 		FBI_spoocs = {
 			0.2,
@@ -1830,9 +1830,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.18
 		},
 		Death_squad = {
-			0.18,
-			0.18,
-			0.18
+			0.17,
+			0.17,
+			0.17
 		},
 		FBI_spoocs = {
 			0.2,
@@ -1947,9 +1947,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.15
 		},
 		Death_squad = {
-			0.25,
-			0.25,
-			0.25
+			0.21,
+			0.21,
+			0.21
 		},
 		FBI_spoocs = {
 			0.2,
@@ -2064,9 +2064,9 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.15
 		},
 		Death_squad = {
-			0.25,
-			0.25,
-			0.25
+			0.23,
+			0.23,
+			0.23
 		},
 		FBI_spoocs = {
 			0.2,
