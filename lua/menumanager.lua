@@ -79,7 +79,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 			elseif DWP.settings.difficulty == 4 then
 				diff = "running on 'Suicidal' difficulty. It might feel harder then DS difficulty. This mod includes some "
 			end
-			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.1) mod installed, ", diff ,"gameplay changes:")
+			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.12) mod installed, ", diff ,"gameplay changes:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -191,14 +191,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.411 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.412 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.1 update: \n- Re-wrote enemy squads from ground up, this should improve enemy variety, and fix moments where normal FBI units were present on murkywater/federales heists\n- Tweaked max limit of cops for all difficulties\n- Some maps will now have their own cop limit adjustments to prevent enemy overflow\n- Added new 'Death Squad' consisting of Winter's shields and field snipers, they spawn rarely compared to other units\n- Considerabley reduced amount of shotgun wiedling enemies on DW+ and DW++ difficulties\n- Slightly reduced amount of shotgunneres on Insanity and Suicidal difficulties"
+			local message = "2.4.12 update: \n- blah"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.411
+			DWP.settings.changelog_msg_shown = 2.412
 			DWP:Save()
 		end
 	end)

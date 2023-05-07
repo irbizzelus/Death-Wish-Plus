@@ -397,7 +397,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 		
 		if DWP.settings.difficulty == 1 then
 			self.special_unit_spawn_limits = {
-				shield = 6,
+				shield = 5,
 				medic = 4,
 				taser = 6,
 				tank = 4,
@@ -405,7 +405,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 2 then
 			self.special_unit_spawn_limits = {
-				shield = 6,
+				shield = 5,
 				medic = 5,
 				taser = 6,
 				tank = 5,
@@ -413,7 +413,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 3 then
 			self.special_unit_spawn_limits = {
-				shield = 7,
+				shield = 6,
 				medic = 5,
 				taser = 7,
 				tank = 6,
@@ -421,7 +421,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 4 then
 			self.special_unit_spawn_limits = {
-				shield = 8,
+				shield = 7,
 				medic = 6,
 				taser = 8,
 				tank = 7,
@@ -723,7 +723,8 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			spawn = {
 				{
 					respawn_cooldown = 15,
-					amount_min = 3, -- 1
+					amount_min = 1, -- 1
+					amount_max = 2, -- ??
 					rank = 2,
 					freq = 1,
 					unit = "marshal_shield",
@@ -1372,8 +1373,8 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				{
 					unit = "FBI_reinf_shield",
 					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
+					amount_min = 1,
+					amount_max = 2,
 					tactics = self._tactics.FBI_shield,
 					rank = 1
 				},
@@ -1381,7 +1382,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					unit = "FBI_sniper",
 					freq = 1,
 					amount_min = 2,
-					amount_max = 2,
+					amount_max = 3,
 					tactics = self._tactics.FBI_swat_rifle,
 					rank = 2
 				}
@@ -1394,8 +1395,8 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				{
 					unit = "FBI_reinf_shield",
 					freq = 1,
-					amount_min = 3,
-					amount_max = 5,
+					amount_min = 1,
+					amount_max = 2,
 					tactics = self._tactics.FBI_shield,
 					rank = 1
 				},
@@ -1627,6 +1628,8 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	self.street = deep_clone(self.besiege)
 	self.safehouse = deep_clone(self.besiege)
 	
+	-- down bellow are a bunch of map specific cop pool changes, because some maps have fucked up respawn points
+	
 	-- boiling wawtuh
 	if Global and Global.level_data and Global.level_data.level_id == "mad" then
 		self.besiege.assault.force = {
@@ -1639,18 +1642,36 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	-- beneath the everest
 	if Global and Global.level_data and Global.level_data.level_id == "pbr" then
 		self.besiege.assault.force = {
-			16,
-			16,
-			16
+			15.5,
+			15.5,
+			15.5
 		}
 	end
 	
 	-- slaughterbuilding
 	if Global and Global.level_data and Global.level_data.level_id == "dinner" then
 		self.besiege.assault.force = {
-			17,
-			17,
-			17
+			17.5,
+			17.5,
+			17.5
+		}
+	end
+	
+	-- hox_1, duh
+	if Global and Global.level_data and Global.level_data.level_id == "hox_1" then
+		self.besiege.assault.force = {
+			18,
+			18,
+			18
+		}
+	end
+	
+	-- blue bride
+	if Global and Global.level_data and Global.level_data.level_id == "glace" then
+		self.besiege.assault.force = {
+			18,
+			18,
+			18
 		}
 	end
 
@@ -1713,9 +1734,9 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.18
 		},
 		Death_squad = {
-			0.13,
-			0.13,
-			0.13
+			0.09,
+			0.09,
+			0.09
 		},
 		FBI_spoocs = {
 			0.2,
@@ -1830,9 +1851,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.18
 		},
 		Death_squad = {
-			0.17,
-			0.17,
-			0.17
+			0.13,
+			0.13,
+			0.13
 		},
 		FBI_spoocs = {
 			0.2,
@@ -1947,9 +1968,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.15
 		},
 		Death_squad = {
-			0.21,
-			0.21,
-			0.21
+			0.18,
+			0.18,
+			0.18
 		},
 		FBI_spoocs = {
 			0.2,
@@ -2064,9 +2085,9 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.15
 		},
 		Death_squad = {
-			0.23,
-			0.23,
-			0.23
+			0.24,
+			0.24,
+			0.24
 		},
 		FBI_spoocs = {
 			0.2,
