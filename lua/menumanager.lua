@@ -195,7 +195,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.12 update: \n- blah"
+			local message = "2.4.12 update: \n- Max amount of normal shields was reduced by 1 for every difficulty\n- Marshal shields now spawn in lower amounts per squad\n- Death Squad's shields now spawn in lower amounts per squad\n- Death Squads's snipers now spawn in bigger amounts per squad\n- Death Squad's spawn chances reduced across all difficultes except for Suicidal\n- Some map's spawn pools were tweaked\n\n Exact numbers for all the changes above can be found in full changelog."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.412
