@@ -73,8 +73,6 @@ function GroupAIStateBase:check_gameover_conditions()
 	return gameover
 end
 
--- 2.3.2 update starts here
-
 local add_drama_orig = GroupAIStateBase._add_drama
 function GroupAIStateBase:_add_drama(amount)
 	if DWP.DWdifficultycheck == true then
@@ -96,10 +94,8 @@ end
 local detonate_world_smoke_grenade_orig = GroupAIStateBase.detonate_world_smoke_grenade
 function GroupAIStateBase:detonate_world_smoke_grenade(id)
 	if DWP.DWdifficultycheck == true then
-		-- disables smokes/flashes on 'No Mercy' - remove if too easy or broken, testing for now
-		-- it does make the easiest heist even easier tbh, BUT i feel like most people would go to this heist to test max settings of this mod
-		-- and with smokes it becomes waaaay to hard, and not due to this mod's tweaks but rather due to poor visibility, which is not fun
-		if Global.level_data and Global.level_data.level_id == "nmh" then
+		-- disables smokes/flashes on 'No Mercy' for insanity and suicidal, since enemy swarm is so bad there, additional visual clutter will just make it unfun
+		if Global.level_data and Global.level_data.level_id == "nmh" and DWP.settings.difficulty >= 3 then
 			return
 		end
 	end
@@ -114,8 +110,6 @@ Hooks:PostHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(sel
 		end
 	end
 end)
-
--- 2.3.2 ends here
 
 -- hostage control - on civi death 
 if DWP.settings.hostagesbeta == true then

@@ -295,6 +295,16 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			access = access_type_all
 		}
 		
+		-- why the fuck would white house use normal US snipers instead of murkywater ones is somewhat understandable, but why would they remove the murky snipers
+		-- from the map's load package is beyond me. it's only 1 unit in the memory, it wont help the awfull performance this map has
+		-- either way, this fixes crashes with 'death squads' for the map
+		if Global and Global.level_data and Global.level_data.level_id == "vit" then
+			self.unit_categories.FBI_sniper.unit_types.murkywater = {
+				Idstring("units/payday2/characters/ene_sniper_1/ene_sniper_1"),
+				Idstring("units/payday2/characters/ene_sniper_2/ene_sniper_2")
+			}
+		end
+		
 		-- winter's shield but without winter's properties
 		self.unit_categories.FBI_reinf_shield = {
 			unit_types = {
@@ -364,13 +374,28 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		end
 		
-		if DWP.settings.bAmMarsh == true then
+		if DWP.settings.marshal_uniform == 1 then
+		
 			self.unit_categories.marshal_marksman.unit_types.america = {
 				Idstring("units/pd2_dlc_usm1/characters/ene_male_marshal_marksman_2/ene_male_marshal_marksman_2")
 			}
 			self.unit_categories.marshal_shield.unit_types.america = {
 				Idstring("units/pd2_dlc_usm2/characters/ene_male_marshal_shield_2/ene_male_marshal_shield_2")
 			}
+			
+		elseif DWP.settings.marshal_uniform == 2 then
+		
+			self.unit_categories.marshal_marksman.unit_types.america = {
+				Idstring("units/pd2_dlc_usm1/characters/ene_male_marshal_marksman_1/ene_male_marshal_marksman_1"),
+				Idstring("units/pd2_dlc_usm1/characters/ene_male_marshal_marksman_2/ene_male_marshal_marksman_2")
+			}
+			self.unit_categories.marshal_shield.unit_types.america = {
+				Idstring("units/pd2_dlc_usm2/characters/ene_male_marshal_shield_1/ene_male_marshal_shield_1"),
+				Idstring("units/pd2_dlc_usm2/characters/ene_male_marshal_shield_2/ene_male_marshal_shield_2")
+			}
+			
+		else
+			-- dont change them
 		end
 		
 		self.unit_categories.UnDeadHostageAvengers = {
@@ -713,25 +738,25 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	else
 		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 15, -- 60
+			spawn_cooldown = 20, -- 60
 			max_nr_simultaneous_groups = 3, -- 2
-			initial_spawn_delay = 75, -- 480
+			initial_spawn_delay = 90, -- 480
 			amount = {
 				2, -- 2
 				2 -- 2
 			},
 			spawn = {
 				{
-					respawn_cooldown = 15,
+					respawn_cooldown = 20, -- 30
 					amount_min = 1, -- 1
-					amount_max = 2, -- ??
+					amount_max = 1, -- ??
 					rank = 2,
 					freq = 1,
 					unit = "marshal_shield",
 					tactics = self._tactics.marshal_shield
 				},
 				{
-					respawn_cooldown = 15,
+					respawn_cooldown = 20, -- 30
 					amount_min = 2, -- 1
 					rank = 1,
 					freq = 1,
@@ -1374,7 +1399,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					unit = "FBI_reinf_shield",
 					freq = 1,
 					amount_min = 1,
-					amount_max = 2,
+					amount_max = 1,
 					tactics = self._tactics.FBI_shield,
 					rank = 1
 				},
@@ -1532,9 +1557,9 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		}
 	else
 		self.besiege.assault.hostage_hesitation_delay = {
-			25,
-			25,
-			25
+			15,
+			15,
+			15
 		}
 	end
 
@@ -1611,9 +1636,9 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	}
 	
 	self.besiege.assault.delay = {
-		25,
-		25,
-		25
+		35,
+		35,
+		35
 	}
 
 	-- Multiplier for assault pool
@@ -1628,51 +1653,355 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	self.street = deep_clone(self.besiege)
 	self.safehouse = deep_clone(self.besiege)
 	
-	-- down bellow are a bunch of map specific cop pool changes, because some maps have fucked up respawn points
+	-- down bellow are a bunch of map specific cop pool changes, because some maps have fucked up respawn points/enemy damage/scripted spawns
+	if Global and Global.level_data then
 	
-	-- boiling wawtuh
-	if Global and Global.level_data and Global.level_data.level_id == "mad" then
-		self.besiege.assault.force = {
-			13,
-			13,
-			13
-		}
-	end
-	
-	-- beneath the everest
-	if Global and Global.level_data and Global.level_data.level_id == "pbr" then
-		self.besiege.assault.force = {
-			15.5,
-			15.5,
-			15.5
-		}
-	end
-	
-	-- slaughterbuilding
-	if Global and Global.level_data and Global.level_data.level_id == "dinner" then
-		self.besiege.assault.force = {
-			17.5,
-			17.5,
-			17.5
-		}
-	end
-	
-	-- hox_1, duh
-	if Global and Global.level_data and Global.level_data.level_id == "hox_1" then
-		self.besiege.assault.force = {
-			18,
-			18,
-			18
-		}
-	end
-	
-	-- blue bride
-	if Global and Global.level_data and Global.level_data.level_id == "glace" then
-		self.besiege.assault.force = {
-			18,
-			18,
-			18
-		}
+		-- BAIN
+		-- tarantino
+		if Global.level_data.level_id == "rvd1" or Global.level_data.level_id == "rvd2" then
+			self.besiege.assault.force = {
+				16,
+				16,
+				16
+			}
+		end
+		
+		-- alesso-хуессо
+		if Global.level_data.level_id == "arena" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- transport
+		-- crossroads
+		if Global.level_data.level_id == "arm_cro" then
+			self.besiege.assault.force = {
+				16.5,
+				16.5,
+				16.5
+			}
+		end
+		
+		-- downtown
+		if Global.level_data.level_id == "arm_hcm" then
+			self.besiege.assault.force = {
+				17.2,
+				17.2,
+				17.2
+			}
+		end
+		
+		-- harbor
+		if Global.level_data.level_id == "arm_fac" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- train
+		if Global.level_data.level_id == "arm_for" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- underpass
+		if Global.level_data.level_id == "arm_und" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- CLASSICS
+		-- FWB is good. in theory
+		if Global.level_data.level_id == "red2" then
+			self.besiege.assault.force = {
+				17.5,
+				17.5,
+				17.5
+			}
+		end
+		
+		-- blue bridge
+		if Global.level_data.level_id == "glace" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- dodge street
+		if Global.level_data.level_id == "run" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- slaughterbuilding
+		if Global.level_data.level_id == "dinner" then
+			self.besiege.assault.force = {
+				17.5,
+				17.5,
+				17.5
+			}
+		end
+		
+		-- overcover
+		if Global.level_data.level_id == "man" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- EVENTS
+		-- lab rats. ah yes, lets make a map that has no cover, horrible pathing, with zip lines as your main way to move around - those things that make you as vulnerable as level 60 player with ictv rogue on DS. oh and lets place headless dozers there. oh and yeah, lets keep the cops vanilla american faction instead of the zombies one. sooooo cooooooool
+		if Global.level_data.level_id == "nail" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- JIMMY
+		-- boiling wawtuh with stupid ak's
+		if Global.level_data.level_id == "mad" then
+			self.besiege.assault.force = {
+				12,
+				12,
+				12
+			}
+		end
+		
+		-- JIU FENG
+		-- vlad breakout
+		if Global.level_data.level_id == "sand" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- LOCKE
+		-- polar bear's home
+		if Global.level_data.level_id == "wwh" then
+			self.besiege.assault.force = {
+				16.5,
+				16.5,
+				16.5
+			}
+		end
+		
+		-- beneath the everest
+		if Global.level_data.level_id == "pbr" then
+			self.besiege.assault.force = {
+				15.5,
+				15.5,
+				15.5
+			}
+		end
+		
+		-- "WE NEED TO BUILD A WALL!" - most popular child molester of 2017
+		if Global.level_data.level_id == "mex" then
+			self.besiege.assault.force = {
+				14.4,
+				14.4,
+				14.4
+			}
+		end
+		
+		-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
+		-- personal note: lab's location at the smaller warehouse is much better, if you get the big one, you should just restart. applies to vanilla as well tbh
+		if Global.level_data.level_id == "mex_cooking" then
+			self.besiege.assault.force = {
+				15.6,
+				15.6,
+				15.6
+			}
+		end
+		
+		-- brooklyn the bank
+		if Global.level_data.level_id == "brb" then
+			self.besiege.assault.force = {
+				17.5,
+				17.5,
+				17.5
+			}
+		end
+		
+		-- henry's cock
+		if Global.level_data.level_id == "des" then
+			self.besiege.assault.force = {
+				15.2,
+				15.2,
+				15.2
+			}
+		end	
+		
+		-- black tablet
+		if Global.level_data.level_id == "sah" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- the end
+		if Global.level_data.level_id == "vit" then
+			self.besiege.assault.force = {
+				16.8,
+				16.8,
+				16.8
+			}
+		end
+		
+		-- BUTCHER
+		-- Sosa сосёт ХААХААААААААААААААААААААА я смешной
+		if Global.level_data.level_id == "friend" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end	
+		
+		-- CONTINENTAL
+		-- 10-10
+		if Global.level_data.level_id == "spa" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- DENTIST
+		-- OG casino
+		if Global.level_data.level_id == "kenaz" then
+			self.besiege.assault.force = {
+				13.6,
+				13.6,
+				13.6
+			}
+		end
+		
+		-- hot line
+		if Global.level_data.level_id == "mia_1" or Global.level_data.level_id == "mia_2" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- hox_1, duh
+		if Global.level_data.level_id == "hox_1" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- ELEPHANT
+		-- wtf is this id lmao
+		if Global.level_data.level_id == "welcome_to_the_jungle_2" then
+			self.besiege.assault.force = {
+				15,
+				15,
+				15
+			}
+		end
+		
+		if Global.level_data.level_id == "election_day_1" or Global.level_data.level_id == "election_day_2" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- VLAD
+		-- SAFES BABY
+		if Global.level_data.level_id == "jolly" then
+			self.besiege.assault.force = {
+				17.5,
+				17.5,
+				17.5
+			}
+		end
+		
+		-- buluc's clusterfuck of objectives
+		if Global.level_data.level_id == "fex" then
+			self.besiege.assault.force = {
+				17,
+				17,
+				17
+			}
+		end
+		
+		-- goat sim day 2. day 1 is also really bad, but mostly because of snipers, not the other squads, so its ok.
+		if Global.level_data.level_id == "peta2" then
+			self.besiege.assault.force = {
+				15,
+				15,
+				15
+			}
+		end
+		
+		-- at least i dont have to shave pubes anymore
+		if Global.level_data.level_id == "shoutout_raid" then
+			self.besiege.assault.force = {
+				16,
+				16,
+				16
+			}
+		end
+		
+		-- san martin
+		if Global.level_data.level_id == "bex" then
+			self.besiege.assault.force = {
+				18,
+				18,
+				18
+			}
+		end
+		
+		-- santa's workshop. holy shit is this bad
+		if Global.level_data.level_id == "cane" then
+			self.besiege.assault.force = {
+				13.5,
+				13.5,
+				13.5
+			}
+		end
+		
+		-- ESCAPES
+		-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		if Global.level_data.level_id == "escape_cafe" then
+			self.besiege.assault.force = {
+				16,
+				16,
+				16
+			}
+		end		
+		
 	end
 
 	end
@@ -1826,9 +2155,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.3
 		},
 		FBI_tanks = {
-			0.35,
-			0.35,
-			0.35
+			0.33,
+			0.33,
+			0.33
 		},
 		CS_tazers = {
 			0.35,
@@ -1851,9 +2180,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.18
 		},
 		Death_squad = {
-			0.13,
-			0.13,
-			0.13
+			0.12,
+			0.12,
+			0.12
 		},
 		FBI_spoocs = {
 			0.2,
@@ -1913,12 +2242,12 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 end
 
 function GroupAITweakData:init_taskdata_deathwish_3()
-	--78
+	--80
 	self.besiege.assault.force_balance_mul = {
-		3.9,
-		3.9,
-		3.9,
-		3.9
+		4,
+		4,
+		4,
+		4
 	}
 	
 	self.besiege.assault.groups = {
@@ -1943,9 +2272,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.25
 		},
 		FBI_tanks = {
-			0.27,
-			0.27,
-			0.27
+			0.3,
+			0.3,
+			0.3
 		},
 		CS_tazers = {
 			0.35,
@@ -1968,9 +2297,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.15
 		},
 		Death_squad = {
-			0.18,
-			0.18,
-			0.18
+			0.16,
+			0.16,
+			0.16
 		},
 		FBI_spoocs = {
 			0.2,
@@ -2060,9 +2389,9 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.25
 		},
 		FBI_tanks = {
-			0.3,
-			0.3,
-			0.3
+			0.33,
+			0.33,
+			0.33
 		},
 		CS_tazers = {
 			0.35,

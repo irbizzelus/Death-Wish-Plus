@@ -16,11 +16,6 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		--nothingness
 	end
 	
-	MenuCallbackHandler.DWPcb_arrestbeta = function(this, item)
-		DWP.settings[item:name()] = item:value() == 'on'
-		DWP:Save()
-	end
-	
 	MenuCallbackHandler.DWPcb_hostagesbeta = function(this, item)
 		DWP.settings[item:name()] = item:value() == 'on'
 		DWP:Save()
@@ -31,8 +26,8 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
-	MenuCallbackHandler.DWPcb_bAmMarsh = function(this, item)
-		DWP.settings[item:name()] = item:value() == 'on'
+	MenuCallbackHandler.DWPcb_marshal_uniform = function(this, item)
+		DWP.settings.marshal_uniform = tonumber(item:value())
 		DWP:Save()
 	end
 	
@@ -51,26 +46,17 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
-	MenuCallbackHandler.DWPcb_gameplay_defaults = function(this, item)		
-		DWP.menu_node._items_list[3].selected = 1
-		DWP.settings.DSdozer = true
-		
-		DWP.menu_node._items_list[4].selected = 1
-		DWP.settings.bAmMarsh = true
-		
-		DWP.menu_node._items_list[5].selected = 1
-		DWP.settings.arrestbeta = true
-		
-		DWP.menu_node._items_list[6].selected = 2
+	MenuCallbackHandler.DWPcb_gameplay_defaults = function(this, item)	
+		DWP.menu_node._items_list[3].selected = 2
 		DWP.settings.hostagesbeta = false
 		
-		DWP.menu_node._items_list[7]._current_index = 1
+		DWP.menu_node._items_list[4]._current_index = 1
 		DWP.settings.difficulty = 1
 		
-		DWP.menu_node._items_list[8]._value = 400
+		DWP.menu_node._items_list[5]._value = 400
 		DWP.settings.assforce_pool = 400
 		
-		DWP.menu_node._items_list[9]._value = 350
+		DWP.menu_node._items_list[6]._value = 350
 		DWP.settings.assduration = 350
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()

@@ -19,33 +19,6 @@
 		},
 		{
 			"type" : "toggle",
-			"id" : "DSdozer",
-			"title" : "DWP_DSdozer",
-			"description" : "DWP_DSdozer_desc",
-			"callback" : "DWPcb_DSdozer",
-			"value" : "DSdozer",
-			"default_value" : true
-		},
-		{
-			"type" : "toggle",
-			"id" : "bAmMarsh",
-			"title" : "DWP_bAmMarsh",
-			"description" : "DWP_bAmMarsh_desc",
-			"callback" : "DWPcb_bAmMarsh",
-			"value" : "bAmMarsh",
-			"default_value" : true
-		},
-		{
-			"type" : "toggle",
-			"id" : "arrestbeta",
-			"title" : "DWP_arrestbeta",
-			"description" : "DWP_arrestbeta_desc",
-			"callback" : "DWPcb_arrestbeta",
-			"value" : "arrestbeta",
-			"default_value" : true
-		},
-		{
-			"type" : "toggle",
 			"id" : "hostagesbeta",
 			"title" : "DWP_hostagesbeta",
 			"description" : "DWP_hostagesbeta_desc",
@@ -98,6 +71,40 @@
 			"title" : "DWP_gameplay_defaults",
 			"description" : "DWP_gameplay_defaults_desc",
 			"callback" : "DWPcb_gameplay_defaults"
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+				{
+			"type" : "button",
+			"id" : "enemy_header",
+			"title" : "DWP_enemy_header",
+			"description" : "DWP_enemy_header_desc",
+			"callback" : "DWPcb_donothing"
+		},
+		{
+			"type" : "toggle",
+			"id" : "DSdozer",
+			"title" : "DWP_DSdozer",
+			"description" : "DWP_DSdozer_desc",
+			"callback" : "DWPcb_DSdozer",
+			"value" : "DSdozer",
+			"default_value" : true
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "marshal_uniform",
+			"title" : "DWP_marshal_uniform",
+			"description" : "DWP_marshal_uniform_desc",
+			"callback" : "DWPcb_marshal_uniform",
+			"items" : [
+				"DWP_marshal_uniform_1",
+				"DWP_marshal_uniform_2",
+				"DWP_marshal_uniform_3"
+			],
+			"value" : "marshal_uniform",
+			"default_value" : 2
 		},
 		{
 			"type" : "divider",

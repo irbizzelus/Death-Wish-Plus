@@ -1,17 +1,23 @@
+-- in case this file gets called before DWP globals are created
 dofile(ModPath .. "lua/DWPbase.lua")
 
--- When a client starts interacting, send a cop to try and arrest them
+-- When a client starts interacting, send a cop to arrest them + activate scan to enable cuffing from other units
 if DWP.DWdifficultycheck == true then
-	Hooks:PostHook(HuskPlayerMovement, "sync_interaction_anim_start", "huskinteract_sendcoptoarrest", function(self)
-		-- Only the host should send cops
+	Hooks:PostHook(HuskPlayerMovement, "sync_interaction_anim_start", "DWP_cuffing_on_husk_interaction_start", function(self,tweak)
+
 		if Network and Network:is_client() then
 			return
 		end
+		
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
 		
-		-- agro cuffing with 1 second delay
-		if DWP.settings.arrestbeta then
-			DelayedCalls:Add("delay_for_cuff_scan_husk"..tostring(self._unit), 1.05, function()
+		if tweak == "revive" then
+			log("[DW+] PEER revive interaction.")
+			DelayedCalls:Add("delay_for_cuff_scan_on_husk_"..tostring(self._unit), 3.15, function()
+				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
+			end)
+		else
+			DelayedCalls:Add("delay_for_cuff_scan_on_husk"..tostring(self._unit), 1.05, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
 			end)
 		end

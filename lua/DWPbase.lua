@@ -24,8 +24,7 @@ if not DWP then
 		difficulty = 1,
 		assforce_pool = 400,
 		assduration = 350,
-		bAmMarsh = true,
-		arrestbeta = true,
+		marshal_uniform = 2,
 		hostagesbeta = false,
 		statsmsgpublic = true
     }

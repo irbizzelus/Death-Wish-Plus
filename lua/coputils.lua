@@ -7,16 +7,18 @@ dofile(ModPath .. "lua/DWPbase.lua")
 DWPMod.CopUtils = {}
 
 -- Search radius for interacing player
-DWPMod.CopUtils._arrest_search_radius = 800
--- How far can a cop be to arrest a player
+DWPMod.CopUtils._arrest_search_radius = 750
+-- How far can unit be to auto-arrest players during active scan period
 DWPMod.CopUtils._arrest_action_radius = 150
 
 -- Checks if the local player should be arrested
 function DWPMod.CopUtils:CheckLocalMeleeDamageArrest(player_unit, attacker_unit, is_melee)
+	
 	--dont get cuffed if we are a client, if host has the mod, he will tell us when we are cuffed anyway
 	if Network and Network:is_client() then
         return nil, "not host, no cuffs"
     end
+	
     -- Check if this is our own player unit
     if player_unit ~= managers.player:player_unit() then
         return nil, "not local player unit"
@@ -193,7 +195,7 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		if islocal == true then
 			local state = player_unit:movement():current_state()
 			is_interacting = state._interacting and state:_interacting()
-			if is_interacting then -- it's a timer, reset to value
+			if is_interacting then -- idk if i should keep this, this is old code lol
 				is_interacting = true
 			end
 		elseif not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
@@ -203,7 +205,7 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		if not is_interacting then
 			return
 		else
-			DelayedCalls:Add("check_for_unit_interaction_and_arrest"..tostring(player_unit), 0.15, function()
+			DelayedCalls:Add("check_for_unit_interaction_and_arrest_unit_"..tostring(player_unit), 0.15, function()
 				-- check again that peer is not dead or something, since we have a 0.15 sec delay before this loop starts
 				if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
 					return
@@ -217,6 +219,7 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 							if enemy_chartweak.access ~= "gangster" then
 								player_unit:movement():on_cuffed()
 								enemy:sound():say("i03", true, false)
+								return
 							end
 						end
 					end

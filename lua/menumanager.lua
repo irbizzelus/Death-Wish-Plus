@@ -46,7 +46,7 @@ function DWP:statspublicmessage(message) -- quick fix before release, read below
 	end
 end
 
-function DWP:statsmessage(message) -- send end game stats, but make sure that clients with mod recieve this message, by not adding the 'banned' prefix
+function DWP:statsmessage(message) -- send end game stats, but make sure that clients with DW+ mod recieve this message, by not adding the 'DWP_STATS' prefix that clients with DW+ mod ignore and dont recieve to avoid duplication of player info messages
 	if Global.game_settings.single_player == false then
 		managers.chat:_receive_message(1, "[DWP]", message, DWP.color)
 		DWP:statspublicmessage(message)
@@ -77,9 +77,9 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 			elseif DWP.settings.difficulty == 3 then
 				diff = "running on 'Insanity' difficulty. DS difficulty builds STRONGLY recommended. This mod includes some "
 			elseif DWP.settings.difficulty == 4 then
-				diff = "running on 'Suicidal' difficulty. It might feel harder then DS difficulty. This mod includes some "
+				diff = "running on 'Suicidal' difficulty. It CAN feel harder then DS difficulty. This mod includes some "
 			end
-			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.12) mod installed, ", diff ,"gameplay changes:")
+			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.2) mod installed, ", diff ,"gameplay changes:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -95,13 +95,11 @@ function DWP:welcomemsg2(peer_id)
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 2.5, function()
-			local cuffs = "\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs"
-			local dominations = "\n- All cops are harder to intimidate: /dom"
 			local hostages = ""
 			if DWP.settings.hostagesbeta == true then
 				hostages = "\n- New bonuses/penalties for having/killing hostages: /civi"
 			end
-			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault%s%s%s\nMore info on chat commands: /help", cuffs, dominations, hostages)
+			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs\n- All cops are harder to intimidate: /dom%s\nMore info on chat commands: /help", hostages)
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -191,14 +189,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.412 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.42 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.12 update: \n- Max amount of normal shields was reduced by 1 for every difficulty\n- Marshal shields now spawn in lower amounts per squad\n- Death Squad's shields now spawn in lower amounts per squad\n- Death Squads's snipers now spawn in bigger amounts per squad\n- Death Squad's spawn chances reduced across all difficultes except for Suicidal\n- Some map's spawn pools were tweaked\n\n Exact numbers for all the changes above can be found in full changelog."
+			local message = "2.4.2 update: UPDATE ME!"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.412
+			DWP.settings.changelog_msg_shown = 2.42
 			DWP:Save()
 		end
 	end)
