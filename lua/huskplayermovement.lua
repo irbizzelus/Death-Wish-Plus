@@ -12,7 +12,6 @@ if DWP.DWdifficultycheck == true then
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
 		
 		if tweak == "revive" then
-			log("[DW+] PEER revive interaction.")
 			DelayedCalls:Add("delay_for_cuff_scan_on_husk_"..tostring(self._unit), 3.15, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
 			end)

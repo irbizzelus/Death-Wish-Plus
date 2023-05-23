@@ -193,7 +193,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.2 update: UPDATE ME!"
+			local message = "2.4.2 changelog:\n- Fixed a crash on White House heist\n- Changes to cuffing system - check full changelog\n- Tweks to all difficulties, most of them minor \n- New marshal unifrom options added\n- Tweaked map pools for 37 different heists to reduce enemy swarm\n\nI recommend going through all cuffing changes in the full changelog to not get caught off guard while playing."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.42
