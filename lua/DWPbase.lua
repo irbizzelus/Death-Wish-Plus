@@ -23,7 +23,7 @@ if not DWP then
 		DSdozer = true,
 		difficulty = 1,
 		assforce_pool = 400,
-		assduration = 350,
+		assduration = 330,
 		marshal_uniform = 2,
 		hostagesbeta = false,
 		statsmsgpublic = true

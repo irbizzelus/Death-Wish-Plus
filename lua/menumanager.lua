@@ -4,13 +4,13 @@ Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", functio
 		DWP.DWdifficultycheck = true
 		if DWP.settings.lobbyname then
 			DWP.curlobbyname = "Death Wish +"
-			managers.network.matchmake:change_lobby_name(DWP.curlobbyname)
+			DWP.change_lobby_name(DWP.curlobbyname)
 		end
 	else
 		DWP.DWdifficultycheck = false
 		if DWP.settings.lobbyname then
 			DWP.curlobbyname = managers.network.account:username()
-			managers.network.matchmake:change_lobby_name(DWP.curlobbyname)
+			DWP.change_lobby_name(DWP.curlobbyname)
 		end
 	end
 end)
@@ -71,7 +71,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
 			local diff
 			if DWP.settings.difficulty == 1 then
-				diff = " using high damage builds is advised. This mod includes some "
+				diff = "using high damage builds is advised. This mod includes some "
 			elseif DWP.settings.difficulty == 2 then
 				diff = "running on 'DW++' difficulty. High DPS builds STRONGLY recommended. This mod includes some "
 			elseif DWP.settings.difficulty == 3 then
@@ -141,69 +141,91 @@ function DWP:skills(peer_id) -- get peer's id, get their skills, print messages 
 	end
 end
 
+
 function DWP:returnplayerhours(peer_id, user_id) -- same as above, but for hours and only needs to be printed on first join
 if DWP.players[peer_id][2] ~= 0 then
 	local hours = nil
 	local peer = managers.network:session():peer(peer_id)
-	dohttpreq("http://steamcommunity.com/profiles/".. user_id .. "/?l=english",
-	function(page)
-		local _, hours_start = string.find(page, '<div class="game_info_details">')
-		if hours_start then
-			local hours_ends = string.find(page, '<div class="game_name"><a', hours_start)
-			if hours_ends then
-				hours = (string.sub(page, hours_start, hours_ends))
-				hours = string.gsub(hours, "	", "")
-				hours = string.gsub(hours, "hrs on record<br>", "")
-				hours = string.gsub(hours, "<", "")
-				hours = string.gsub(hours, ">", "")
-				hours = string.split(hours, "\n")
-				hours = hours[2]
-				hours = string.gsub(hours, ",", "")
-				hours = (math.floor((hours + 1/2)/1) * 1)
-				hours = tonumber(hours)
-				if hours ~= nil then
+	local steam_id = managers.network:session():peer(peer_id)._account_id
+	--MenuCallbackHandler:is_steam()
+	if peer:account_type() == Idstring("STEAM") then
+		dohttpreq("http://steamcommunity.com/profiles/".. steam_id .. "/?l=english",
+		function(page)
+			local _, hours_start = string.find(page, '<div class="game_info_details">')
+			if hours_start then
+				local hours_ends = string.find(page, '<div class="game_name"><a', hours_start)
+				if hours_ends then
+					hours = (string.sub(page, hours_start, hours_ends))
+					hours = string.gsub(hours, "	", "")
+					hours = string.gsub(hours, "hrs on record<br>", "")
+					hours = string.gsub(hours, "<", "")
+					hours = string.gsub(hours, ">", "")
+					hours = string.split(hours, "\n")
+					hours = hours[2]
+					hours = string.gsub(hours, ",", "")
 					hours = (math.floor((hours + 1/2)/1) * 1)
+					hours = tonumber(hours)
+					if hours ~= nil then
+						hours = (math.floor((hours + 1/2)/1) * 1)
+					end
 				end
 			end
-		end
-		if hours == nil then
-			hours = "??"
-		end
+			if hours == nil then
+				hours = "??"
+			end
+			if DWP.settings.hourinfo == true then
+				local infamy = "."
+				if DWP.settings.infamy == true then
+					infamy = ", with level " .. tostring(peer:rank()) .. " infamy."
+				end
+				local message = string.format("%s has %s hours%s", peer:name(), hours, infamy)
+				if DWP.players[peer_id][2] == true then
+					if managers.network:session():local_peer():id() ~= peer:id() then -- dont send hours info about ourselves
+						DWP:infomessages(message)
+						DWP.players[peer_id][2] = 0
+					end
+				end
+			end
+		end)
+	end
+	-- we divide them, because we cant execute code bellow untill the steam page is loaded, or we get nil hours
+	if peer:account_type() == Idstring("EPIC") then
 		if DWP.settings.hourinfo == true then
 			local infamy = "."
 			if DWP.settings.infamy == true then
 				infamy = ", with level " .. tostring(peer:rank()) .. " infamy."
 			end
-			local message = string.format("%s has %s hours%s", peer:name(), hours, infamy)
+			hours = "Epic launcher"
+			local message = string.format("%s is on %s account%s", peer:name(), hours, infamy)
 			if DWP.players[peer_id][2] == true then
-				if managers.network:session():local_peer():id() ~= peer:id() then -- dont send hours info about ourselves
+				if managers.network:session():local_peer():id() ~= peer:id() then
 					DWP:infomessages(message)
 					DWP.players[peer_id][2] = 0
 				end
 			end
 		end
-	end)
+	end
 end
 end
 
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.42 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.421 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.2 changelog:\n- Fixed a crash on White House heist\n- Changes to cuffing system - check full changelog\n- Tweks to all difficulties, most of them minor \n- New marshal unifrom options added\n- Tweaked map pools for 37 different heists to reduce enemy swarm\n\nI recommend going through all cuffing changes in the full changelog to not get caught off guard while playing."
+			local message = "2.4.21 changelog:\n- Reduced default and minimal available assault duration from 350 to 330 seconds\n- Fixes for crashes/bugs after U237, more fixes may come later if more bugs are discovered.\n\nDO NOT PLAY in public lobbies for now, functionality may be restored, but welcome messages do not get sent, and im not sure exactly why. Testing DWP without any other mods seems to send message correctly, but i couldnt pin point why they would not be sent sometimes(i've unistalled/installed practically all of my mods 2 times). May just be an issue with the base game.\nP.S. Before updating beardlib, make sure its version 4.86 or higher."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.42
+			DWP.settings.changelog_msg_shown = 2.421
 			DWP:Save()
 		end
 	end)
 end
 
 function DWP_linkchangelog()
-	Steam:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases/latest")
+	managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases/latest")
 end
 
 Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node)
@@ -224,13 +246,22 @@ Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_na
 		if DWP.settings.lobbyname then
 			if managers.network.matchmake._lobby_attributes then
 				if Network:is_server() then
-					if managers.network.matchmake._lobby_attributes.job_id == 0 then
-						if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then managers.network.matchmake._lobby_attributes.owner_name = managers.network.account:username_id() end
+					if managers.network.matchmake._lobby_attributes.job_id == 0 and managers.network.matchmake.lobby_handler then
+						if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
+							managers.network.matchmake._lobby_attributes.owner_name = managers.network.account:username_id()
+							managers.network.matchmake.lobby_handler:set_lobby_data(managers.network.matchmake._lobby_attributes)
+						end
 					else
 						if managers.network.matchmake._lobby_attributes.difficulty == 7 then
-							if managers.network.matchmake._lobby_attributes.owner_name ~= "Death Wish +" then managers.network.matchmake._lobby_attributes.owner_name = "Death Wish +" end
+							if managers.network.matchmake._lobby_attributes.owner_name ~= "Death Wish +" then
+								managers.network.matchmake._lobby_attributes.owner_name = "Death Wish +"
+								managers.network.matchmake.lobby_handler:set_lobby_data(managers.network.matchmake._lobby_attributes)
+							end
 						else
-							if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then managers.network.matchmake._lobby_attributes.owner_name = managers.network.account:username_id() end
+							if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
+								managers.network.matchmake._lobby_attributes.owner_name = managers.network.account:username_id()
+								managers.network.matchmake.lobby_handler:set_lobby_data(managers.network.matchmake._lobby_attributes)
+							end
 						end
 					end
 				end

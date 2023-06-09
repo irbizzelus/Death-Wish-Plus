@@ -56,8 +56,8 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.menu_node._items_list[5]._value = 400
 		DWP.settings.assforce_pool = 400
 		
-		DWP.menu_node._items_list[6]._value = 350
-		DWP.settings.assduration = 350
+		DWP.menu_node._items_list[6]._value = 330
+		DWP.settings.assduration = 330
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()
 	end

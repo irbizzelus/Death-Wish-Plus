@@ -1,12 +1,12 @@
 dofile(ModPath .. "lua/DWPbase.lua")
 
 if DWP.settings.lobbyname then
-	if SystemInfo:distribution() == Idstring("STEAM") then
+	if SystemInfo:distribution() == Idstring("STEAM") or SystemInfo:distribution() == Idstring("EPIC") then -- not entierly sure if this would even help, but whatever
 	
-		function NetworkMatchMakingSTEAM:change_lobby_name(message)--the thing that does all the magic
-			if self._lobby_attributes and self.lobby_handler then
-				self._lobby_attributes.owner_name = message
-				self.lobby_handler:set_lobby_data(self._lobby_attributes)
+		function DWP.change_lobby_name(message)--the thing that does all the magic
+			if managers.network.matchmake._lobby_attributes and managers.network.matchmake.lobby_handler then
+				managers.network.matchmake._lobby_attributes.owner_name = message
+				managers.network.matchmake.lobby_handler:set_lobby_data(managers.network.matchmake._lobby_attributes)
 			end
 		end
 		
@@ -16,13 +16,14 @@ if DWP.settings.lobbyname then
 		--This is just a workaround, that makes sure, that our lobby name is always appropriate to our contract difficulty.
 		--Note: this workaround only causes 1 issue: if we've created a DW lobby, then quit, and then created an empty lobby (vanila hud or other mods) lobby name will be "Death Wish+"
 		--But honestly, its whatever, since after buying a contract name will change accoridingly
+		--[[
 		Hooks:PostHook(NetworkMatchMakingSTEAM, "set_attributes", "DWP_swapname", function()
 			if DWP.curlobbyname ~= nil then
-				managers.network.matchmake:change_lobby_name(DWP.curlobbyname)
+				DWP.change_lobby_name(DWP.curlobbyname)
 			else
-				managers.network.matchmake:change_lobby_name(managers.network.account:username_id())
+				DWP.change_lobby_name(managers.network.account:username_id())
 			end
-		end)
+		end)]]
 		
 		Hooks:Add("NetworkManagerOnPeerAdded", "DWP_changelobbyname", function(peer, peer_id) --Change host name for peers when they join, since techincally, before they join, their game thinks host's name is "Death Wish+"
 			if Network:is_server() then

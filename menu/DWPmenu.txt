@@ -51,7 +51,7 @@
 			"default_value" : 400,
 			"min" : 400,
 			"max" : 700,
-			"step" : 10
+			"step" : 1
 		},
 		{
 			"type" : "slider",
@@ -60,10 +60,10 @@
 			"description" : "DWP_assduration_desc",
 			"callback" : "DWPcb_assduration",
 			"value" : "assduration",
-			"default_value" : 350,
-			"min" : 350,
+			"default_value" : 330,
+			"min" : 330,
 			"max" : 600,
-			"step" : 10
+			"step" : 1
 		},
 		{
 			"type" : "button",
