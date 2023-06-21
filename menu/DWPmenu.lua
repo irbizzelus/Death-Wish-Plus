@@ -111,6 +111,21 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.settings[item:name()] = item:value() == 'on'
 		DWP:Save()
 	end
+	
+	MenuCallbackHandler.DWPcb_patch_notes = function(this, item)
+		managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases")
+	end
+	
+	-- any time host changes lobby attributes, update lobby name
+	Hooks:PostHook(MenuCallbackHandler, "update_matchmake_attributes", "DWP_swapname_on_attributes_update", function()
+		if DWP.settings.lobbyname then
+			if DWP.curlobbyname ~= nil then
+				DWP.change_lobby_name(DWP.curlobbyname)
+			else
+				DWP.change_lobby_name(managers.network.account:username_id())
+			end
+		end
+	end)
 
 	DWP:Load()
 

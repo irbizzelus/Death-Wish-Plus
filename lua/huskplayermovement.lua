@@ -10,13 +10,13 @@ if DWP.DWdifficultycheck == true then
 		end
 		
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
-		
+		-- check starts slightly later to prevent cuffing on players with high ping
 		if tweak == "revive" then
 			DelayedCalls:Add("delay_for_cuff_scan_on_husk_"..tostring(self._unit), 3.15, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
 			end)
 		else
-			DelayedCalls:Add("delay_for_cuff_scan_on_husk"..tostring(self._unit), 1.05, function()
+			DelayedCalls:Add("delay_for_cuff_scan_on_husk"..tostring(self._unit), 1.15, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, false)
 			end)
 		end

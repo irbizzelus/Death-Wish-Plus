@@ -10,12 +10,12 @@ DWP_CM:add_command("help", {
 	callback = function(args, sender)
 		if sender:id() ~= 1 then
 			if DWP.DWdifficultycheck == true then
-				DWP_CM:send_message(sender:id(), string.format("This mod includes a few chat commands you can use to get more info on gameplay changes using '/dom' and similar commands mentioned above. You can also use /med or /ammo to quickly ask for aid."))
+				DWP_CM:send_message(sender:id(), string.format("You can use chat commands to get more info on gameplay changes of DW+ using '/dom' or other commands mentioned above, these messages are sent only to you, to prevent spam for other players. You can also use /med or /ammo in game to quickly ask for aid."))
 			else
 				DWP_CM:send_message(sender:id(), string.format("This lobby runs 'Death Wish +' mod which includes a few chat commands you can use like /med or /ammo to quickly ask for aid."))
 			end
 		else
-			DWP_CM:send_message(sender:id(), string.format("You are running DW+ which includes a few chat commands you can use, for example /med and /ammo for quick messages requesting aid. You as host can also use /say to send messages that start with a command prefix like '/' or '!'"))
+			DWP_CM:send_message(sender:id(), string.format("DW+ includes chat commands for all players, for example /med and /ammo for quick aid requests. You can also use commands like /dom to print informative global messages in chat for everyone to read. Normally such commands are sent privately if requested."))
 		end
 	end,
 })
@@ -24,9 +24,9 @@ if DWP.DWdifficultycheck == true then
 DWP_CM:add_command("assault", {
 	callback = function(args, sender)
 		if sender:id() ~= 1 then
-			DWP_CM:send_message(sender:id(), string.format("All tactical units from other difficulties like FBI or SWAT teams are included. Special unit limit is increased. Dozer types were changed to: saiga, lmg, minigun, medic."))
+			DWP_CM:send_message(sender:id(), string.format("All tactical units from other difficulties (like green FBI or blue SWAT's) are included. Field snipers and Winters shileds are also present. Special unit limit is increased. Green bulldozer replaced with a medic bulldozer."))
 		else -- print these messages publicly if host requests them
-			DWP_CM:message(string.format("All tactical units from other difficulties like FBI or SWAT teams are included. Special unit limit is increased. Dozer types were changed to: saiga, lmg, minigun, medic."), nil, nil, true)
+			DWP_CM:message(string.format("All tactical units from other difficulties (like green FBI or blue SWAT's) are included. Field snipers and Winters shileds are also present. Special unit limit is increased. Green bulldozer replaced with a medic bulldozer."), nil, nil, true)
 		end
 	end,
 })
@@ -34,9 +34,9 @@ DWP_CM:add_command("assault", {
 DWP_CM:add_command("cuffs", {
 	callback = function(args, sender)	
 		if sender:id() ~= 1 then
-			DWP_CM:send_message(sender:id(), string.format("While you are inteacting with something enemy closest to you will try to come and handcuff you. All units can do this. Only way to get out is to get uncuffed by a teammate or wait for 60 seconds."))
+			DWP_CM:send_message(sender:id(), string.format("While you are inteacting with anything enemy closest to you will try to come and handcuff you. All enemies can do this. You have 2 ways to get out if you are cuffed - get uncuffed by a teammate or uncuff yourself after 60 seconds."))
 		else
-			DWP_CM:message(string.format("While you are inteacting with something enemy closest to you will try to come and handcuff you. All units can do this. Only way to get out is to get uncuffed by a teammate or wait for 60 seconds."), nil, nil, true) 
+			DWP_CM:message(string.format("While you are inteacting with anything enemy closest to you will try to come and handcuff you. All enemies can do this. You have 2 ways to get out if you are cuffed - get uncuffed by a teammate or uncuff yourself after 60 seconds."), nil, nil, true) 
 		end
 	end,
 })

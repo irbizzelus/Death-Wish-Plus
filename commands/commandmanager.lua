@@ -13,12 +13,16 @@ if not rawget(_G, "DWP_CM") then
 		commands = {}
 	})
 	
-	dofile(ModPath .. "commands/utils.lua")
-	
 	function DWP_CM:validPrefix(prefix)
 		return self._prefixes[prefix]
 	end
 
+	function DWP_CM:is_playing()
+		if not BaseNetworkHandler then 
+			return false
+		end
+		return BaseNetworkHandler._gamestate_filter.any_ingame_playing[ game_state_machine:last_queued_state_name() ]
+	end
 
 	function DWP_CM:message(text, title, color, sync)
 		if sync then

@@ -1,6 +1,14 @@
 Hooks:Add("NetworkManagerOnPeerAdded", "DWP_onpeeradded", function(peer, peer_id)
 	DWP:plyerjoin(peer_id)
 	DWP.players[peer_id][2] = true
+	if Network:is_server() then
+		DelayedCalls:Add("DWP_updatelobbyname" .. tostring(peer_id), 0.1, function()
+			local peer2 = managers.network:session() and managers.network:session():peer(peer_id)
+			if peer2 then
+				peer2:send("request_player_name_reply", managers.network.account:username())
+			end
+		end)
+	end
 end)
 
 Hooks:Add("BaseNetworkSessionOnPeerRemoved", "DWP_onpeerremoved", function(peer, peer_id, reason)
@@ -15,6 +23,13 @@ end)
 	
 Hooks:Add("BaseNetworkSessionOnLoadComplete", "DWP_onloadcomplete", function(peer, id) -- after loading into a game send to all allready synched clients skill information
 	DWP.loadcomplete = true
+	if managers.network.matchmake._lobby_attributes and managers.network.matchmake.lobby_handler then
+		if managers.network.matchmake._lobby_attributes.difficulty == 7 then
+			DWP.curlobbyname = "Death Wish +"
+		else
+			DWP.curlobbyname = managers.network.account:username_id()
+		end
+	end
 	DelayedCalls:Add("DWP_skilsforpeer_" .. tostring(id), 0.5 , function()
 		if managers.network._session and #managers.network:session():peers() > 0 then
 			DWP:skills(id)

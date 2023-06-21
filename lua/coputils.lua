@@ -8,7 +8,7 @@ DWPMod.CopUtils = {}
 
 -- Search radius for interacing player
 DWPMod.CopUtils._arrest_search_radius = 750
--- How far can unit be to auto-arrest players during active scan period
+-- How far can unit be to arrest a player 
 DWPMod.CopUtils._arrest_action_radius = 150
 
 -- Checks if the local player should be arrested
@@ -210,7 +210,7 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 				if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
 					return
 				end
-				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 125, managers.slot:get_mask("enemies"))
+				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 140, managers.slot:get_mask("enemies"))
 				if enemies and #enemies >= 1 then
 					-- Check every enemy in radius, make sure its actually an enemy
 					for i, enemy in pairs(enemies) do

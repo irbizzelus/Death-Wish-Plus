@@ -57,4 +57,6 @@
 	"DWP_misc_header": "---- MISCELLANEOUS OPTIONS ----",
 	"DWP_enablelobbyname": "Enable custom lobby name",
 	"DWP_lobbyname_desc": "If enabled, your lobby will be renamed to 'Death With+' on Death Wish difficulty, to let people on Crime.net screen know that you are running this mod.\nShould only(!!!) be disabled if you run 'Change lobby name anytime' mod.",
+	"DWP_patch_notes": "Patch notes",
+	"DWP_patch_notes_desc": "Click this button to open DW+ patch notes in overlay browser.",
 }

@@ -71,15 +71,15 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
 			local diff
 			if DWP.settings.difficulty == 1 then
-				diff = "using high damage builds is advised. This mod includes some "
+				diff = "using high DPS builds is advised."
 			elseif DWP.settings.difficulty == 2 then
-				diff = "running on 'DW++' difficulty. High DPS builds STRONGLY recommended. This mod includes some "
+				diff = "running on 'DW++' difficulty. High DPS builds STRONGLY recommended."
 			elseif DWP.settings.difficulty == 3 then
-				diff = "running on 'Insanity' difficulty. DS difficulty builds STRONGLY recommended. This mod includes some "
+				diff = "running on 'Insanity' difficulty. DS difficulty builds STRONGLY recommended."
 			elseif DWP.settings.difficulty == 4 then
-				diff = "running on 'Suicidal' difficulty. It CAN feel harder then DS difficulty. This mod includes some "
+				diff = "running on 'Suicidal' difficulty. It CAN feel harder then DS difficulty."
 			end
-			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.2) mod installed, ", diff ,"gameplay changes:")
+			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.3) mod installed, ", diff ," This mod includes following gameplay changes:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -99,7 +99,7 @@ function DWP:welcomemsg2(peer_id)
 			if DWP.settings.hostagesbeta == true then
 				hostages = "\n- New bonuses/penalties for having/killing hostages: /civi"
 			end
-			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs\n- All cops are harder to intimidate: /dom%s\nMore info on chat commands: /help", hostages)
+			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault\n- All cops are harder to intimidate: /dom\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs%s\nMore info on chat commands: /help", hostages)
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -211,14 +211,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.421 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.43 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.21 changelog:\n- Reduced default and minimal available assault duration from 350 to 330 seconds\n- Fixes for crashes/bugs after U237, more fixes may come later if more bugs are discovered.\n\nDO NOT PLAY in public lobbies for now, functionality may be restored, but welcome messages do not get sent, and im not sure exactly why. Testing DWP without any other mods seems to send message correctly, but i couldnt pin point why they would not be sent sometimes(i've unistalled/installed practically all of my mods 2 times). May just be an issue with the base game.\nP.S. Before updating beardlib, make sure its version 4.86 or higher."
+			local message = "2.4.3 changelog:\n- TO BE ADDED.\n\nAs of update 237.2, you won't get anyone to join your jobby unless you hide your mod list. I am heavily against hiding your mods, but untill Overkill-starbreeze fix this issue, you could use this knowledge to host public lobbies."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.421
+			DWP.settings.changelog_msg_shown = 2.43
 			DWP:Save()
 		end
 	end)

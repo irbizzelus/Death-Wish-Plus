@@ -239,6 +239,13 @@
 			"callback" : "DWPcb_lobbyname",
 			"value" : "lobbyname",
 			"default_value" : true
+		},
+		{
+			"type" : "button",
+			"id" : "DWP_patch_notes",
+			"title" : "DWP_patch_notes",
+			"description" : "DWP_patch_notes_desc",
+			"callback" : "DWPcb_patch_notes"
 		}
 	]
 }

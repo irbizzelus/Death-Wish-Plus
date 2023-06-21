@@ -80,4 +80,13 @@ if not DWP then
     -- This also regenerates a "fresh" config if it's corrupted.
     DWP:Save()
 
+	if SystemInfo:distribution() == Idstring("STEAM") or SystemInfo:distribution() == Idstring("EPIC") then
+		function DWP.change_lobby_name(lobby_name)
+			if managers.network.matchmake._lobby_attributes and managers.network.matchmake.lobby_handler then
+				managers.network.matchmake._lobby_attributes.owner_name = lobby_name
+				managers.network.matchmake.lobby_handler:set_lobby_data(managers.network.matchmake._lobby_attributes)
+			end
+		end
+	end
+
 end

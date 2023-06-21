@@ -673,7 +673,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	if Global.level_data and Global.level_data.level_id == "trai" or Global.game_settings and Global.game_settings.level_id == "trai" then
 		self.enemy_spawn_groups.marshal_squad = {
 			spawn_cooldown = 15, -- 60
-			max_nr_simultaneous_groups = 3, -- 2
+			max_nr_simultaneous_groups = 2, -- 2
 			initial_spawn_delay = 30, -- 90
 			amount = {
 				2, -- 2
@@ -682,7 +682,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			spawn = {
 				{
 					respawn_cooldown = 15, -- 30
-					amount_min = 4, -- 1
+					amount_min = 3, -- 1
 					rank = 2,
 					freq = 1,
 					unit = "marshal_shield",
@@ -706,7 +706,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	elseif Global.level_data and Global.level_data.level_id == "ranc" or Global.game_settings and Global.game_settings.level_id == "ranc" then
 		self.enemy_spawn_groups.marshal_squad = {
 			spawn_cooldown = 15, -- 60
-			max_nr_simultaneous_groups = 3, -- 2
+			max_nr_simultaneous_groups = 2, -- 2
 			initial_spawn_delay = 30, -- 90
 			amount = {
 				2, -- 2
@@ -739,7 +739,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	else
 		self.enemy_spawn_groups.marshal_squad = {
 			spawn_cooldown = 20, -- 60
-			max_nr_simultaneous_groups = 3, -- 2
+			max_nr_simultaneous_groups = 2, -- 2
 			initial_spawn_delay = 90, -- 480
 			amount = {
 				2, -- 2
@@ -751,13 +751,14 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					amount_min = 1, -- 1
 					amount_max = 1, -- ??
 					rank = 2,
-					freq = 1,
+					freq = 0.8,
 					unit = "marshal_shield",
 					tactics = self._tactics.marshal_shield
 				},
 				{
 					respawn_cooldown = 20, -- 30
 					amount_min = 2, -- 1
+					amount_max = 2, -- ??
 					rank = 1,
 					freq = 1,
 					unit = "marshal_marksman",
@@ -1047,7 +1048,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				{
 					unit = "FBI_tank",
 					freq = 1,
-					amount_min = 3,
+					amount_min = 2,
 					amount_max = 3,
 					tactics = self._tactics.FBI_tank,
 					rank = 3
@@ -1391,51 +1392,27 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	}
 	
 	-- snipers + winters shields
-	if DWP.settings.difficulty <= 2 then
-		self.enemy_spawn_groups.Death_squad = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_reinf_shield",
-					freq = 1,
-					amount_min = 1,
-					amount_max = 1,
-					tactics = self._tactics.FBI_shield,
-					rank = 1
-				},
-				{
-					unit = "FBI_sniper",
-					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 2
-				}
+	self.enemy_spawn_groups.Death_squad = {
+		amount = {3 * squadmul, 3 * squadmul},
+		spawn = {
+			{
+				unit = "FBI_reinf_shield",
+				freq = 1,
+				amount_min = 1,
+				amount_max = 1,
+				tactics = self._tactics.FBI_shield,
+				rank = 1
+			},
+			{
+				unit = "FBI_sniper",
+				freq = 1,
+				amount_min = 2,
+				amount_max = 2,
+				tactics = self._tactics.FBI_swat_rifle,
+				rank = 2
 			}
 		}
-	else
-		self.enemy_spawn_groups.Death_squad = {
-			amount = {3 * squadmul, 3 * squadmul},
-			spawn = {
-				{
-					unit = "FBI_reinf_shield",
-					freq = 1,
-					amount_min = 1,
-					amount_max = 2,
-					tactics = self._tactics.FBI_shield,
-					rank = 1
-				},
-				{
-					unit = "FBI_sniper",
-					freq = 1,
-					amount_min = 3,
-					amount_max = 4,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 2
-				}
-			}
-		}
-	end
+	}
 
 	self.enemy_spawn_groups.Undead = {
 		amount = {3 * squadmul, 3 * squadmul},
@@ -2135,9 +2112,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 	
 	self.besiege.assault.groups = {
 		FBI_city_swats = {
-			0.3,
-			0.3,
-			0.3
+			0.28,
+			0.28,
+			0.28
 		},
 		FBI_heavys = {
 			0.28,
@@ -2145,24 +2122,24 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.28
 		},
 		FBI_CQB_swats = {
-			0.23,
-			0.23,
-			0.23
+			0.25,
+			0.25,
+			0.25
 		},
 		FBI_shields = {
-			0.3,
-			0.3,
-			0.3
+			0.28,
+			0.28,
+			0.28
 		},
 		FBI_tanks = {
-			0.33,
-			0.33,
-			0.33
+			0.34,
+			0.34,
+			0.34
 		},
 		CS_tazers = {
-			0.35,
-			0.35,
-			0.35
+			0.34,
+			0.34,
+			0.34
 		},
 		CS_swats = {
 			0.2,
@@ -2175,9 +2152,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.18
 		},
 		CS_shields = {
-			0.18,
-			0.18,
-			0.18
+			0.16,
+			0.16,
+			0.16
 		},
 		Death_squad = {
 			0.12,
@@ -2267,9 +2244,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.3
 		},
 		FBI_shields = {
-			0.25,
-			0.25,
-			0.25
+			0.23,
+			0.23,
+			0.23
 		},
 		FBI_tanks = {
 			0.3,
@@ -2277,9 +2254,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.3
 		},
 		CS_tazers = {
-			0.35,
-			0.35,
-			0.35
+			0.34,
+			0.34,
+			0.34
 		},
 		CS_swats = {
 			0.2,
@@ -2292,9 +2269,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.18
 		},
 		CS_shields = {
-			0.15,
-			0.15,
-			0.15
+			0.13,
+			0.13,
+			0.13
 		},
 		Death_squad = {
 			0.16,
@@ -2384,19 +2361,19 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.3
 		},
 		FBI_shields = {
-			0.25,
-			0.25,
-			0.25
+			0.2,
+			0.2,
+			0.2
 		},
 		FBI_tanks = {
-			0.33,
-			0.33,
-			0.33
-		},
-		CS_tazers = {
 			0.35,
 			0.35,
 			0.35
+		},
+		CS_tazers = {
+			0.34,
+			0.34,
+			0.34
 		},
 		CS_swats = {
 			0.2,
@@ -2409,14 +2386,14 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.18
 		},
 		CS_shields = {
-			0.15,
-			0.15,
-			0.15
+			0.11,
+			0.11,
+			0.11
 		},
 		Death_squad = {
-			0.24,
-			0.24,
-			0.24
+			0.2,
+			0.2,
+			0.2
 		},
 		FBI_spoocs = {
 			0.2,
