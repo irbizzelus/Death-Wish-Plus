@@ -215,7 +215,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.3 changelog:\n- TO BE ADDED.\n\nAs of update 237.2, you won't get anyone to join your jobby unless you hide your mod list. I am heavily against hiding your mods, but untill Overkill-starbreeze fix this issue, you could use this knowledge to host public lobbies."
+			local message = "2.4.3 changelog:\n- Tweaked marshal amounts\n- Tweaked Death Squad's spawn chanes and amounts\n- Added patch notes button to the bottom of DW+ mod settings\n- Should now be compatibile with EPIC launcher version.\n\nAs of update 237.2, you won't get anyone to join your jobby unless you hide your mod list. I am heavily against hiding your mods, but untill Overkill-Starbreeze fix this issue, you could use this knowledge to host public lobbies."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.43
