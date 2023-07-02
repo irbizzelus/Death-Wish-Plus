@@ -669,109 +669,6 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			"murder"
 		},
 	}
-	-- commented are defualt marshal unit values we will buff em up a 'bit'
-	if Global.level_data and Global.level_data.level_id == "trai" or Global.game_settings and Global.game_settings.level_id == "trai" then
-		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 15, -- 60
-			max_nr_simultaneous_groups = 2, -- 2
-			initial_spawn_delay = 30, -- 90
-			amount = {
-				2, -- 2
-				3 -- 2
-			},
-			spawn = {
-				{
-					respawn_cooldown = 15, -- 30
-					amount_min = 3, -- 1
-					rank = 2,
-					freq = 1,
-					unit = "marshal_shield",
-					tactics = self._tactics.marshal_shield
-				},
-				{
-					respawn_cooldown = 15, -- 30
-					amount_min = 2, -- 1
-					rank = 1,
-					freq = 1,
-					unit = "marshal_marksman",
-					tactics = self._tactics.marshal_marksman
-				}
-			},
-			spawn_point_chk_ref = table.list_to_set({
-				"tac_shield_wall",
-				"tac_shield_wall_ranged",
-				"tac_shield_wall_charge"
-			})
-		}
-	elseif Global.level_data and Global.level_data.level_id == "ranc" or Global.game_settings and Global.game_settings.level_id == "ranc" then
-		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 15, -- 60
-			max_nr_simultaneous_groups = 2, -- 2
-			initial_spawn_delay = 30, -- 90
-			amount = {
-				2, -- 2
-				3 -- 2
-			},
-			spawn = {
-				{
-					respawn_cooldown = 15, -- 30
-					amount_min = 2, -- 2
-					rank = 2,
-					freq = 1,
-					unit = "marshal_shield",
-					tactics = self._tactics.marshal_shield
-				},
-				{
-					respawn_cooldown = 15, -- 30
-					amount_min = 3, -- 2
-					rank = 1,
-					freq = 1,
-					unit = "marshal_marksman",
-					tactics = self._tactics.marshal_marksman
-				}
-			},
-			spawn_point_chk_ref = table.list_to_set({
-				"tac_shield_wall",
-				"tac_shield_wall_ranged",
-				"tac_shield_wall_charge"
-			})
-		}
-	else
-		self.enemy_spawn_groups.marshal_squad = {
-			spawn_cooldown = 20, -- 60
-			max_nr_simultaneous_groups = 2, -- 2
-			initial_spawn_delay = 90, -- 480
-			amount = {
-				2, -- 2
-				2 -- 2
-			},
-			spawn = {
-				{
-					respawn_cooldown = 20, -- 30
-					amount_min = 1, -- 1
-					amount_max = 1, -- ??
-					rank = 2,
-					freq = 0.8,
-					unit = "marshal_shield",
-					tactics = self._tactics.marshal_shield
-				},
-				{
-					respawn_cooldown = 20, -- 30
-					amount_min = 2, -- 1
-					amount_max = 2, -- ??
-					rank = 1,
-					freq = 1,
-					unit = "marshal_marksman",
-					tactics = self._tactics.marshal_marksman
-				}
-			},
-			spawn_point_chk_ref = table.list_to_set({
-				"tac_shield_wall",
-				"tac_shield_wall_ranged",
-				"tac_shield_wall_charge"
-			})
-		}
-	end
 
 	local squadmul = 1
 	if DWP.settings.difficulty then
@@ -1983,6 +1880,104 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 
 	end
 end)
+
+function GroupAITweakData:_init_enemy_spawn_groups_level(tweak_data, difficulty_index)
+	local lvl_tweak_data = tweak_data.levels[Global.game_settings and Global.game_settings.level_id or Global.level_data and Global.level_data.level_id]
+
+	if Global.level_data and Global.level_data.level_id == "deep" then
+		-- ignore unit type overrides specifically for crude awakening, since only change here is to the marshal's uniform colour, which we change in DW+'s settings ourselves
+		-- rest of the function is base game code, let's hope it wont break with new updates :)
+	elseif lvl_tweak_data and lvl_tweak_data.ai_unit_group_overrides then
+		local unit_types = nil
+
+		for unit_type, faction_type_data in pairs(lvl_tweak_data.ai_unit_group_overrides) do
+			unit_types = self.unit_categories[unit_type] and self.unit_categories[unit_type].unit_types
+
+			if unit_types then
+				for faction_type, override in pairs(faction_type_data) do
+					if unit_types[faction_type] then
+						unit_types[faction_type] = override
+					end
+				end
+			end
+		end
+	end
+
+	-- commented out values are base game values, for reference. rip tweaking shield amounts for the train heist, but tbh, after flashlight range buff they are ridiculously annoying
+	if lvl_tweak_data and not lvl_tweak_data.ai_marshal_spawns_disabled then
+		if lvl_tweak_data.ai_marshal_spawns_fast then
+			self.enemy_spawn_groups.marshal_squad = {
+				spawn_cooldown = 15, -- 60
+				max_nr_simultaneous_groups = 2,
+				initial_spawn_delay = 30, -- 90
+				amount = {
+					2,
+					3 -- 2
+				},
+				spawn = {
+					{
+						respawn_cooldown = 15, -- 30
+						amount_min = 1,
+						amount_max = 2, -- nil
+						rank = 2,
+						freq = 1,
+						unit = "marshal_shield",
+						tactics = self._tactics.marshal_shield
+					},
+					{
+						respawn_cooldown = 15, -- 30
+						amount_min = 2, -- 1
+						amount_max = 2, -- nil
+						rank = 1,
+						freq = 1,
+						unit = "marshal_marksman",
+						tactics = self._tactics.marshal_marksman
+					}
+				},
+				spawn_point_chk_ref = table.list_to_set({
+					"tac_shield_wall",
+					"tac_shield_wall_ranged",
+					"tac_shield_wall_charge"
+				})
+			}
+		else
+			self.enemy_spawn_groups.marshal_squad = {
+				spawn_cooldown = 20, -- 60
+				max_nr_simultaneous_groups = 2,
+				initial_spawn_delay = 120, -- 480
+				amount = {
+					2,
+					2
+				},
+				spawn = {
+					{
+						respawn_cooldown = 20, -- 30
+						amount_min = 1,
+						amount_max = 1, -- nil
+						rank = 2,
+						freq = 0.8, -- 1
+						unit = "marshal_shield",
+						tactics = self._tactics.marshal_shield
+					},
+					{
+						respawn_cooldown = 20, -- 30
+						amount_min = 1,
+						amount_max = 2, -- nil
+						rank = 1,
+						freq = 1,
+						unit = "marshal_marksman",
+						tactics = self._tactics.marshal_marksman
+					}
+				},
+				spawn_point_chk_ref = table.list_to_set({
+					"tac_shield_wall",
+					"tac_shield_wall_ranged",
+					"tac_shield_wall_charge"
+				})
+			}
+		end
+	end
+end
 
 function GroupAITweakData:init_taskdata_deathwish_1()
 	--50
