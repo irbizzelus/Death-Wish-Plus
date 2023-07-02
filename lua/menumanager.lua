@@ -211,14 +211,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.43 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.431 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
 			local message = "2.4.31 changelog:\n- Compatibility with update 238.1\n\nMarshals on Crude Awakening heist will be using DW+'s marshal uniform setting for their colour."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.43
+			DWP.settings.changelog_msg_shown = 2.431
 			DWP:Save()
 		end
 	end)
