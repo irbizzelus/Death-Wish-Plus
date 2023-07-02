@@ -79,7 +79,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 			elseif DWP.settings.difficulty == 4 then
 				diff = "running on 'Suicidal' difficulty. It CAN feel harder then DS difficulty."
 			end
-			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.3) mod installed, ", diff ," This mod includes following gameplay changes:")
+			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.31) mod installed, ", diff ," This mod includes following gameplay changes:")
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -215,7 +215,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.3 changelog:\n- Tweaked marshal amounts\n- Tweaked Death Squad's spawn chanes and amounts\n- Added patch notes button to the bottom of DW+ mod settings\n- Should now be compatibile with EPIC launcher version.\n\nAs of update 237.2, you won't get anyone to join your jobby unless you hide your mod list. I am heavily against hiding your mods, but untill Overkill-Starbreeze fix this issue, you could use this knowledge to host public lobbies."
+			local message = "2.4.31 changelog:\n- Compatibility with update 238.1\n\nMarshals on Crude Awakening heist will be using DW+'s marshal uniform setting for their colour."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.43
