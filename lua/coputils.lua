@@ -193,6 +193,9 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		-- Check if target is valid and interacting
 		local is_interacting = true
 		if islocal == true then
+			if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
+				return
+			end
 			local state = player_unit:movement():current_state()
 			is_interacting = state._interacting and state:_interacting()
 			if is_interacting then -- idk if i should keep this, this is old code lol
