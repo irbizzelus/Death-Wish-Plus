@@ -193,12 +193,12 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		-- Check if target is valid and interacting
 		local is_interacting = true
 		if islocal == true then
-			if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
+			if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement().current_state or not player_unit:movement():current_state() or not player_unit:movement():current_state()._interact_params then
 				return
 			end
 			local state = player_unit:movement():current_state()
 			is_interacting = state._interacting and state:_interacting()
-			if is_interacting then -- idk if i should keep this, this is old code lol
+			if is_interacting then -- convert numerical value to boolean for the sake of consistency
 				is_interacting = true
 			end
 		elseif not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
@@ -210,8 +210,18 @@ function DWPMod.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 		else
 			DelayedCalls:Add("check_for_unit_interaction_and_arrest_unit_"..tostring(player_unit), 0.15, function()
 				-- check again that peer is not dead or something, since we have a 0.15 sec delay before this loop starts
-				if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() or not player_unit:movement()._interaction_tweak then
+				if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() then
 					return
+				else
+					if islocal then
+						if not player_unit:movement().current_state or not player_unit:movement():current_state() or not player_unit:movement():current_state()._interact_params then
+							return
+						end
+					else
+						if not player_unit:movement()._interaction_tweak then
+							return
+						end
+					end
 				end
 				local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 140, managers.slot:get_mask("enemies"))
 				if enemies and #enemies >= 1 then

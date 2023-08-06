@@ -211,14 +211,14 @@ end
 -- only pops up once in the main menu
 function DWP:changelog_message()
 	DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.432 then
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.433 then
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.32 changelog:\n- Added a fix that should prevent crashes with aggressive cuffing (in cases when local player dies or is somehow else unavailable)."
+			local message = "2.4.33 changelog:\n- Fixed the fix from previous patch (lol), that caused local player (a.k.a. mod user) to not get affected by the aggressive cuffing mechanic."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.432
+			DWP.settings.changelog_msg_shown = 2.433
 			DWP:Save()
 		end
 	end)

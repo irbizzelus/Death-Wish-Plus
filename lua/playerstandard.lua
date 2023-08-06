@@ -12,11 +12,11 @@ if DWP.DWdifficultycheck == true then
 		DWPMod.CopUtils:SendCopToArrestPlayer(self._unit)
 		
 		if self._unit:movement():current_state()._interact_params.tweak_data == "revive" then
-			DelayedCalls:Add("delay_for_cuff_scan_on_local", 3.05, function()
+			DelayedCalls:Add("delay_for_cuff_scan_on_local", 3, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, true)
 			end)
 		else
-			DelayedCalls:Add("delay_for_cuff_scan_on_local", 1.05, function()
+			DelayedCalls:Add("delay_for_cuff_scan_on_local", 1, function()
 				DWPMod.CopUtils:NearbyCopAutoArrestCheck(self._unit, true)
 			end)
 		end
