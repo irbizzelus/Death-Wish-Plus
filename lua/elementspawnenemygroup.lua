@@ -12,7 +12,8 @@ local groupsOLD = {
 	"tac_shield_wall_ranged",
 	"tac_bull_rush",
 	"marshal_squad",
-	"snowman_boss" -- probably will be used next year or something
+	"snowman_boss",
+	"piggydozer"
 }
 
 local groupsOLD_custom = {
@@ -26,7 +27,8 @@ local groupsOLD_custom = {
 	"tac_bull_rush",
 	"single_spooc",
 	"marshal_squad",
-	"snowman_boss"
+	"snowman_boss",
+	"piggydozer"
 }
 
 -- hardware store cutsom heist fix

@@ -1,7 +1,7 @@
 {
     "name": "Death Wish +",
     "description": "Modifies Death Wish difficulty to make it a bit harder.",
-    "version": "2.4.33",
+    "version": "2.4.34",
     "author": "irbizzelus",
     "contact": "Steam profile link is on my modworkshop account",
 	"image" : "dwp.dds",

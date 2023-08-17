@@ -681,6 +681,26 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		log("[DW+] Respawn value doesn't exist, using defaults.")
 	end
 	
+	-- lol
+	self.enemy_spawn_groups.piggydozer = {
+		amount = {
+			1,
+			1
+		},
+		spawn = {
+			{
+				freq = 1,
+				amount_min = 1,
+				rank = 1,
+				unit = "piggydozer",
+				tactics = self._tactics.tank_rush
+			}
+		},
+		spawn_point_chk_ref = table.list_to_set({
+			"tac_bull_rush"
+		})
+	}
+	
 	self.enemy_spawn_groups.CS_defend_a = {
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
@@ -1496,8 +1516,22 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		0
 	}
 
-	-- snowman, prob will be removed later
+	-- snowman, prob will be removed later. or not evidently
 	self.besiege.assault.groups.snowman_boss = {
+		0,
+		0,
+		0
+	}
+	
+	-- we have this fella here as well now
+	self.besiege.assault.groups.piggydozer = {
+		0,
+		0,
+		0
+	}
+	
+	-- twice
+	self.besiege.recon.groups.piggydozer = {
 		0,
 		0,
 		0
