@@ -73,39 +73,63 @@ function GroupAIStateBase:check_gameover_conditions()
 	return gameover
 end
 
-local add_drama_orig = GroupAIStateBase._add_drama
-function GroupAIStateBase:_add_drama(amount)
-	if DWP.DWdifficultycheck == true then
+Hooks:PostHook(GroupAIStateBase, "_add_drama", "DWP_dramaUpdate", function(self, amount)
+	if DWP.DWdifficultycheck == true and (Global.level_data and Global.level_data.level_id ~= "nmh") then
 		-- prevent drama from goin over 95 so we never skip anticipation. reason: longer breaks are needed with this mod
 		-- also i like when bain tells me it's 10 seconds before assaults starts (thx mods), but hate when assault immediately begins right after this voice line
 		-- also some of my custom music's anticipation tracks are 11/10, yet i almost never hear them because of this (useless for this mod) mechanic 
-		if self._drama_data.amount >= 0.74 then
-			self._drama_data.amount = 0.55
-		end
+		--
 		-- also prevent drama from beeing to low to make fade last as long as possible. 
 		-- thanks to update 181, this is not exploitable and gives 1 minute of free time at best
-		if self._drama_data.amount <= 0.55 then
+		if self._drama_data.amount > 0.55 or self._drama_data.amount < 0.55 then
 			self._drama_data.amount = 0.55
 		end
+	elseif DWP.DWdifficultycheck == true then
+		-- scripted rules for no mercy heist for first 2 waves
+		-- <=1 because we dont need to skip anticipation for the 3rd wave, since the counter updates only after ancticipation ends and 3rd assault begins
+		-- this does lead to increased fade after second wave is over, but it will create a perfect "they are regrouping" feeling
+		if self._assault_number <= 1 then
+			if (self._task_data and self._task_data.assault and self._task_data.assault.phase == "anticipation") and self._drama_data.amount < 0.999 then
+				self._drama_data.amount = 0.999
+			elseif (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and self._drama_data.amount > 0.01 then
+				self._drama_data.amount = 0.01
+			end
+		else
+			if self._drama_data.amount > 0.55 or self._drama_data.amount < 0.55 then
+				self._drama_data.amount = 0.55
+			end
+		end
 	end
-	add_drama_orig(self,amount)
-end
+	-- at the end of assault 2 on no mercy, play an overly dramatic warning in chat and a voice line from bain, cause why not
+	if (Global.level_data and Global.level_data.level_id == "nmh") and self._assault_number == 2 and (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and not DWP.NoMercyThirdAssaultWarning then
+		DWP.NoMercyThirdAssaultWarning = true
+		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 40, function()
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] There is talk of reinforcements from other agencies coming your way. Prepare yourselves.")
+			DelayedCalls:Add("NoMercyThirdAssaultWarningCall2", 55, function()
+				managers.player:local_player():sound():say("Play_ban_p01",true,true)
+			end)
+		end)
+	end
+end)
 
 local detonate_world_smoke_grenade_orig = GroupAIStateBase.detonate_world_smoke_grenade
 function GroupAIStateBase:detonate_world_smoke_grenade(id)
 	if DWP.DWdifficultycheck == true then
-		-- disables smokes/flashes on 'No Mercy' for insanity and suicidal, since enemy swarm is so bad there, additional visual clutter will just make it unfun
-		if Global.level_data and Global.level_data.level_id == "nmh" and DWP.settings.difficulty >= 3 then
+		-- disables smokes/flashes on 'No Mercy' for first 3 waves, since enemy swarm is so bad there, additional visual clutter will just make it unfun
+		if Global.level_data and Global.level_data.level_id == "nmh" and self._assault_number <= 3 then
 			return
 		end
 	end
 	detonate_world_smoke_grenade_orig(self,id)
 end
 
--- keep diff value always at max. wouldnt change much since DWP allready used identical enemy spawn rates regardless of this value before
 Hooks:PostHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(self, value)
 	if DWP.DWdifficultycheck == true then
-		if value < 1 and value > 0 then
+		if Global.level_data and Global.level_data.level_id == "nmh" and self._assault_number <= 1 then
+			if value ~= 0.001 then
+				self:set_difficulty(0.001)
+			end
+		elseif value > 0 and value < 1 then
 			self:set_difficulty(1)
 		end
 	end

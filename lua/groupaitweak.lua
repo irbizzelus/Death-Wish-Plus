@@ -1426,12 +1426,12 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	
 	
 	self.besiege.assault.sustain_duration_min = {
-		math.floor(DWP.settings.assduration),
+		math.floor(DWP.settings.assduration) / 6.6,
 		math.floor(DWP.settings.assduration),
 		math.floor(DWP.settings.assduration)
 	}
 	self.besiege.assault.sustain_duration_max = {
-		math.floor(DWP.settings.assduration),
+		math.floor(DWP.settings.assduration) / 6.6,
 		math.floor(DWP.settings.assduration),
 		math.floor(DWP.settings.assduration)
 	}
@@ -1672,6 +1672,15 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				17,
 				17,
 				17
+			}
+		end
+		
+		-- mercy r34
+		if Global.level_data.level_id == "nmh" then
+			self.besiege.assault.force = {
+				14.4,
+				14.4,
+				14.4
 			}
 		end
 		
@@ -2029,32 +2038,32 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.3
 		},
 		FBI_heavys = {
-			0.28,
+			0,
 			0.28,
 			0.28
 		},
 		FBI_CQB_swats = {
-			0.23,
+			0,
 			0.23,
 			0.23
 		},
 		FBI_shields = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
 		FBI_tanks = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
 		CS_tazers = {
-			0.35,
+			0,
 			0.35,
 			0.35
 		},
 		CS_swats = {
-			0.2,
+			0.4,
 			0.2,
 			0.2
 		},
@@ -2069,7 +2078,7 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.18
 		},
 		Death_squad = {
-			0.09,
+			0,
 			0.09,
 			0.09
 		},
@@ -2146,32 +2155,32 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.28
 		},
 		FBI_heavys = {
-			0.28,
+			0,
 			0.28,
 			0.28
 		},
 		FBI_CQB_swats = {
-			0.25,
+			0,
 			0.25,
 			0.25
 		},
 		FBI_shields = {
-			0.28,
+			0,
 			0.28,
 			0.28
 		},
 		FBI_tanks = {
-			0.34,
+			0,
 			0.34,
 			0.34
 		},
 		CS_tazers = {
-			0.34,
+			0,
 			0.34,
 			0.34
 		},
 		CS_swats = {
-			0.2,
+			0.4,
 			0.2,
 			0.2
 		},
@@ -2186,7 +2195,7 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.16
 		},
 		Death_squad = {
-			0.12,
+			0,
 			0.12,
 			0.12
 		},
@@ -2263,32 +2272,32 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.2
 		},
 		FBI_heavys = {
-			0.35,
+			0,
 			0.35,
 			0.35
 		},
 		FBI_CQB_swats = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
 		FBI_shields = {
-			0.23,
+			0,
 			0.23,
 			0.23
 		},
 		FBI_tanks = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
 		CS_tazers = {
-			0.34,
+			0,
 			0.34,
 			0.34
 		},
 		CS_swats = {
-			0.2,
+			0.4,
 			0.2,
 			0.2
 		},
@@ -2303,7 +2312,7 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.13
 		},
 		Death_squad = {
-			0.16,
+			0,
 			0.16,
 			0.16
 		},
@@ -2380,32 +2389,32 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.2
 		},
 		FBI_heavys = {
-			0.35,
+			0,
 			0.35,
 			0.35
 		},
 		FBI_CQB_swats = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
 		FBI_shields = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
 		FBI_tanks = {
-			0.35,
+			0,
 			0.35,
 			0.35
 		},
 		CS_tazers = {
-			0.34,
+			0,
 			0.34,
 			0.34
 		},
 		CS_swats = {
-			0.2,
+			0.4,
 			0.2,
 			0.2
 		},
@@ -2420,7 +2429,7 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.11
 		},
 		Death_squad = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
