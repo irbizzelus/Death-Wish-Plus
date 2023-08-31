@@ -48,7 +48,7 @@ end
 
 function DWP:statsmessage(message) -- send end game stats, but make sure that clients with DW+ mod recieve this message, by not adding the 'DWP_STATS' prefix that clients with DW+ mod ignore and dont recieve to avoid duplication of player info messages
 	if Global.game_settings.single_player == false then
-		managers.chat:_receive_message(1, "[DWP]", message, DWP.color)
+		managers.chat:_receive_message(1, "[DW+]", message, DWP.color)
 		DWP:statspublicmessage(message)
 	end
 end
@@ -215,7 +215,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.4.4 changelog:\n- Bla."
+			local message = "2.4.4 'Theatrical Update':\n	No mercy heist will now follow a scipted pattern after alarm goes off. This should prevent the low spawns issue of the map, by forcing the game to go through a few short waves really quickly. For details on how exactly first waves are going to play out, and why exactly this patch is called 'theatrical', check the full changelog."
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.44
