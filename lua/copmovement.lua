@@ -15,6 +15,10 @@ function CopMovement:_override_weapons(primary, secondary)
 	end
 end
 
+-- this would automaticaly mark sniper units with red countour, needs more work
+-- because a) sometimes these units get stuck and b) normal snipers also get affected
+-- needs a check if this unit is part of a "death squad" and also a difficulty check
+--[[
 Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , function(self,action_desc)
 	if not Network:is_server() then
 		return
@@ -22,8 +26,7 @@ Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , func
 	if self._unit:base().mic_is_being_moved then
 		return
 	end
-	-- ADD DIFFICULTY CHECK
 	if self._unit:base():char_tweak().access == "sniper" then
 		self._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
 	end
-end)
+end)]]
