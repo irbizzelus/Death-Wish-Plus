@@ -14,3 +14,16 @@ function CopMovement:_override_weapons(primary, secondary)
 		self._unit:inventory():add_unit_by_name(secondary, true)
 	end
 end
+
+Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , function(self,action_desc)
+	if not Network:is_server() then
+		return
+	end
+	if self._unit:base().mic_is_being_moved then
+		return
+	end
+	-- ADD DIFFICULTY CHECK
+	if self._unit:base():char_tweak().access == "sniper" then
+		self._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
+	end
+end)

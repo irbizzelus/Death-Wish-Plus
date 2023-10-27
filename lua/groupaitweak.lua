@@ -422,15 +422,15 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 		
 		if DWP.settings.difficulty == 1 then
 			self.special_unit_spawn_limits = {
-				shield = 5,
-				medic = 4,
+				shield = 6,
+				medic = 5,
 				taser = 6,
 				tank = 4,
 				spooc = 3
 			}
 		elseif DWP.settings.difficulty == 2 then
 			self.special_unit_spawn_limits = {
-				shield = 5,
+				shield = 6,
 				medic = 5,
 				taser = 6,
 				tank = 5,
@@ -438,7 +438,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 3 then
 			self.special_unit_spawn_limits = {
-				shield = 6,
+				shield = 7,
 				medic = 5,
 				taser = 7,
 				tank = 6,
@@ -446,7 +446,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 4 then
 			self.special_unit_spawn_limits = {
-				shield = 7,
+				shield = 8,
 				medic = 6,
 				taser = 8,
 				tank = 7,
@@ -1426,12 +1426,12 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	
 	
 	self.besiege.assault.sustain_duration_min = {
-		math.floor(DWP.settings.assduration) / 6.6,
+		45,
 		math.floor(DWP.settings.assduration),
 		math.floor(DWP.settings.assduration)
 	}
 	self.besiege.assault.sustain_duration_max = {
-		math.floor(DWP.settings.assduration) / 6.6,
+		45,
 		math.floor(DWP.settings.assduration),
 		math.floor(DWP.settings.assduration)
 	}
@@ -1445,13 +1445,13 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	-- Make the assault breaks substantially longer if players have hostages
 	if DWP.settings.hostagesbeta == true then
 		self.besiege.assault.hostage_hesitation_delay = {
-			60,
+			1,
 			60,
 			60
 		}
 	else
 		self.besiege.assault.hostage_hesitation_delay = {
-			15,
+			1,
 			15,
 			15
 		}
@@ -1544,7 +1544,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	}
 	
 	self.besiege.assault.delay = {
-		35,
+		4,
 		35,
 		35
 	}
@@ -2033,7 +2033,7 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 	
 	self.besiege.assault.groups = {
 		FBI_city_swats = {
-			0.3,
+			0,
 			0.3,
 			0.3
 		},
@@ -2058,7 +2058,7 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.3
 		},
 		CS_tazers = {
-			0,
+			0.15,
 			0.35,
 			0.35
 		},
@@ -2083,12 +2083,12 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.09
 		},
 		FBI_spoocs = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
 		single_spooc = {
-			0.1,
+			0,
 			0.1,
 			0.1
 		}
@@ -2150,7 +2150,7 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 	
 	self.besiege.assault.groups = {
 		FBI_city_swats = {
-			0.28,
+			0,
 			0.28,
 			0.28
 		},
@@ -2200,12 +2200,12 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.12
 		},
 		FBI_spoocs = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
 		single_spooc = {
-			0.1,
+			0,
 			0.1,
 			0.1
 		}
@@ -2384,7 +2384,7 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 	
 	self.besiege.assault.groups = {
 		FBI_city_swats = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
@@ -2434,12 +2434,12 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.2
 		},
 		FBI_spoocs = {
-			0.2,
+			0,
 			0.2,
 			0.2
 		},
 		single_spooc = {
-			0.1,
+			0,
 			0.1,
 			0.1
 		}

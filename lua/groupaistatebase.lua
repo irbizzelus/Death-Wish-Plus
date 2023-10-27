@@ -89,10 +89,20 @@ Hooks:PostHook(GroupAIStateBase, "_add_drama", "DWP_dramaUpdate", function(self,
 		-- <=1 because we dont need to skip anticipation for the 3rd wave, since the counter updates only after ancticipation ends and 3rd assault begins
 		-- this does lead to increased fade after second wave is over, but it will create a perfect "they are regrouping" feeling
 		if self._assault_number <= 1 then
-			if (self._task_data and self._task_data.assault and self._task_data.assault.phase == "anticipation") and self._drama_data.amount < 0.999 then
-				self._drama_data.amount = 0.999
+			if (self._task_data and self._task_data.assault and (self._task_data.assault.phase == "anticipation" or self._task_data.assault.phase == "build")) and self._drama_data.amount < 0.999 then
+				if not DWP.NMH_anticipation_skip and not DWP.NMH_delay_active then
+					DWP.NMH_delay_active = true
+					DelayedCalls:Add("NoMercyAnticipationSkipDelay", 5, function()
+						DWP.NMH_anticipation_skip = true
+					end)
+				end
+				if DWP.NMH_anticipation_skip then
+					self._drama_data.amount = 0.999
+					DWP.NMH_delay_active = nil
+				end
 			elseif (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and self._drama_data.amount > 0.01 then
 				self._drama_data.amount = 0.01
+				DWP.NMH_anticipation_skip = nil
 			end
 		else
 			if self._drama_data.amount > 0.55 or self._drama_data.amount < 0.55 then
@@ -106,7 +116,9 @@ Hooks:PostHook(GroupAIStateBase, "_add_drama", "DWP_dramaUpdate", function(self,
 		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 40, function()
 			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] There is talk of reinforcements from other agencies coming your way. Prepare yourselves.")
 			DelayedCalls:Add("NoMercyThirdAssaultWarningCall2", 55, function()
-				managers.player:local_player():sound():say("Play_ban_p01",true,true)
+				if managers.player:player_unit() then -- avoid crash if host is dead somehow after 2 pathetic waves
+					managers.player:local_player():sound():say("Play_ban_p01",true,true)
+				end
 			end)
 		end)
 	end
@@ -227,12 +239,12 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 		end
 		if self._hostages_killed == 7 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
-				0.42,
+				0,
 				0.42,
 				0.42
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
-				0.22,
+				0,
 				0.22,
 				0.22
 			}
