@@ -1,3 +1,7 @@
+if not DWP then
+	dofile(ModPath .. "lua/DWPbase.lua")
+end
+
 -- make all enemy squad spawns faster but keep dozer and cloakers at a normal rate
 if DWP.DWdifficultycheck == true then
 	

@@ -1,3 +1,7 @@
+if not DWP then
+	dofile(ModPath .. "lua/DWPbase.lua")
+end
+
 -- Gameover now happens after ~33 seconds instead of 10 seconds, allowing Stockholm Syndrome to function correctly
 function GroupAIStateBase:check_gameover_conditions()
 	if not Network:is_server() or managers.platform:presence() ~= "Playing" or setup:has_queued_exec() then

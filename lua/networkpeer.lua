@@ -1,3 +1,7 @@
+if not DWP then
+	dofile(ModPath .. "lua/DWPbase.lua")
+end
+
 Hooks:Add("NetworkManagerOnPeerAdded", "DWP_onpeeradded", function(peer, peer_id)
 	DWP:plyerjoin(peer_id)
 	DWP.players[peer_id][2] = true

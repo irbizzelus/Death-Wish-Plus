@@ -1,4 +1,6 @@
---dofile(ModPath .. "lua/DWPbase.lua")
+if not DWP then
+	dofile(ModPath .. "lua/DWPbase.lua")
+end
 
 -- process send messages to activate chat commands if prefix exists
 local orig_send = ChatManager.send_message
@@ -16,11 +18,10 @@ function ChatManager:send_message(channel_id, sender, message)
 		return
 	end
 
-	local CM = _G["DWP_CM"]
-	if CM then
-		if CM:validPrefix(message:sub(1, 1)) and sender then
+	if DWP.CM then
+		if DWP.CM:validPrefix(message:sub(1, 1)) and sender then
 			if Network:is_server() then
-				CM:process_input(message, sender)
+				DWP.CM:process_input(message, sender)
 				return
 			end
 		end
@@ -39,12 +40,11 @@ function ChatManager:receive_message_by_peer(channel_id, peer, message)
 	end
 	orig_receive(self, channel_id, peer, message)
 
-	local CM = _G["DWP_CM"]
-	if CM then
-		if peer:id() ~= CM:local_peer():id() then
-			if CM:validPrefix(message:sub(1, 1)) then
+	if DWP.CM then
+		if peer:id() ~= DWP.CM:local_peer():id() then
+			if DWP.CM:validPrefix(message:sub(1, 1)) then
 				if Network:is_server() then
-					CM:process_input(message, peer)
+					DWP.CM:process_input(message, peer)
 				end
 			end
 		end

@@ -1,4 +1,6 @@
-dofile(ModPath .. "lua/DWPbase.lua")
+if not DWP then
+	dofile(ModPath .. "lua/DWPbase.lua")
+end
 
 local function string_startswith(String, Start)
 	return string.sub(String,1,string.len(Start))==Start

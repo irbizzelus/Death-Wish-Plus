@@ -1,24 +1,4 @@
--- Sometimes HRT units spawn without a team set which crashes the game
--- Set a default team for cop units if they dont have a team
-Hooks:PreHook(CopMovement, "team", "setcopteamifnoteam", function(self)
-	if not self._team then
-		self:set_team(managers.groupai:state()._teams[tweak_data.levels:get_default_team_ID(self._unit:base():char_tweak().access == "gangster" and "gangster" or "combatant")])
-	end
-end)
-
-function CopMovement:_override_weapons(primary, secondary)
-	if primary then
-		self._unit:inventory():add_unit_by_name(primary, true)
-	end
-	if secondary then
-		self._unit:inventory():add_unit_by_name(secondary, true)
-	end
-end
-
--- this would automaticaly mark sniper units with red countour, needs more work
--- because a) sometimes these units get stuck and b) normal snipers also get affected
--- needs a check if this unit is part of a "death squad" and also a difficulty check
---[[
+-- needs a difficulty check and a settings option
 Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , function(self,action_desc)
 	if not Network:is_server() then
 		return
@@ -26,7 +6,11 @@ Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , func
 	if self._unit:base().mic_is_being_moved then
 		return
 	end
+	
 	if self._unit:base():char_tweak().access == "sniper" then
-		self._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
+		-- fucking kill me
+		if self._unit:base()._ext_movement and self._unit:base()._ext_movement._ext_brain and self._unit:base()._ext_movement._ext_brain._logic_data and self._unit:base()._ext_movement._ext_brain._logic_data.group and self._unit:base()._ext_movement._ext_brain._logic_data.group.type and self._unit:base()._ext_movement._ext_brain._logic_data.group.type == "Death_squad" then
+			self._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
+		end
 	end
-end)]]
+end)
