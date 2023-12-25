@@ -3,9 +3,6 @@ if not DWP then
 	dofile(ModPath .. "lua/DWPbase.lua")
 end
 
--- 1st msg only once
-DWP.end_stats_printed = false
-
 -- print stats at the end of the match
 Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats", function(self, peer_id, peer_kills, peer_specials_kills, peer_head_shots, accuracy, downs)
 	-- if enabled, print stats in post game chat with customizable settings

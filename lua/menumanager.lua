@@ -28,6 +28,11 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
+	MenuCallbackHandler.DWPcb_deathSquadSniperHighlight = function(this, item)
+		DWP.settings[item:name()] = item:value() == 'on'
+		DWP:Save()
+	end
+	
 	MenuCallbackHandler.DWPcb_marshal_uniform = function(this, item)
 		DWP.settings.marshal_uniform = tonumber(item:value())
 		DWP:Save()
@@ -60,6 +65,10 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		
 		DWP.menu_node._items_list[6]._value = 330
 		DWP.settings.assduration = 330
+		
+		DWP.menu_node._items_list[7].selected = 2
+		DWP.settings.deathSquadSniperHighlight = false
+		
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()
 	end

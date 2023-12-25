@@ -1,9 +1,15 @@
--- needs a difficulty check and a settings option
+-- highlights enemy snipers that spawn as a part of the "Death_squad"
 Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , function(self,action_desc)
 	if not Network:is_server() then
 		return
 	end
 	if self._unit:base().mic_is_being_moved then
+		return
+	end
+	if not DWP.DWdifficultycheck then
+		return
+	end
+	if not DWP.settings.deathSquadSniperHighlight then
 		return
 	end
 	

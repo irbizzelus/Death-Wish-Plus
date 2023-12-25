@@ -21,7 +21,8 @@ if not DWP then
 		assduration = 330,
 		marshal_uniform = 2,
 		hostagesbeta = false,
-		statsmsgpublic = true
+		statsmsgpublic = true,
+		deathSquadSniperHighlight = false,
     }
 	DWP.players = {}
 	for i=1,4 do -- peer skills/hours prints
@@ -35,6 +36,7 @@ if not DWP then
 	DWP.HostageControl.PeerHostageKillCount = {}
 	DWP.color = Color(255,217,0,217) / 255
 	DWP.statprefix = "[DWP_Stats]"
+	DWP.end_stats_printed = false
 
     function DWP:Save()
         local file = io.open(DWP._data_path, 'w+')

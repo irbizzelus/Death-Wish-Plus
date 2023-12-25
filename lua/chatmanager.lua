@@ -14,14 +14,14 @@ function ChatManager:send_message(channel_id, sender, message)
 		sender = managers.network:session():local_peer()
 	end
 	
-	if not message then -- fix for sending messages to clients privately
+	if not message then
 		return
 	end
 
 	if DWP.CM then
 		if DWP.CM:validPrefix(message:sub(1, 1)) and sender then
 			if Network:is_server() then
-				DWP.CM:process_input(message, sender)
+				DWP.CM:process_command(message, sender)
 				return
 			end
 		end
@@ -33,7 +33,7 @@ end
 -- same check for messages from other peers/players
 local orig_receive = ChatManager.receive_message_by_peer
 function ChatManager:receive_message_by_peer(channel_id, peer, message)
-	if peer:id() == 1 and Network:is_client() then -- if host sends us a message starting with dwp_stats, we ignore it. why? to not have duplicated messages
+	if peer:id() == 1 and Network:is_client() then -- if host sends us a message starting with dwp_stats, we ignore it. why? to not have duplicated player info messages
 		if message:sub(1, 11) == "[DWP_Stats]" then
 			return
 		end
@@ -41,10 +41,10 @@ function ChatManager:receive_message_by_peer(channel_id, peer, message)
 	orig_receive(self, channel_id, peer, message)
 
 	if DWP.CM then
-		if peer:id() ~= DWP.CM:local_peer():id() then
-			if DWP.CM:validPrefix(message:sub(1, 1)) then
-				if Network:is_server() then
-					DWP.CM:process_input(message, peer)
+		if Network:is_server() then
+			if peer:id() ~= DWP.CM:local_peer():id() then
+				if DWP.CM:validPrefix(message:sub(1, 1)) then
+					DWP.CM:process_command(message, peer)
 				end
 			end
 		end

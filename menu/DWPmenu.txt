@@ -66,6 +66,15 @@
 			"step" : 1
 		},
 		{
+			"type" : "toggle",
+			"id" : "deathSquadSniperHighlight",
+			"title" : "DWP_deathSquadSniperHighlight",
+			"description" : "DWP_deathSquadSniperHighlight_desc",
+			"callback" : "DWPcb_deathSquadSniperHighlight",
+			"value" : "deathSquadSniperHighlight",
+			"default_value" : false
+		},
+		{
 			"type" : "button",
 			"id" : "gameplay_defaults",
 			"title" : "DWP_gameplay_defaults",

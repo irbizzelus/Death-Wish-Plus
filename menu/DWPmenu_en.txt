@@ -17,6 +17,8 @@
 	"DWP_assforce_pool_desc": "Set amount of cops that you have to kill for assault to be over. DWP default 400. Base game default: 900. Slider min and max values: 400; 700",
 	"DWP_assduration": "DW assault duration",
 	"DWP_assduration_desc": "Change assault length on DW difficulty in seconds. DWP default: 330. Base game default: set to 300 but is usually lower because of diff value.\nSlider min and max values: 330; 600"
+	"DWP_deathSquadSniperHighlight": "Sniper highlight",
+	"DWP_deathSquadSniperHighlight_desc": "If enabled, snipers that spawn as part of a 'Death Squad' will get periodically highlighted.",
 	"DWP_gameplay_defaults": "Reset to defaults",
 	"DWP_gameplay_defaults_desc": "Click this button to reset all gameplay options to deafult settings.",
 	
