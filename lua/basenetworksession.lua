@@ -3,7 +3,6 @@ if not DWP then
 	dofile(ModPath .. "lua/DWPbase.lua")
 end
 
--- print stats at the end of the match
 Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats", function(self, peer_id, peer_kills, peer_specials_kills, peer_head_shots, accuracy, downs)
 	-- if enabled, print stats in post game chat with customizable settings
 	-- this part is the first message that creates a "header" explaining each value below
@@ -11,7 +10,6 @@ Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats",
 		DWP.end_stats_printed = true
 		DelayedCalls:Add("DWP:endstatannounce", 0.5, function()
 			if DWP.settings.endstattoggle == true then
-				-- create empty strings for settings in case these customization options are disabled
 				local specials = ""
 				local headshoots = ""
 				local acc = ""

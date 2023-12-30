@@ -32,11 +32,18 @@ if not DWP then
 		end
 	end
 	DWP.synced = {}
-	DWP.HostageControl = {}
-	DWP.HostageControl.PeerHostageKillCount = {}
 	DWP.color = Color(255,217,0,217) / 255
 	DWP.statprefix = "[DWP_Stats]"
 	DWP.end_stats_printed = false
+	DWP.HostageControl = {
+		globalkillcount = 0,
+		PeerHostageKillCount = {
+			0,
+			0,
+			0,
+			0
+		},
+	}
 
     function DWP:Save()
         local file = io.open(DWP._data_path, 'w+')
@@ -89,7 +96,7 @@ if not DWP then
 	dofile(ModPath .. "lua/coputils.lua")
 
 	-- Change the surrender presets to harder ones
-	function DWP:setnewdoms()	
+	function DWP:setnewdoms()
 		if not tweak_data then
 			DelayedCalls:Add("updateDomsAfterTweakdataHasLoaded", 0.2, function()
 				DWP:setnewdoms()

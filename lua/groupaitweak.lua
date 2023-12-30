@@ -26,6 +26,10 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 	if difficulty_index == 7 then
 		DWP.DWdifficultycheck = true
 		DWP.setnewdoms()
+		-- snapshot of our settings that are used for the current game
+		if not DWP.settings_config then
+			DWP.settings_config = clone(DWP.settings)
+		end
 		
 		-- empty squads that we dont use. i dont think it matters for memory effiency, but this should help figure out if we still have these squads somewhere in the code for no reason
 		self.unit_categories.CS_cop_C45_R870 = nil
