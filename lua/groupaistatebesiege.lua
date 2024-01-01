@@ -139,11 +139,22 @@ function DWP.CloakerReinforce(killer_id)
 	local peer = ""
 	local unit = ""
 	
-	-- todo: maybe add a map check so that cloaker would have proper appearance on murkywater/russian/spanish/haloween unit maps
+	-- update our cloaker looks depending on the current map
+	local cloaker = Idstring("units/payday2/characters/ene_spook_1/ene_spook_1")
+	if tweak_data.levels[Global.level_data.level_id].ai_group_type == "russia" then
+		cloaker = Idstring("units/pd2_dlc_mad/characters/ene_akan_fbi_spooc_asval_smg/ene_akan_fbi_spooc_asval_smg")
+	elseif tweak_data.levels[Global.level_data.level_id].ai_group_type == "zombie" then
+		cloaker = Idstring("units/pd2_dlc_hvh/characters/ene_spook_hvh_1/ene_spook_hvh_1")
+	elseif tweak_data.levels[Global.level_data.level_id].ai_group_type == "murkywater" then
+		cloaker = Idstring("units/pd2_dlc_bph/characters/ene_murkywater_cloaker/ene_murkywater_cloaker")
+	elseif tweak_data.levels[Global.level_data.level_id].ai_group_type == "federales" then
+		cloaker = Idstring("units/pd2_dlc_bex/characters/ene_swat_cloaker_policia_federale/ene_swat_cloaker_policia_federale")
+	end
+	
 	if spawntarget_id == 1 then
 		if managers.player:player_unit() and managers.player:player_unit():position() then
 			mvector3.set(posi,managers.player:player_unit():position())
-			World:spawn_unit(Idstring("units/payday2/characters/ene_spook_1/ene_spook_1"), posi, rot)
+			World:spawn_unit(cloaker, posi, rot)
 		end
 	else
 		if managers.network:session():peer(spawntarget_id) then
@@ -153,7 +164,7 @@ function DWP.CloakerReinforce(killer_id)
 				return
 			end
 			mvector3.set(posi,unit:position())
-			World:spawn_unit(Idstring("units/payday2/characters/ene_spook_1/ene_spook_1"), posi, rot)
+			World:spawn_unit(cloaker, posi, rot)
 		end
 	end
 end

@@ -44,6 +44,7 @@ if not DWP then
 			0
 		},
 	}
+	DWP.DS_snipers = {}
 
     function DWP:Save()
         local file = io.open(DWP._data_path, 'w+')

@@ -77,7 +77,8 @@ function GroupAIStateBase:check_gameover_conditions()
 	return gameover
 end
 
-Hooks:PreHook(GroupAIStateBase, "_add_drama", "DWP_dramaUpdate", function(self, amount)
+local orig_drama = GroupAIStateBase._add_drama
+function GroupAIStateBase:_add_drama(amount)
 	if DWP.DWdifficultycheck and (Global.level_data and Global.level_data.level_id ~= "nmh") then
 		-- prevent drama from goin over 95 so we never skip anticipation. reason: longer breaks
 		-- also some music anticipation tracks are 11/10, yet i almost never hear them because of this useless (gameplay wise) mechanic
@@ -127,7 +128,8 @@ Hooks:PreHook(GroupAIStateBase, "_add_drama", "DWP_dramaUpdate", function(self, 
 			end)
 		end)
 	end
-end)
+	orig_drama(self, amount)
+end
 
 local detonate_world_smoke_grenade_orig = GroupAIStateBase.detonate_world_smoke_grenade
 function GroupAIStateBase:detonate_world_smoke_grenade(id)
@@ -140,9 +142,11 @@ function GroupAIStateBase:detonate_world_smoke_grenade(id)
 	detonate_world_smoke_grenade_orig(self,id)
 end
 
-Hooks:PreHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(self, value)
+local orig_diff = GroupAIStateBase.set_difficulty
+function GroupAIStateBase:set_difficulty(value)
 	
-	if not DWP.DWdifficultycheck then
+	if not DWP or not DWP.DWdifficultycheck then
+		orig_diff(self, value)
 		return
 	end
 
@@ -164,14 +168,15 @@ Hooks:PreHook(GroupAIStateBase, "set_difficulty", "DWP_difffffff", function(self
 		
 		-- set diff_ceil to a value between 0.5 and 1 depending on amount of currently held hostages (max bonus of 5) and hostage kill count
 		if host_count >= 1 then
-			diff_ceil = diff_ceil - ((diff_ceil - diff_floor) / 5) * (math.clamp(host_count, 1, 5)
+			diff_ceil = diff_ceil - ((diff_ceil - diff_floor) / 5) * math.clamp(host_count, 1, 5)
 		end
 		
 		if value ~= diff_ceil then
 			value = diff_ceil
 		end
 	end
-end)
+	orig_diff(self, value)
+end
 
 -- hostage control - on civi death 
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function(self, killer_unit)
@@ -202,43 +207,41 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 	local killer_name = "Someone"
 	local peer = 1
 	local killer_id = 1
-	local kill_counter = DWP.HostageControl.PeerHostageKillCount
-	local total_kill_counter = DWP.HostageControl.globalkillcount
 	
 	-- i have no idea how to get player's name from killer_unit for PEERS so we will have this nasty looking mess
 	-- basically checks who killed the hostage, adds that to their kill count and remembers their name for chat messages later
 	if killer_unit:base().is_local_player then
 		killer_name = managers.network:session():peer(killer_unit:base()._id):name()
-		kill_counter[1] = kill_counter[1] + 1
+		DWP.HostageControl.PeerHostageKillCount[1] = DWP.HostageControl.PeerHostageKillCount[1] + 1
 	elseif managers.network:session():peer(2) and managers.network:session():peer(2):unit() == killer_unit then
 		peer = managers.network:session():peer(2)
 		killer_name = peer:name()
-		kill_counter[2] = kill_counter[2] + 1
+		DWP.HostageControl.PeerHostageKillCount[2] = DWP.HostageControl.PeerHostageKillCount[2] + 1
 		killer_id = 2
 	elseif managers.network:session():peer(3) and managers.network:session():peer(3):unit() == killer_unit then
 		killer_name = managers.network:session():peer(3):name()
 		peer = managers.network:session():peer(3)
-		kill_counter[3] = kill_counter[3] + 1
+		DWP.HostageControl.PeerHostageKillCount[3] = DWP.HostageControl.PeerHostageKillCount[3] + 1
 		killer_id = 3
 	elseif managers.network:session():peer(4) and managers.network:session():peer(4):unit() == killer_unit then
 		killer_name = managers.network:session():peer(4):name()
 		peer = managers.network:session():peer(4)
-		kill_counter[4] = kill_counter[4] + 1
+		DWP.HostageControl.PeerHostageKillCount[4] = DWP.HostageControl.PeerHostageKillCount[4] + 1
 		killer_id = 4
 	end
-	total_kill_counter = total_kill_counter + 1
+	DWP.HostageControl.globalkillcount = DWP.HostageControl.globalkillcount + 1
 	
-	if total_kill_counter < 5 then
+	if DWP.HostageControl.globalkillcount < 5 then
 		if peer == 1 then
-			managers.hud:show_hint({text = "You killed a hostage! Hostages killed: "..tostring(total_kill_counter)})
+			managers.hud:show_hint({text = "You killed a hostage! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		else
 			managers.network:session():send_to_peer(peer, "send_chat_message", 1, "[DW+ Private message] Killing hostages inflicts penalties on you and your team. Use /civi for more info.")
-			managers.hud:show_hint({text = tostring(killer_name).." killed a hostage! Hostages killed: "..tostring(total_kill_counter)})
+			managers.hud:show_hint({text = tostring(killer_name).." killed a hostage! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		end
-	elseif total_kill_counter == 5 then
+	elseif DWP.HostageControl.globalkillcount == 5 then
 		managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 5 hostages dead. Enemy respawn rates are maxed out. And also cloakers learned how to teleport?..")
 		DWP.CloakerReinforce(killer_id)
-	elseif total_kill_counter == 7 then
+	elseif DWP.HostageControl.globalkillcount == 7 then
 		managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 7 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
 		tweak_data.group_ai.besiege.assault.groups.Undead = {
 			0,

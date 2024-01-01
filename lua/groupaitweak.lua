@@ -1314,28 +1314,46 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	}
 	
-	-- snipers + winters shields
-	self.enemy_spawn_groups.Death_squad = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "FBI_reinf_shield",
-				freq = 1,
-				amount_min = 1,
-				amount_max = 1,
-				tactics = self._tactics.FBI_shield,
-				rank = 1
-			},
-			{
-				unit = "FBI_sniper",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 2,
-				tactics = self._tactics.FBI_swat_rifle,
-				rank = 2
+	-- snipers + winters shields aka Death Squad
+	-- slaughterhouse forces all sniper units to never move/only make a single move after they spawn it seems
+	-- or maybe just disalowws to move to/through certain pathways, which makes DSquad snipers get stuck
+	if Global.level_data.level_id == "dinner" then
+		self.enemy_spawn_groups.Death_squad = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "FBI_reinf_shield",
+					freq = 1,
+					amount_min = 1,
+					amount_max = 1,
+					tactics = self._tactics.FBI_shield,
+					rank = 1
+				}
 			}
 		}
-	}
+	else
+		self.enemy_spawn_groups.Death_squad = {
+			amount = {3 * squadmul, 3 * squadmul},
+			spawn = {
+				{
+					unit = "FBI_reinf_shield",
+					freq = 1,
+					amount_min = 1,
+					amount_max = 1,
+					tactics = self._tactics.FBI_shield,
+					rank = 1
+				},
+				{
+					unit = "FBI_sniper",
+					freq = 1,
+					amount_min = 2,
+					amount_max = 2,
+					tactics = self._tactics.FBI_swat_rifle,
+					rank = 2
+				}
+			}
+		}
+	end
 
 	self.enemy_spawn_groups.Undead = {
 		amount = {3 * squadmul, 3 * squadmul},
