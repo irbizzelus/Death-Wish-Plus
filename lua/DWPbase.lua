@@ -189,4 +189,57 @@ if not DWP then
 			tweak_data.character.fbi_heavy_swat.surrender = surrender_preset_hard
 		end
 	end
+	
+	function DWP:ActivateHostageControl7KillsPenalty()
+		if DWP.settings_config and DWP.settings_config.difficulty == 1 then
+			tweak_data.group_ai.besiege.assault.groups.Undead = {
+				0,
+				0.3,
+				0.3
+			}
+			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
+				0,
+				0.2,
+				0.2
+			}
+			tweak_data.group_ai.special_unit_spawn_limits.tank = 8
+		elseif DWP.settings_config and DWP.settings_config.difficulty == 2 then
+			tweak_data.group_ai.besiege.assault.groups.Undead = {
+				0,
+				0.35,
+				0.35
+			}
+			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
+				0,
+				0.15,
+				0.15
+			}
+			tweak_data.group_ai.special_unit_spawn_limits.tank = 10
+		elseif DWP.settings_config and DWP.settings_config.difficulty == 3 then
+			tweak_data.group_ai.besiege.assault.groups.Undead = {
+				0,
+				0.4,
+				0.4
+			}
+			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
+				0,
+				0.1,
+				0.1
+			}
+			tweak_data.group_ai.special_unit_spawn_limits.tank = 12
+		elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
+			tweak_data.group_ai.besiege.assault.groups.Undead = {
+				0,
+				0.45,
+				0.45
+			}
+			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
+				0,
+				0.05,
+				0.05
+			}
+			tweak_data.group_ai.special_unit_spawn_limits.tank = 14
+		end
+	end
+	
 end

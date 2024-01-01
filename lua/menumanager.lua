@@ -214,17 +214,7 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 2, function()
-			local diff
-			if DWP.settings.difficulty == 1 then
-				diff = "using high DPS builds is advised."
-			elseif DWP.settings.difficulty == 2 then
-				diff = "running on 'DW++' difficulty. High DPS builds STRONGLY recommended."
-			elseif DWP.settings.difficulty == 3 then
-				diff = "running on 'Insanity' difficulty. DS difficulty builds STRONGLY recommended."
-			elseif DWP.settings.difficulty == 4 then
-				diff = "running on 'Suicidal' difficulty. It CAN feel harder then DS difficulty."
-			end
-			local message = string.format("%s%s%s%s%s", "Welcome ", peer:name(), "!\nThis lobby is hosted with 'Death Wish +' (Ver. 2.4.4) mod installed, ", diff ," This mod includes following gameplay changes:")
+			local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.4.5) which CHANGES LOUD GAMEPLAY:"
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
 				if peer then
@@ -236,19 +226,36 @@ function DWP:welcomemsg1(peer_id) -- welcome msg for clients
 end
 
 function DWP:welcomemsg2(peer_id)
-	local tosent = peer_id
 	local peer = managers.network:session():peer(peer_id)
 	if Network:is_server() and DWP.DWdifficultycheck == true then
 		DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 2.5, function()
-			local hostages = ""
-			if DWP.settings.hostagesbeta == true then
-				hostages = "\n- New bonuses/penalties for having/killing hostages: /civi"
-			end
-			local message = string.format("\n- Enemies respawn quicker and have more variety: /assault\n- All cops are harder to intimidate: /dom\n- Enemies CAN HANDCUFF YOU during interactions: /cuffs%s\nMore info on chat commands: /help", hostages)
 			if managers.network:session() and managers.network:session():peers() then
 				local peer = managers.network:session():peer(peer_id)
+				local diff = "'DW+ Classic'"
+				if DWP.settings_config and DWP.settings_config.difficulty == 2 then
+					diff = "'DW++'"
+				elseif  DWP.settings_config and DWP.settings_config.difficulty == 3 then
+					diff = "'Insanity'"
+				elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
+					diff = "'Suicidal'"
+				-- if settings config wasnt created yet, take whatever host selected in options, even though its not yet confirmed
+				elseif DWP.settings.difficulty == 2 then
+					diff = "'DW++'"
+				elseif DWP.settings.difficulty == 3 then
+					diff = "'Insanity'"
+				elseif DWP.settings.difficulty == 4 then
+					diff = "'Suicidal'"
+				end
 				if peer then
-					peer:send("send_chat_message", ChatManager.GAME, message)
+					peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
+					peer:send("send_chat_message", ChatManager.GAME, "Police assault changes: /assault")
+					peer:send("send_chat_message", ChatManager.GAME, "Enemy intimidation changes: /dom")
+					peer:send("send_chat_message", ChatManager.GAME, "Enemy variety changes: /cops")
+					if DWP.settings.hostagesbeta == true then
+						peer:send("send_chat_message", ChatManager.GAME, "Penalties/bonuses for killing/controlling hostages: /hostage")
+					end
+					peer:send("send_chat_message", ChatManager.GAME, "Current difficulty: "..diff..". /diff")
+					peer:send("send_chat_message", ChatManager.GAME, "You can use chat commands above to recieve personal messages with detailed information on specified gameplay changes. You can also use /med (or !med) and /ammo (or !ammo) in game to ask for help.")
 				end
 			end
 		end)

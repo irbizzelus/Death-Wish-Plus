@@ -37,12 +37,14 @@ if not DWP.CM then
 		end
 		managers.chat:send_message(ChatManager.GAME, nil, text)
 	end
-
+	
+	-- preferably this message should have a [DW+ Private Message] prefix, but we don't actually always need it, so i'll just add it to messages manualy whenver needed
 	function DWP.CM:private_chat_message(peer_id, message)
 		if not message or (message == "") then
 			return
 		end
 		
+		local peer = managers.network:session():peer(peer_id)
 		if peer_id == self:local_peer():id() then
 			managers.chat:_receive_message(1, "[DW+]", message, tweak_data.system_chat_color or Color(255,255,0,0) / 255)
 		else

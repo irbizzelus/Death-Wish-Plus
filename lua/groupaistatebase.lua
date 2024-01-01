@@ -243,16 +243,6 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 		DWP.CloakerReinforce(killer_id)
 	elseif DWP.HostageControl.globalkillcount == 7 then
 		managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 7 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
-		tweak_data.group_ai.besiege.assault.groups.Undead = {
-			0,
-			0.45,
-			0.45
-		}
-		tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
-			0,
-			0.1,
-			0.1
-		}
-		tweak_data.group_ai.special_unit_spawn_limits.tank = 11
+		DWP:ActivateHostageControl7KillsPenalty()
 	end
 end)

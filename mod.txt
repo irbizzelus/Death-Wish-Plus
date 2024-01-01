@@ -11,6 +11,7 @@
         {"hook_id": "lib/network/base/basenetworksession", "script_path": "lua/basenetworksession.lua"},
 		{"hook_id": "lib/managers/chatmanager", "script_path": "lua/chatmanager.lua"},
 		{"hook_id": "lib/managers/menumanager", "script_path": "lua/commandmanager.lua"},
+		{"hook_id": "lib/units/enemies/cop/copdamage", "script_path": "lua/copdamage.lua"},
 		{"hook_id": "lib/units/enemies/cop/copmovement", "script_path": "lua/copmovement.lua"},
 		{"hook_id": "lib/managers/mission/elementspawnenemygroup", "script_path": "lua/elementspawnenemygroup.lua"},
 		{"hook_id": "lib/managers/group_ai_states/groupaistatebase", "script_path": "lua/groupaistatebase.lua"},

@@ -2073,17 +2073,17 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 		},
 		FBI_shields = {
 			0,
-			0.3,
+			0.15,
 			0.3
 		},
 		FBI_tanks = {
 			0,
-			0.3,
+			0.15,
 			0.3
 		},
 		CS_tazers = {
 			0.15,
-			0.35,
+			0.18,
 			0.35
 		},
 		CS_swats = {
@@ -2098,22 +2098,22 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 		},
 		CS_shields = {
 			0.18,
-			0.18,
+			0.09,
 			0.18
 		},
 		Death_squad = {
 			0,
-			0.09,
+			0.045,
 			0.09
 		},
 		FBI_spoocs = {
 			0,
-			0.2,
+			0.1,
 			0.2
 		},
 		single_spooc = {
 			0,
-			0.1,
+			0.05,
 			0.1
 		}
 	}
@@ -2190,17 +2190,17 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		},
 		FBI_shields = {
 			0,
-			0.28,
+			0.14,
 			0.28
 		},
 		FBI_tanks = {
 			0,
-			0.34,
+			0.17,
 			0.34
 		},
 		CS_tazers = {
 			0,
-			0.34,
+			0.17,
 			0.34
 		},
 		CS_swats = {
@@ -2215,22 +2215,22 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		},
 		CS_shields = {
 			0.16,
-			0.16,
+			0.08,
 			0.16
 		},
 		Death_squad = {
 			0,
-			0.12,
+			0.06,
 			0.12
 		},
 		FBI_spoocs = {
 			0,
-			0.2,
+			0.1,
 			0.2
 		},
 		single_spooc = {
 			0,
-			0.1,
+			0.05,
 			0.1
 		}
 	}
@@ -2307,17 +2307,17 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 		},
 		FBI_shields = {
 			0,
-			0.23,
+			0.12,
 			0.23
 		},
 		FBI_tanks = {
 			0,
-			0.3,
+			0.15,
 			0.3
 		},
 		CS_tazers = {
-			0,
-			0.34,
+			0.15,
+			0.17,
 			0.34
 		},
 		CS_swats = {
@@ -2332,22 +2332,22 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 		},
 		CS_shields = {
 			0.13,
-			0.13,
+			0.07,
 			0.13
 		},
 		Death_squad = {
 			0,
-			0.16,
+			0.08,
 			0.16
 		},
 		FBI_spoocs = {
-			0.2,
-			0.2,
+			0,
+			0.1,
 			0.2
 		},
 		single_spooc = {
-			0.1,
-			0.1,
+			0,
+			0.05,
 			0.1
 		}
 	}
@@ -2424,17 +2424,17 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 		},
 		FBI_shields = {
 			0,
-			0.2,
+			0.1,
 			0.2
 		},
 		FBI_tanks = {
 			0,
-			0.35,
+			0.18,
 			0.35
 		},
 		CS_tazers = {
-			0,
-			0.34,
+			0.15,
+			0.17,
 			0.34
 		},
 		CS_swats = {
@@ -2449,22 +2449,22 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 		},
 		CS_shields = {
 			0.11,
-			0.11,
+			0.06,
 			0.11
 		},
 		Death_squad = {
 			0,
-			0.2,
+			0.1,
 			0.2
 		},
 		FBI_spoocs = {
 			0,
-			0.2,
+			0.1,
 			0.2
 		},
 		single_spooc = {
 			0,
-			0.1,
+			0.05,
 			0.1
 		}
 	}

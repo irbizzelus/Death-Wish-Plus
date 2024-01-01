@@ -40,4 +40,19 @@ Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , func
 			DWP.sniper_highlighter(self)
 		end
 	end
+	
+	if action_desc.variant == "tied_all_in_one" or action_desc.variant == "tied" then
+		if not DWP.cop_hostages then
+			DWP.cop_hostages = {}
+		end
+		DWP.cop_hostages[self._unit:id()] = true
+	end
+end)
+
+-- self-explanatory - prevents a crash when info is missing
+-- in DW+ this should only occur when we force a unit spawn, like cloakers in the hostage control penalty, otherwise we are good
+Hooks:PreHook(CopMovement, "team", "DWP_setcopteamifnoteam", function(self)
+	if not self._team then
+		self:set_team(managers.groupai:state()._teams[tweak_data.levels:get_default_team_ID(self._unit:base():char_tweak().access == "gangster" and "gangster" or "combatant")])
+	end
 end)
