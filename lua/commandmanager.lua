@@ -38,7 +38,7 @@ if not DWP.CM then
 		managers.chat:send_message(ChatManager.GAME, nil, text)
 	end
 	
-	-- preferably this message should have a [DW+ Private Message] prefix, but we don't actually always need it, so i'll just add it to messages manualy whenver needed
+	-- preferably this message should have a [DW+ Private Message] prefix, but this would make messages way too long so screw it
 	function DWP.CM:private_chat_message(peer_id, message)
 		if not message or (message == "") then
 			return

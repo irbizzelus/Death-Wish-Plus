@@ -5,21 +5,7 @@ Hooks:PostHook(CopDamage, "die", "DWP_copdie" , function(self,attack_data)
 		return
 	end
 	
-	--
-	if managers.player:player_unit() == attack_data.attacker_unit then
-		log("local player killed a cop")
-	else
-		if managers.network:session():peer(2) and managers.network:session():peer(2):unit() and managers.network:session():peer(2):unit() == attack_data.attacker_unit then
-			log("peer 2 killed a cop")
-		elseif managers.network:session():peer(3) and managers.network:session():peer(3):unit() and managers.network:session():peer(3):unit() == attack_data.attacker_unit then
-			log("peer 3 killed a cop")
-		elseif managers.network:session():peer(4) and managers.network:session():peer(4):unit() and managers.network:session():peer(4):unit() == attack_data.attacker_unit then
-			log("peer 4 killed a cop")
-		end
-	end
-	--
-	
-	if not DWP.settings.hostagesbeta or not DWP.DWdifficultycheck then
+	if not DWP.settings_config.hostage_control or not DWP.DWdifficultycheck then
 		return
 	end
 	
@@ -34,8 +20,7 @@ Hooks:PostHook(CopDamage, "die", "DWP_copdie" , function(self,attack_data)
 	local was_hostage = false
 	
 	if DWP.cop_hostages and DWP.cop_hostages[self._unit:id()] then
-		log("adding a hostage cop to hostage conrol kill count")
-		DWP.HostageControl.globalkillcount = DWP.HostageControl.globalkillcount + 1
+		DWP.HostageControl.globalkillcount = DWP.HostageControl.globalkillcount + 0.5
 		DWP.cop_hostages[self._unit:id()] = nil
 		was_hostage = true
 	end
@@ -49,40 +34,42 @@ Hooks:PostHook(CopDamage, "die", "DWP_copdie" , function(self,attack_data)
 	local killer_id = 1
 	
 	if managers.player:player_unit() == attack_data.attacker_unit then
-		log("local player killed a cop")
-		killer_name = managers.network:session():peer(killer_unit:base()._id):name()
+		killer_name = managers.network.account:username()
+		DWP.HostageControl.PeerHostageKillCount[1] = DWP.HostageControl.PeerHostageKillCount[1] + 0.5
 	else
 		if managers.network:session():peer(2) and managers.network:session():peer(2):unit() and managers.network:session():peer(2):unit() == attack_data.attacker_unit then
-			log("peer 2 killed a cop")
 			peer = managers.network:session():peer(2)
 			killer_name = peer:name()
 			killer_id = 2
+			DWP.HostageControl.PeerHostageKillCount[2] = DWP.HostageControl.PeerHostageKillCount[2] + 0.5
 		elseif managers.network:session():peer(3) and managers.network:session():peer(3):unit() and managers.network:session():peer(3):unit() == attack_data.attacker_unit then
-			log("peer 3 killed a cop")
 			peer = managers.network:session():peer(3)
 			killer_name = peer:name()
 			killer_id = 3
+			DWP.HostageControl.PeerHostageKillCount[3] = DWP.HostageControl.PeerHostageKillCount[3] + 0.5
 		elseif managers.network:session():peer(4) and managers.network:session():peer(4):unit() and managers.network:session():peer(4):unit() == attack_data.attacker_unit then
-			log("peer 4 killed a cop")
 			peer = managers.network:session():peer(4)
 			killer_name = peer:name()
 			killer_id = 4
+			DWP.HostageControl.PeerHostageKillCount[4] = DWP.HostageControl.PeerHostageKillCount[4] + 0.5
 		end
 	end
 	
-	if DWP.HostageControl.globalkillcount < 5 then
+	if DWP.HostageControl.globalkillcount < 6 or (DWP.HostageControl.globalkillcount < 11 and (DWP.HostageControl.globalkillcount ~= 6 or DWP.HostageControl.globalkillcount == 6.5 and DWP.CloakerReinforceEnabled)) then
 		if peer == 1 then
-			managers.hud:show_hint({text = "You killed a hostage! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
+			managers.hud:show_hint({text = "[DW+] You killed a surrendered officer! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		else
-			managers.network:session():send_to_peer(peer, "send_chat_message", 1, "[DW+ Private message] Killing hostages inflicts penalties on you and your team. Use /civi for more info.")
-			managers.hud:show_hint({text = tostring(killer_name).." killed a hostage! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
+			DWP.HostageControl:warn_peer(peer, killer_id, false)
+			managers.hud:show_hint({text = "[DW+] "..tostring(killer_name).." killed a surrendered officer! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		end
-	elseif DWP.HostageControl.globalkillcount == 5 then
-		managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 5 hostages dead. Enemy respawn rates are maxed out. And also cloakers learned how to teleport?..")
+	elseif DWP.HostageControl.globalkillcount == 6 or DWP.HostageControl.globalkillcount == 6.5 and not DWP.CloakerReinforceEnabled then
+		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 6 hostages killed. Enemy respawn rates are almost maxed out. And also cloakers learned how to teleport?..")
 		DWP.CloakerReinforce(killer_id)
-	elseif DWP.HostageControl.globalkillcount == 7 then
-		managers.chat:send_message(ChatManager.GAME, nil, "[DW+ Hostage Control] 7 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
-		DWP:ActivateHostageControl7KillsPenalty()
+		DWP.CloakerReinforceEnabled = true
+	elseif DWP.HostageControl.globalkillcount == 11 or DWP.HostageControl.globalkillcount == 11.5 and not DWP.HC11killpenalty then
+		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 11 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
+		DWP:ActivateHostageControlDozerPenalty()
+		DWP.HC11killpenalty = true
 	end
 	
 end)

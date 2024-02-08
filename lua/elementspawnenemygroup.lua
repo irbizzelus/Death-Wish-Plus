@@ -20,6 +20,19 @@ local groupsOLD = {
 	"piggydozer"
 }
 
+local groupsOLD_marshal_less = {
+	"tac_shield_wall_charge",
+	"FBI_spoocs",
+	"tac_tazer_charge",
+	"tac_tazer_flanking",
+	"tac_shield_wall",
+	"tac_swat_rifle_flank",
+	"tac_shield_wall_ranged",
+	"tac_bull_rush",
+	"snowman_boss",
+	"piggydozer"
+}
+
 local groupsOLD_custom = {
 	"tac_shield_wall_charge",
 	"FBI_spoocs",
@@ -80,9 +93,12 @@ local disallowed_groups = {
 
 -- Will break custom heists that dont have standard spawngroups. Replaces spawn groups to our own
 Hooks:PostHook(ElementSpawnEnemyGroup, "_finalize_values", "DWP_replacespawngroups", function(self)
-	if (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD and table.contains_all(self._values.preferred_spawn_groups, groupsOLD)) or (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom)) then
-		if self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom) then
-			log("[Death With +] Attempting to use fix for no enemy spawns on custom maps.")
+	if (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD and table.contains_all(self._values.preferred_spawn_groups, groupsOLD)) or (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom)) or (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_marshal_less and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_marshal_less)) then
+		if #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom) then
+			log("[DW+] ElementSpawnEnemyGroup attempts to load the 'no enemy spawns on custom maps' fix.")
+		end
+		if #self._values.preferred_spawn_groups == #groupsOLD_marshal_less and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_marshal_less) then
+			log("[DW+] ElementSpawnEnemyGroup used a marshal free group list.")
 		end
 		self._values.preferred_spawn_groups = {}
 		for name,_ in pairs(tweak_data.group_ai.enemy_spawn_groups) do

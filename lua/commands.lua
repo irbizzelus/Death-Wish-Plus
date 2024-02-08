@@ -7,16 +7,6 @@ end
 DWP.CM.commands = {}
 
 if Network:is_server() and DWP.DWdifficultycheck == true then
-
-	DWP.CM:add_command("help", {
-		callback = function(sender)
-			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "You can use chat commands to get more info on gameplay changes of DW+ mod using /dom or other commands, these messages are sent only to you, to prevent spam for other players. You can also use /med or /ammo in game to quickly ask for aid.")
-			else
-				DWP.CM:private_chat_message(sender:id(), "You can use /med and /ammo for quick aid requests. You can also use commands like /dom to print informative global messages in chat for everyone to read. Normally info commands are sent privately if requested by joined players.")
-			end
-		end
-	})
 	
 	DWP.CM:add_command("cops", {
 		callback = function(sender)
@@ -51,9 +41,9 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("assault", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Police assaults last almost 2x longer, but breaks in-between assault also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:private_chat_message(sender:id(), "Police assaults last almost 2x as long, but breaks in-between assaults also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
 			else
-				DWP.CM:public_chat_message("Police assaults last almost 2x longer, but breaks in-between assault also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:public_chat_message("Police assaults last almost 2x as long, but breaks in-between assaults also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
 			end
 		end
 	})
@@ -61,11 +51,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("hostage", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill/control (up to 5 for both killed/controlled), speeds up/slows down enemy respawn rates, and increases/decreases chances for special enemies to appear.")
-				DWP.CM:private_chat_message(sender:id(), "In addition, after 5 total casualties cloakers will sometimes teleport directly to players, prioritizing those that have most amount of hostages killed. After 7 total casualties, new enemies will come to finish the job.")
+				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
+				DWP.CM:private_chat_message(sender:id(), "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 11 total casualties, new enemies will come to finish the job.")
 			else
-				DWP.CM:public_chat_message("Both civiliands and fully intimidated cops count towards this mechanic. Every hostage you kill/control (up to 5 for both killed/controlled), speeds up/slows down enemy respawn rates, and increases/decreases chances for special enemies to appear.")
-				DWP.CM:public_chat_message("In addition, after 5 hostage casualties cloakers will sometimes teleport directly to players, prioritizing those that have most amount of hostages killed. After 7 total casualties, new enemies will come to finish the job.")
+				DWP.CM:public_chat_message("Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
+				DWP.CM:public_chat_message("In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 11 total casualties, new enemies will come to finish the job.")
 			end
 		end
 	})
@@ -86,7 +76,7 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
 				fou = " (Current)"
 			end
-			local msg = string.format("DW+ difficulty affects amount of cops on the map, their respawn speed, and amount of special units. Higher difficulty means harder parameters. List of difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
+			local msg = string.format("DW+ difficulty affects amount of cops on the map, their respawn speed, and amount of special units. Higher difficulty = harder parameters. List of all 4 difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
 			if sender:id() ~= 1 then
 				DWP.CM:private_chat_message(sender:id(), msg)
 			else
@@ -98,7 +88,7 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("med", {
 		in_game_only = true,
 		callback = function(sender)
-			local msg = " needs a MEDIC bag. Help your team."
+			local msg = " needs a MEDIC bag! Help your team."
 			if sender:name() then
 				if sender:id() == 1 then
 					DWP.CM:public_chat_message(msg)
@@ -114,7 +104,7 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("ammo", {
 		in_game_only = true,
 		callback = function(sender)
-			local msg = " ran out of AMMO. Help your team."
+			local msg = " ran out of AMMO! Help your team."
 			if sender:name() then
 				if sender:id() == 1 then
 					DWP.CM:public_chat_message(msg)
@@ -123,6 +113,81 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 				end
 			else
 				DWP.CM:public_chat_message("Someone"..msg)
+			end
+		end
+	})
+	
+	DWP.CM:add_command("hostmods", {
+		callback = function(sender)
+			if sender:id() ~= 1 then
+				if not DWP.players[sender:id()].requested_mods_1 then
+					DWP.CM:private_chat_message(sender:id(), "This command will print all mods that lobby host has, printing every name as a seperate message, it may get really spammy if the list is really big. To confirm your request use /hostmodsconfirm")
+					DWP.players[sender:id()].requested_mods_1 = true
+				else
+					if not DWP.players[sender:id()].requested_mods_2 then
+						DWP.CM:private_chat_message(sender:id(), "As mentioned before, you can request host's mod list with /hostmodsconfirm")
+					else
+						DWP.CM:private_chat_message(sender:id(), "You have allready requested host's mod list.")
+					end
+				end
+			else
+				-- i know most of these, but i gotta be honest, i took a couple that i found funny from some quotes website (most of the top of this list)
+				local random_message = {
+					"You have died of dysentery.",
+					"Praise the sun!",
+					"Are you a boy or a girl?",
+					"Does this unit have a soul?",
+					"Stop right there, criminal scum!",
+					"Do a barrel roll!",
+					"Space. Space. I'm in space. SPAAAAAAACE!",
+					"Grass grows, birds fly, sun shines, and brother, I hurt people.",
+					"It's a-me, Mario!",
+					"It's time to chew ass and kick bubblegum... and I'm all outta ass.",
+					"This is a bucket.",
+					"There is nothing. Only warm, primordial blackness. Your conscience ferments in it — no larger than a single grain of malt. You don't have to do anything anymore. Ever. Never ever.",
+					"The man does not know the bullet has entered his brain. He never will. Death comes faster than the realization.",
+					-- is this a bit too dark of a quote for a small troll command that only host can see? probably.
+					"This is real darkness. It's not death, or war, or child molestation. Real darkness has love for a face. The first death is in the heart, Harry.",
+					"The pain of your absence is sharp and haunting, and I would give anything not to know it; anything but never knowing you at all (which would be worse).",
+					"Science compels us to explode the sun.",
+				}
+				DWP.CM:private_chat_message(sender:id(), random_message[math.random(1,16)])
+			end
+		end
+	})
+	
+	DWP.CM:add_command("hostmodsconfirm", {
+		callback = function(sender)
+			if sender:id() ~= 1 then
+				if not DWP.players[sender:id()].requested_mods_2 then
+					for i, mod in pairs(BLT.FindMods(BLT)) do
+						DWP.CM:private_chat_message(sender:id(), tostring(mod))
+					end
+					DWP.players[sender:id()].requested_mods_2 = true
+				else
+					DWP.CM:private_chat_message(sender:id(), "You have allready requested host's mod list.")
+				end
+			else
+				local random_message = {
+					"You have died of dysentery.",
+					"Praise the sun!",
+					"Are you a boy or a girl?",
+					"Does this unit have a soul?",
+					"Stop right there, criminal scum!",
+					"Do a barrel roll!",
+					"Space. Space. I'm in space. SPAAAAAAACE!",
+					"Grass grows, birds fly, sun shines, and brother, I hurt people.",
+					"It's a-me, Mario!",
+					"It's time to chew ass and kick bubblegum... and I'm all outta ass.",
+					"This is a bucket.",
+					"There is nothing. Only warm, primordial blackness. Your conscience ferments in it — no larger than a single grain of malt. You don't have to do anything anymore. Ever. Never ever.",
+					"The man does not know the bullet has entered his brain. He never will. Death comes faster than the realization.",
+					-- is this a bit too dark of a quote for a small troll command that only host can see? probably.
+					"This is real darkness. It's not death, or war, or child molestation. Real darkness has love for a face. The first death is in the heart, Harry.",
+					"The pain of your absence is sharp and haunting, and I would give anything not to know it; anything but never knowing you at all (which would be worse).",
+					"Science compels us to explode the sun.",
+				}
+				DWP.CM:private_chat_message(sender:id(), random_message[math.random(1,16)])
 			end
 		end
 	})

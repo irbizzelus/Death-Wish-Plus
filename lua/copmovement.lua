@@ -13,7 +13,7 @@ function DWP.sniper_highlighter(npc)
 		return
 	end
 	npc._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
-	DelayedCalls:Add("ContinueHighlightForSniper_"..tostring(npc._unit:id()), 1, function()
+	DelayedCalls:Add("ContinueHighlightForSniper_"..tostring(npc._unit:id()), 2, function()
 		if DWP then
 			DWP.sniper_highlighter(npc)
 		end
@@ -30,11 +30,8 @@ Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , func
 	if not DWP.DWdifficultycheck then
 		return
 	end
-	if not DWP.settings.deathSquadSniperHighlight then
-		return
-	end
 	
-	if self._unit:base():char_tweak().access == "sniper" then
+	if DWP.settings.deathSquadSniperHighlight and self._unit:base():char_tweak().access == "sniper" then
 		-- fucking kill me
 		if self._unit:base()._ext_movement and self._unit:base()._ext_movement._ext_brain and self._unit:base()._ext_movement._ext_brain._logic_data and self._unit:base()._ext_movement._ext_brain._logic_data.group and self._unit:base()._ext_movement._ext_brain._logic_data.group.type and self._unit:base()._ext_movement._ext_brain._logic_data.group.type == "Death_squad" then
 			DWP.sniper_highlighter(self)
@@ -46,11 +43,15 @@ Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , func
 			DWP.cop_hostages = {}
 		end
 		DWP.cop_hostages[self._unit:id()] = true
+	else
+		if DWP.cop_hostages and DWP.cop_hostages[self._unit:id()] then
+			DWP.cop_hostages[self._unit:id()] = nil
+		end
 	end
 end)
 
 -- self-explanatory - prevents a crash when info is missing
--- in DW+ this should only occur when we force a unit spawn, like cloakers in the hostage control penalty, otherwise we are good
+-- in DW+ this should only occur when we force a unit spawn, like cloakers in the hostage control penalty, otherwise we should not need it
 Hooks:PreHook(CopMovement, "team", "DWP_setcopteamifnoteam", function(self)
 	if not self._team then
 		self:set_team(managers.groupai:state()._teams[tweak_data.levels:get_default_team_ID(self._unit:base():char_tweak().access == "gangster" and "gangster" or "combatant")])

@@ -31,17 +31,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			DWP.settings_config = clone(DWP.settings)
 		end
 		
-		-- empty squads that we dont use. i dont think it matters for memory effiency, but this should help figure out if we still have these squads somewhere in the code for no reason
-		self.unit_categories.CS_cop_C45_R870 = nil
-		self.unit_categories.FBI_suit_M4_MP5 = nil
-		self.unit_categories.FBI_swat_M4 = nil
-		self.unit_categories.FBI_suit_stealth_MP5 = nil
-		self.unit_categories.FBI_heavy_G36 = nil
-		self.unit_categories.FBI_swat_R870 = nil
-		self.unit_categories.FBI_suit_C45_M4 = nil
-		self.unit_categories.FBI_heavy_G36_w = nil
-		
-		-- reworking quite a few squads. CS squads are the only ones unchanged now.
+		-- reworking a bunch of squads
 		
 		-- new CS_cop_C45_R870
 		self.unit_categories.cops_CQB = {
@@ -75,31 +65,48 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			access = access_type_walk_only
 		}
 
-		-- combined FBI_suit_C45_M4 and FBI_suit_M4_MP5
-		self.unit_categories.FBI_suits = {
+		-- previously FBI_suit_C45_M4/FBI_suit_M4_MP5, now HRT
+		self.unit_categories.FBI_HRT = {
 			unit_types = {
 				america = {
-					Idstring("units/payday2/characters/ene_fbi_1/ene_fbi_1"),
-					Idstring("units/payday2/characters/ene_fbi_2/ene_fbi_2"),
 					Idstring("units/payday2/characters/ene_fbi_3/ene_fbi_3")
 				},
 				russia = {
-					Idstring("units/pd2_dlc_mad/characters/ene_akan_cs_cop_ak47_ass/ene_akan_cs_cop_ak47_ass"),
 					Idstring("units/pd2_dlc_mad/characters/ene_akan_cs_cop_asval_smg/ene_akan_cs_cop_asval_smg")
 				},
 				zombie = {
-					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_hvh_1/ene_fbi_hvh_1"),
-					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_hvh_2/ene_fbi_hvh_2"),
 					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_hvh_3/ene_fbi_hvh_3")
 				},
 				murkywater = {
 					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_light/ene_murkywater_light"),
-					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi")
+				},
+				federales = {
+					Idstring("units/pd2_dlc_bex/characters/ene_bex_security_suit_03/ene_bex_security_suit_03")
+				}
+			},
+			access = access_type_all
+		}
+		
+		-- previously FBI_suit_C45_M4/FBI_suit_M4_MP5, now recon units, that spawn every now and then
+		self.unit_categories.FBI_light_recon = {
+			unit_types = {
+				america = {
+					Idstring("units/payday2/characters/ene_fbi_1/ene_fbi_1"),
+					Idstring("units/payday2/characters/ene_fbi_2/ene_fbi_2")
+				},
+				russia = {
+					Idstring("units/pd2_dlc_mad/characters/ene_akan_cs_cop_ak47_ass/ene_akan_cs_cop_ak47_ass"),
+				},
+				zombie = {
+					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_hvh_1/ene_fbi_hvh_1"),
+					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_hvh_2/ene_fbi_hvh_2")
+				},
+				murkywater = {
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"),
 				},
 				federales = {
 					Idstring("units/pd2_dlc_bex/characters/ene_bex_security_suit_01/ene_bex_security_suit_01"),
-					Idstring("units/pd2_dlc_bex/characters/ene_bex_security_suit_02/ene_bex_security_suit_02"),
-					Idstring("units/pd2_dlc_bex/characters/ene_bex_security_suit_03/ene_bex_security_suit_03")
+					Idstring("units/pd2_dlc_bex/characters/ene_bex_security_suit_02/ene_bex_security_suit_02")
 				}
 			},
 			access = access_type_all
@@ -338,32 +345,22 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			special_type = "tank",
 			unit_types = {
 				america = {
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic"),
 					Idstring("units/payday2/characters/ene_bulldozer_3/ene_bulldozer_3"),
 					Idstring("units/payday2/characters/ene_bulldozer_2/ene_bulldozer_2")
 				},
 				russia = {
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic"),
 					Idstring("units/pd2_dlc_mad/characters/ene_akan_fbi_tank_rpk_lmg/ene_akan_fbi_tank_rpk_lmg"),
 					Idstring("units/pd2_dlc_mad/characters/ene_akan_fbi_tank_saiga/ene_akan_fbi_tank_saiga")
 				},
 				zombie = {
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
-					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic"),
 					Idstring("units/pd2_dlc_hvh/characters/ene_bulldozer_hvh_3/ene_bulldozer_hvh_3"),
 					Idstring("units/pd2_dlc_hvh/characters/ene_bulldozer_hvh_2/ene_bulldozer_hvh_2")
 				},
 				murkywater = {
-					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_1/ene_murkywater_bulldozer_1"),
-					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_medic/ene_murkywater_bulldozer_medic"),
 					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_3/ene_murkywater_bulldozer_3"),
 					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_4/ene_murkywater_bulldozer_4")
 				},
 				federales = {
-					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_policia_federale_minigun/ene_swat_dozer_policia_federale_minigun"),
-					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_medic_policia_federale/ene_swat_dozer_medic_policia_federale"),
 					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_policia_federale_m249/ene_swat_dozer_policia_federale_m249"),
 					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_policia_federale_saiga/ene_swat_dozer_policia_federale_saiga")
 				}
@@ -371,12 +368,38 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			access = access_type_all
 		}
 		
+		-- Seperate tanks into lmg+auto shotgun and medic/minigun squads to make the latter spawn less often
+		self.unit_categories.FBI_tank_annoying = {
+			special_type = "tank",
+			unit_types = {
+				america = {
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic")
+				},
+				russia = {
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic")
+				},
+				zombie = {
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun_classic/ene_bulldozer_minigun_classic"),
+					Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic")
+				},
+				murkywater = {
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_1/ene_murkywater_bulldozer_1"),
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_bulldozer_medic/ene_murkywater_bulldozer_medic")
+				},
+				federales = {
+					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_policia_federale_minigun/ene_swat_dozer_policia_federale_minigun"),
+					Idstring("units/pd2_dlc_bex/characters/ene_swat_dozer_medic_policia_federale/ene_swat_dozer_medic_policia_federale")
+				}
+			},
+			access = access_type_all
+		}
+		
 		if DWP.settings.DSdozer == true then
-			self.unit_categories.FBI_tank.unit_types.america = {
+			self.unit_categories.FBI_tank_annoying.unit_types.america = {
 				Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_minigun/ene_bulldozer_minigun"),
-				Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic"),
-				Idstring("units/payday2/characters/ene_bulldozer_3/ene_bulldozer_3"),
-				Idstring("units/payday2/characters/ene_bulldozer_2/ene_bulldozer_2")
+				Idstring("units/pd2_dlc_drm/characters/ene_bulldozer_medic/ene_bulldozer_medic")
 			}
 		end
 		
@@ -428,7 +451,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 		
 		if DWP.settings.difficulty == 1 then
 			self.special_unit_spawn_limits = {
-				shield = 6,
+				shield = 5,
 				medic = 5,
 				taser = 6,
 				tank = 4,
@@ -436,7 +459,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 2 then
 			self.special_unit_spawn_limits = {
-				shield = 6,
+				shield = 5,
 				medic = 5,
 				taser = 6,
 				tank = 5,
@@ -444,7 +467,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 3 then
 			self.special_unit_spawn_limits = {
-				shield = 7,
+				shield = 6,
 				medic = 5,
 				taser = 7,
 				tank = 6,
@@ -452,14 +475,14 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			}
 		elseif DWP.settings.difficulty == 4 then
 			self.special_unit_spawn_limits = {
-				shield = 8,
+				shield = 7,
 				medic = 6,
 				taser = 8,
 				tank = 7,
 				spooc = 5
 			}
 		else
-			log("DWP difficulty setting not found, special limits not adjusted properly.")
+			log("[DW+] difficulty setting not found, special limits not adjusted properly.")
 		end
 	
 	else
@@ -707,46 +730,6 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		})
 	}
 	
-	self.enemy_spawn_groups.CS_defend_a = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "cops_CQB",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.CS_cop,
-				rank = 1
-			}
-		}
-	}
-	self.enemy_spawn_groups.CS_defend_b = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "CS_swat_MP5",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.CS_cop,
-				rank = 1
-			}
-		}
-	}
-	self.enemy_spawn_groups.CS_defend_c = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "CS_heavy_M4",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_swat_rifle,
-				rank = 1
-			}
-		}
-	}
-	
 	self.enemy_spawn_groups.CS_shields = {
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
@@ -938,7 +921,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	
 	if DWP.settings.difficulty <= 2 then
 		self.enemy_spawn_groups.FBI_tanks = {
-			amount = {3 * squadmul, 3 * squadmul},
+			amount = {2 * squadmul, 3 * squadmul},
 			spawn = {
 				{
 					unit = "FBI_tank",
@@ -949,15 +932,16 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					rank = 3
 				},
 				{
-					unit = "CS_tazer",
-					freq = 0.5,
+					unit = "FBI_tank_annoying",
+					freq = 0.7,
+					amount_min = 1,
 					amount_max = 1,
-					tactics = self._tactics.FBI_swat_rifle,
-					rank = 2
+					tactics = self._tactics.FBI_tank,
+					rank = 3
 				},
 				{
 					unit = "medic_R870",
-					freq = 0.25,
+					freq = 0.2,
 					amount_max = 1,
 					tactics = self._tactics.FBI_swat_shotgun,
 					rank = 3
@@ -971,21 +955,22 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 				{
 					unit = "FBI_tank",
 					freq = 1,
-					amount_min = 2,
-					amount_max = 3,
+					amount_min = 1,
+					amount_max = 2,
 					tactics = self._tactics.FBI_tank,
 					rank = 3
 				},
 				{
-					unit = "CS_tazer",
-					freq = 0.5,
-					amount_max = 2,
-					tactics = self._tactics.CS_tazer,
-					rank = 2
+					unit = "FBI_tank_annoying",
+					freq = 1,
+					amount_min = 1,
+					amount_max = 1,
+					tactics = self._tactics.FBI_tank,
+					rank = 3
 				},
 				{
 					unit = "medic_R870",
-					freq = 0.5,
+					freq = 0.4,
 					amount_max = 1,
 					amount_max = 3,
 					tactics = self._tactics.FBI_swat_shotgun,
@@ -995,95 +980,35 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	end
 	
-	self.enemy_spawn_groups.FBI_defend_a = {
+	-- this squad is almost never used ever since they gutted the reinforce phase
+	self.enemy_spawn_groups.FBI_defence_squad = {
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
 			{
-				unit = "FBI_suits",
+				unit = "FBI_light_recon",
 				freq = 1,
-				amount_min = 2,
+				amount_min = 1,
 				amount_max = 3,
 				tactics = self._tactics.FBI_suit,
-				rank = 2
+				rank = 1
 			},
 			{
 				unit = "FBI_swat_LR",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit,
-				rank = 1
-			}
-		}
-	}
-	self.enemy_spawn_groups.FBI_defend_b = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "FBI_suits",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit,
-				rank = 2
-			},
-			{
-				unit = "FBI_heavy_LR",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit,
-				rank = 1
-			}
-		}
-	}
-
-	self.enemy_spawn_groups.FBI_stealth_a = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "FBI_suits",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit_stealth,
-				rank = 2
-			},
-			{
-				unit = "CS_tazer",
-				freq = 1,
+				freq = 0.8,
+				amount_min = 1,
 				amount_max = 1,
-				tactics = self._tactics.CS_tazer,
-				rank = 1
-			}
-		}
-	}
-	self.enemy_spawn_groups.FBI_stealth_b = {
-		amount = {3 * squadmul, 3 * squadmul},
-		spawn = {
-			{
-				unit = "FBI_suits",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit_stealth,
+				tactics = self._tactics.FBI_suit,
 				rank = 1
 			},
-			{
-				unit = "FBI_swat_LR",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
-				tactics = self._tactics.FBI_suit_stealth,
-				rank = 1
-			}
 		}
 	}
-	self.enemy_spawn_groups.FBI_stealth_c = {
-		amount = {3 * squadmul, 3 * squadmul},
+	
+	-- in-between assaults squad
+	self.enemy_spawn_groups.FBI_HRT_squad = {
+		amount = {3 * squadmul, 5 * squadmul},
 		spawn = {
 			{
-				unit = "FBI_suits",
+				unit = "FBI_HRT",
 				freq = 1,
 				amount_min = 2,
 				amount_max = 3,
@@ -1092,14 +1017,15 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			},
 			{
 				unit = "FBI_heavy_LR",
-				freq = 1,
-				amount_min = 2,
-				amount_max = 3,
+				freq = 0.6,
+				amount_min = 0,
+				amount_max = 2,
 				tactics = self._tactics.FBI_suit_stealth,
 				rank = 1
 			}
 		}
 	}
+	
 	if DWP.settings.difficulty <= 2 then
 		self.enemy_spawn_groups.FBI_city_swats = {
 			amount = {3 * squadmul, 3 * squadmul},
@@ -1154,6 +1080,14 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					freq = 0.5,
 					amount_max = 1,
 					tactics = self._tactics.FBI_heavy_flank,
+					rank = 2
+				},
+				{
+					unit = "FBI_light_recon",
+					freq = 0.35,
+					amount_max = 1,
+					amount_max = 2,
+					tactics = self._tactics.FBI_suit,
 					rank = 2
 				}
 			}
@@ -1242,6 +1176,14 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 					amount_max = 1,
 					amount_max = 2,
 					tactics = self._tactics.FBI_heavy_flank,
+					rank = 2
+				},
+				{
+					unit = "FBI_light_recon",
+					freq = 0.35,
+					amount_max = 1,
+					amount_max = 2,
+					tactics = self._tactics.FBI_suit,
 					rank = 2
 				}
 			}
@@ -1315,9 +1257,9 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	}
 	
 	-- snipers + winters shields aka Death Squad
-	-- slaughterhouse forces all sniper units to never move/only make a single move after they spawn it seems
-	-- or maybe just disalowws to move to/through certain pathways, which makes DSquad snipers get stuck
-	if Global.level_data.level_id == "dinner" then
+	-- on some maps sniper units seem to never move/only make a single move after they spawn, so sniper part of the death squad will be disabled there
+	-- maps affected: slaughterhouse, bomb:docks, breakfast in tihuana
+	if Global.level_data.level_id == "dinner" or Global.level_data.level_id == "crojob2" or Global.level_data.level_id == "pex" then
 		self.enemy_spawn_groups.Death_squad = {
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {
@@ -1436,516 +1378,249 @@ end)
 Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", function(self, difficulty_index, difficulty)
 	if difficulty_index == 7 then
 	
-	if DWP.settings.difficulty == 1 then
-		self:init_taskdata_deathwish_1()
-	elseif DWP.settings.difficulty == 2 then
-		self:init_taskdata_deathwish_2()
-	elseif DWP.settings.difficulty == 3 then
-		self:init_taskdata_deathwish_3()
-	elseif DWP.settings.difficulty == 4 then
-		self:init_taskdata_deathwish_4()
-	else
-		log("DWP difficulty setting not found, unit spawn rates were not set correctly.")
-	end
-	
-	
-	self.besiege.assault.sustain_duration_min = {
-		45,
-		math.floor(DWP.settings.assduration),
-		math.floor(DWP.settings.assduration)
-	}
-	self.besiege.assault.sustain_duration_max = {
-		45,
-		math.floor(DWP.settings.assduration),
-		math.floor(DWP.settings.assduration)
-	}
-	self.besiege.assault.sustain_duration_balance_mul = {
-		1,
-		1,
-		1,
-		1
-	}
-
-	-- Make the assault breaks substantially longer if players have hostages
-	if DWP.settings.hostagesbeta == true then
-		self.besiege.assault.hostage_hesitation_delay = {
-			1,
-			60,
-			60
+		self.besiege.assault.build_duration = 5
+		
+		-- heist duration, smaller values are only used on no mercy for first 2 waves
+		self.besiege.assault.sustain_duration_min = {
+			20,
+			335,
+			335
 		}
-	else
-		self.besiege.assault.hostage_hesitation_delay = {
-			1,
-			15,
-			15
+		self.besiege.assault.sustain_duration_max = {
+			35,
+			365,
+			365
 		}
-	end
-
-	-- Base assault values, how many cops are allowed on the map at once, and how big is the spawnpool
-	
-	-- Max cop amount per map
-	self.besiege.assault.force = {
-		20,
-		20,
-		20
-	}
-	-- Total max cop spawns per assault
-	self.besiege.assault.force_pool = {
-		200,
-		200,
-		200
-	}
-
-	-- Cloaker-specific spawns
-	self.besiege.cloaker.groups = {
-		single_spooc = {
+		self.besiege.assault.sustain_duration_balance_mul = {
+			1,
 			1,
 			1,
 			1
 		}
-	}
-
-	-- Add winters
-	self.besiege.assault.groups.Phalanx = {
-		0,
-		0,
-		0
-	}
-	self.besiege.recon.groups.Phalanx = {
-		0,
-		0,
-		0
-	}
-	-- Add marshals
-	self.besiege.assault.groups.marshal_squad = {
-		0,
-		0,
-		0
-	}
-	self.besiege.recon.groups.marshal_squad = {
-		0,
-		0,
-		0
-	}
-	
-	self.besiege.recon.groups.single_spooc = {
-		0,
-		0,
-		0
-	}
-	
-	self.besiege.assault.groups.Undead = {
-		0,
-		0,
-		0
-	}
-
-	-- snowman, prob will be removed later. or not evidently
-	self.besiege.assault.groups.snowman_boss = {
-		0,
-		0,
-		0
-	}
-	
-	-- we have this fella here as well now
-	self.besiege.assault.groups.piggydozer = {
-		0,
-		0,
-		0
-	}
-	
-	-- twice
-	self.besiege.recon.groups.piggydozer = {
-		0,
-		0,
-		0
-	}
-	
-	self.besiege.recon.groups.snowman_boss = {
-		0,
-		0,
-		0
-	}
-	
-	self.besiege.assault.delay = {
-		4,
-		35,
-		35
-	}
-
-	-- Multiplier for assault pool
-	self.besiege.assault.force_pool_balance_mul = {
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200,
-		math.floor(DWP.settings.assforce_pool) / 200
-	}
-
-	-- Wtf is this?
-	self.street = deep_clone(self.besiege)
-	self.safehouse = deep_clone(self.besiege)
-	
-	-- down bellow are a bunch of map specific cop pool changes, because some maps have fucked up respawn points/enemy damage/scripted spawns
-	if Global and Global.level_data then
-	
-		-- BAIN
-		-- tarantino
-		if Global.level_data.level_id == "rvd1" or Global.level_data.level_id == "rvd2" then
-			self.besiege.assault.force = {
-				16,
-				16,
-				16
-			}
-		end
 		
-		-- alesso-хуессо
-		if Global.level_data.level_id == "arena" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
+		-- self-explanatory
+		self.besiege.assault.delay = {
+			4,
+			35,
+			35
+		}
 		
-		-- transport
-		-- crossroads
-		if Global.level_data.level_id == "arm_cro" then
-			self.besiege.assault.force = {
-				16.5,
-				16.5,
-				16.5
+		-- if we have hostages increase delay by 15 seconds, tbh barely does anything since cops still respawn, but it does affect squad spawn choises
+		if Global and Global.level_data and Global.level_data.level_id == "nmh" then
+			-- no mercy will be the only map where having hostages with HC enabled does not provide extra long delays, because its usually really easy to clear the map of enemies during the fade period
+			self.besiege.assault.hostage_hesitation_delay = {
+				1,
+				15,
+				15
 			}
-		end
-		
-		-- downtown
-		if Global.level_data.level_id == "arm_hcm" then
-			self.besiege.assault.force = {
-				17.2,
-				17.2,
-				17.2
+		elseif Global and Global.level_data and not Global.level_data.level_id == "nmh" and DWP.settings.hostage_control then
+			self.besiege.assault.hostage_hesitation_delay = {
+				35,
+				35,
+				35
 			}
-		end
-		
-		-- harbor
-		if Global.level_data.level_id == "arm_fac" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- train
-		if Global.level_data.level_id == "arm_for" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- underpass
-		if Global.level_data.level_id == "arm_und" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- CLASSICS
-		-- FWB is good. in theory
-		if Global.level_data.level_id == "red2" then
-			self.besiege.assault.force = {
-				17.5,
-				17.5,
-				17.5
-			}
-		end
-		
-		-- blue bridge
-		if Global.level_data.level_id == "glace" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- dodge street
-		if Global.level_data.level_id == "run" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- slaughterbuilding
-		if Global.level_data.level_id == "dinner" then
-			self.besiege.assault.force = {
-				17.5,
-				17.5,
-				17.5
-			}
-		end
-		
-		-- overcover
-		if Global.level_data.level_id == "man" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- mercy r34
-		if Global.level_data.level_id == "nmh" then
-			self.besiege.assault.force = {
-				14.4,
-				14.4,
-				14.4
-			}
-		end
-		
-		-- EVENTS
-		-- lab rats. ah yes, lets make a map that has no cover, horrible pathing, with zip lines as your main way to move around - those things that make you as vulnerable as level 60 player with ictv rogue on DS. oh and lets place headless dozers there. oh and yeah, lets keep the cops vanilla american faction instead of the zombies one. sooooo cooooooool
-		if Global.level_data.level_id == "nail" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- JIMMY
-		-- boiling wawtuh with stupid ak's
-		if Global.level_data.level_id == "mad" then
-			self.besiege.assault.force = {
-				12,
-				12,
-				12
-			}
-		end
-		
-		-- JIU FENG
-		-- vlad breakout
-		if Global.level_data.level_id == "sand" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- LOCKE
-		-- polar bear's home
-		if Global.level_data.level_id == "wwh" then
-			self.besiege.assault.force = {
-				16.5,
-				16.5,
-				16.5
-			}
-		end
-		
-		-- beneath the everest
-		if Global.level_data.level_id == "pbr" then
-			self.besiege.assault.force = {
-				15.5,
-				15.5,
-				15.5
-			}
-		end
-		
-		-- "WE NEED TO BUILD A WALL!" - most popular child molester of 2017
-		if Global.level_data.level_id == "mex" then
-			self.besiege.assault.force = {
-				14.4,
-				14.4,
-				14.4
-			}
-		end
-		
-		-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
-		-- personal note: lab's location at the smaller warehouse is much better, if you get the big one, you should just restart. applies to vanilla as well tbh
-		if Global.level_data.level_id == "mex_cooking" then
-			self.besiege.assault.force = {
-				15.6,
-				15.6,
-				15.6
-			}
-		end
-		
-		-- brooklyn the bank
-		if Global.level_data.level_id == "brb" then
-			self.besiege.assault.force = {
-				17.5,
-				17.5,
-				17.5
-			}
-		end
-		
-		-- henry's cock
-		if Global.level_data.level_id == "des" then
-			self.besiege.assault.force = {
-				15.2,
-				15.2,
-				15.2
-			}
-		end	
-		
-		-- black tablet
-		if Global.level_data.level_id == "sah" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- the end
-		if Global.level_data.level_id == "vit" then
-			self.besiege.assault.force = {
-				16.8,
-				16.8,
-				16.8
-			}
-		end
-		
-		-- BUTCHER
-		-- Sosa сосёт ХААХААААААААААААААААААААА я смешной
-		if Global.level_data.level_id == "friend" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end	
-		
-		-- CONTINENTAL
-		-- 10-10
-		if Global.level_data.level_id == "spa" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- DENTIST
-		-- OG casino
-		if Global.level_data.level_id == "kenaz" then
-			self.besiege.assault.force = {
-				13.6,
-				13.6,
-				13.6
-			}
-		end
-		
-		-- hot line
-		if Global.level_data.level_id == "mia_1" or Global.level_data.level_id == "mia_2" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- hox_1, duh
-		if Global.level_data.level_id == "hox_1" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- ELEPHANT
-		-- wtf is this id lmao
-		if Global.level_data.level_id == "welcome_to_the_jungle_2" then
-			self.besiege.assault.force = {
+		else
+			self.besiege.assault.hostage_hesitation_delay = {
 				15,
 				15,
 				15
 			}
 		end
 		
-		if Global.level_data.level_id == "election_day_1" or Global.level_data.level_id == "election_day_2" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
+		-- Max cop amount on the map at the same time, depends on diff
+		self.besiege.assault.force = {
+			10,
+			10,
+			26.6
+		}
+		-- multiplier for cop amounts on the map, depends on player count
+		self.besiege.assault.force_balance_mul = {
+			2.5,
+			2.5,
+			2.5,
+			2.5
+		}
 		
-		-- VLAD
-		-- SAFES BABY
-		if Global.level_data.level_id == "jolly" then
-			self.besiege.assault.force = {
-				17.5,
-				17.5,
-				17.5
-			}
-		end
-		
-		-- buluc's clusterfuck of objectives
-		if Global.level_data.level_id == "fex" then
-			self.besiege.assault.force = {
-				17,
-				17,
-				17
-			}
-		end
-		
-		-- goat sim day 2. day 1 is also really bad, but mostly because of snipers, not the other squads, so its ok.
-		if Global.level_data.level_id == "peta2" then
-			self.besiege.assault.force = {
-				15,
-				15,
-				15
-			}
-		end
-		
-		-- at least i dont have to shave pubes anymore
-		if Global.level_data.level_id == "shoutout_raid" then
-			self.besiege.assault.force = {
-				16,
-				16,
-				16
-			}
-		end
-		
-		-- san martin
-		if Global.level_data.level_id == "bex" then
-			self.besiege.assault.force = {
-				18,
-				18,
-				18
-			}
-		end
-		
-		-- santa's workshop. holy shit is this bad
-		if Global.level_data.level_id == "cane" then
-			self.besiege.assault.force = {
-				13.5,
-				13.5,
-				13.5
-			}
-		end
-		
-		-- ESCAPES
-		-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		if Global.level_data.level_id == "escape_cafe" then
-			self.besiege.assault.force = {
-				16,
-				16,
-				16
-			}
-		end		
-		
-	end
+		-- Total max cop spawns per each assault
+		self.besiege.assault.force_pool = {
+			math.floor(DWP.settings.assforce_pool),
+			math.floor(DWP.settings.assforce_pool),
+			math.floor(DWP.settings.assforce_pool)
+		}
+		self.besiege.assault.force_pool_balance_mul = {
+			1,
+			1,
+			1,
+			1
+		}
 
+		-- Add cloaker specific group
+		self.besiege.cloaker.groups = {
+			single_spooc = {
+				1,
+				1,
+				1
+			}
+		}
+
+		-- Whytf is this?
+		self.street = deep_clone(self.besiege)
+		self.safehouse = deep_clone(self.besiege)
+		
+		-- down bellow are a bunch of map specific cop pool changes, because some maps have fucked up respawn points/enemy damage/scripted spawns
+		if Global and Global.level_data then
+		
+			local level_balance_data = {
+				
+				-- note: default is 2.5
+				
+				------ BAIN
+				-- tarantino
+				rvd1 = 2,
+				rvd2 = 2,
+				-- diamonds
+				family = 2.3,
+				-- alesso-хуессо
+				arena = 2.125,
+				-- TRANSPORT
+				-- crossroads
+				arm_cro = 2.062,
+				-- downtown
+				arm_hcm = 2.15,
+				-- harbor
+				arm_fac = 2.25,
+				-- train
+				arm_for = 2.125,
+				-- underpass
+				arm_und = 2.125,
+				
+				------ CLASSICS
+				-- FWB is good. in theory
+				red2 = 2.187,
+				-- blue bridge
+				glace = 2.25,
+				-- dodge street
+				run = 2.25,
+				-- slaughterbuilding
+				dinner = 2.187,
+				-- overcover
+				man = 2.125,
+				-- mercy r34
+				nmh = 1.8,
+				
+				------ EVENTS
+				-- lab rats. ah yes, lets make a map that has no cover, horrible pathing, with zip lines as your main method of moving (things that make you as vulnerable as an ictv rogue on DS) oh and lets place headless dozers there. oh and yeah, lets keep the cops vanilla american faction instead of the zombies one. sooooo cooooooool
+				nail = 2.125,
+				
+				------ JIMMY
+				-- boiling wawtuh with stupid ak's
+				mad = 1.5,
+				
+				------ JIU FENG
+				-- vlad breakout
+				sand = 2.25,
+				
+				------ LOCKE
+				-- polar bear's home
+				wwh = 1.97,
+				-- beneath the everest
+				pbr = 1.9,
+				-- "WE NEED TO BUILD A WALL!" - most popular child molester of 2017
+				mex = 1.8,
+				-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
+				-- personal note: lab's location at the smaller warehouse is much better, if you get the big one, you should just restart. applies to vanilla as well tbh
+				mex_cooking = 1.95,
+				-- almir breakout - suprisingly the first in this list that is actually increased
+				pex = 2.65,
+				-- brooklyn the bank
+				brb = 2.187,
+				-- henry's cock
+				des = 1.85,
+				-- black tablet
+				sah = 1.8,
+				-- the end
+				vit = 2.1,
+				
+				------ BUTCHER
+				-- Sosa сосёт ХААХААААААААААААААААААААА я смешной
+				friend = 2.25,
+				-- world of warships
+				crojob2 = 2.15,
+				
+				------ CONTINENTAL
+				-- 10-10
+				spa = 2.25,
+				
+				------ DENTIST
+				-- OG casino
+				kenaz = 1.7,
+				-- hot line
+				mia_1 = 2,
+				mia_2 = 2,
+				-- hox_1, duh
+				hox_1 = 2.25,
+				
+				------ ELEPHANT
+				-- wtf is this id lmao
+				welcome_to_the_jungle_2 = 1.875,
+				
+				election_day_1 = 2.125,
+				election_day_2 = 2.125,
+				
+				------ VLAD
+				-- SAFES BABY WHOOOOOO
+				jolly = 2.187,
+				-- buluc's clusterfuck of objectives
+				fex = 2.125,
+				-- goat sim day 2. day 1 is also really bad, but mostly because of snipers, not the other squads, so its ok.
+				peta2 = 1.875,
+				-- at least i dont have to shave pubes anymore
+				shoutout_raid = 2,
+				-- san martin
+				bex = 2.25,
+				-- santa's workshop. holy shit is this bad
+				cane = 1.687,
+				
+				------ ESCAPES
+				-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				escape_cafe = 2,
+			}
+			
+			for level, multiplier in pairs(level_balance_data) do
+				if Global.level_data.level_id == tostring(level) then
+					self.besiege.assault.force_balance_mul = {
+						multiplier,
+						multiplier,
+						multiplier,
+						multiplier
+					}
+					break
+				end
+			end
+			
+		end
+		
+		if DWP.settings.difficulty == 1 then
+			self:init_taskdata_deathwish_1()
+		elseif DWP.settings.difficulty == 2 then
+			self:init_taskdata_deathwish_2()
+		elseif DWP.settings.difficulty == 3 then
+			self:init_taskdata_deathwish_3()
+		elseif DWP.settings.difficulty == 4 then
+			self:init_taskdata_deathwish_4()
+		else
+			log("DWP difficulty setting not found, unit spawn rates were not set correctly.")
+		end
+	
 	end
+	
+	-- crashes NGBTO if host runs it and somehow manages to get into a match. This mod is for assholes/elitists, so screw them
+	-- if you are reading this and disagree look up Lobby settings by TDLQ
+	DelayedCalls:Add("DWP_clear_NGBTO", 10, function()
+		if NoobJoin then
+			NoobJoin = {}
+		end
+	end)	
 end)
 
 function GroupAITweakData:_init_enemy_spawn_groups_level(tweak_data, difficulty_index)
@@ -2048,11 +1723,10 @@ end
 
 function GroupAITweakData:init_taskdata_deathwish_1()
 	--50
-	self.besiege.assault.force_balance_mul = {
-		2.5,
-		2.5,
-		2.5,
-		2.5
+	self.besiege.assault.force = {
+		10,
+		10,
+		26.6
 	}
 	
 	self.besiege.assault.groups = {
@@ -2073,18 +1747,18 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 		},
 		FBI_shields = {
 			0,
-			0.15,
-			0.3
+			0.125,
+			0.33333
 		},
 		FBI_tanks = {
 			0,
-			0.15,
-			0.3
+			0.13,
+			0.34
 		},
 		CS_tazers = {
-			0.15,
+			0.1,
 			0.18,
-			0.35
+			0.46
 		},
 		CS_swats = {
 			0.4,
@@ -2097,79 +1771,100 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.18
 		},
 		CS_shields = {
-			0.18,
-			0.09,
-			0.18
+			0.2,
+			0.075,
+			0.2
 		},
 		Death_squad = {
 			0,
 			0.045,
-			0.09
+			0.12
 		},
 		FBI_spoocs = {
 			0,
 			0.1,
-			0.2
+			0.26
 		},
 		single_spooc = {
 			0,
 			0.05,
-			0.1
+			0.133
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		Undead = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
 		}
 	}
 
 	self.besiege.reenforce.groups = {
-		FBI_defend_a = {
-			0.6,
-			0.6,
-			0.6
-		},
-		FBI_defend_b = {
-			0.6,
-			0.6,
-			0.6
-		},
-		CS_defend_a = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_b = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_c = {
-			0.2,
-			0.2,
-			0.2
+		FBI_defence_squad = {
+			1,
+			1,
+			1
 		}
 	}
-
-	self.besiege.recon.groups.FBI_stealth_a = {
-		0.3,
-		0.3,
-		0.3
-	}
-	self.besiege.recon.groups.FBI_stealth_b = {
-		0.4,
-		0.4,
-		0.4
-	}
-	self.besiege.recon.groups.FBI_stealth_c = {
-		0.4,
-		0.4,
-		0.4
+	
+	self.besiege.recon.groups = {
+		FBI_HRT_squad = {
+			1,
+			1,
+			1
+		},
+		single_spooc = {
+			0,
+			0,
+			0
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
+		}
 	}
 end
 
 function GroupAITweakData:init_taskdata_deathwish_2()
 	--66
-	self.besiege.assault.force_balance_mul = {
-		3.3,
-		3.3,
-		3.3,
-		3.3
+	self.besiege.assault.force = {
+		13.2,
+		13.2,
+		35.2
 	}
 	
 	self.besiege.assault.groups = {
@@ -2180,8 +1875,8 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		},
 		FBI_heavys = {
 			0,
-			0.28,
-			0.28
+			0.3,
+			0.3
 		},
 		FBI_CQB_swats = {
 			0,
@@ -2190,18 +1885,18 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		},
 		FBI_shields = {
 			0,
-			0.14,
-			0.28
+			0.115,
+			0.3
 		},
 		FBI_tanks = {
 			0,
-			0.17,
-			0.34
+			0.14,
+			0.37
 		},
 		CS_tazers = {
-			0,
+			0.1,
 			0.17,
-			0.34
+			0.453
 		},
 		CS_swats = {
 			0.4,
@@ -2214,79 +1909,100 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.18
 		},
 		CS_shields = {
-			0.16,
-			0.08,
-			0.16
+			0.17,
+			0.064,
+			0.17
 		},
 		Death_squad = {
 			0,
 			0.06,
-			0.12
+			0.16
 		},
 		FBI_spoocs = {
 			0,
 			0.1,
-			0.2
+			0.26
 		},
 		single_spooc = {
 			0,
 			0.05,
-			0.1
+			0.133
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		Undead = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
 		}
 	}
 
 	self.besiege.reenforce.groups = {
-		FBI_defend_a = {
-			0.6,
-			0.6,
-			0.6
-		},
-		FBI_defend_b = {
-			0.6,
-			0.6,
-			0.6
-		},
-		CS_defend_a = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_b = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_c = {
-			0.2,
-			0.2,
-			0.2
+		FBI_defence_squad = {
+			1,
+			1,
+			1
 		}
 	}
 
-	self.besiege.recon.groups.FBI_stealth_a = {
-		0.3,
-		0.3,
-		0.3
-	}
-	self.besiege.recon.groups.FBI_stealth_b = {
-		0.4,
-		0.4,
-		0.4
-	}
-	self.besiege.recon.groups.FBI_stealth_c = {
-		0.4,
-		0.4,
-		0.4
+	self.besiege.recon.groups = {
+		FBI_HRT_squad = {
+			1,
+			1,
+			1
+		},
+		single_spooc = {
+			0,
+			0,
+			0
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
+		}
 	}
 end
 
 function GroupAITweakData:init_taskdata_deathwish_3()
 	--80
-	self.besiege.assault.force_balance_mul = {
-		4,
-		4,
-		4,
-		4
+	self.besiege.assault.force = {
+		16,
+		16,
+		42.6
 	}
 	
 	self.besiege.assault.groups = {
@@ -2307,18 +2023,18 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 		},
 		FBI_shields = {
 			0,
-			0.12,
-			0.23
+			0.1,
+			0.26
 		},
 		FBI_tanks = {
 			0,
 			0.15,
-			0.3
+			0.4
 		},
 		CS_tazers = {
-			0.15,
+			0.1,
 			0.17,
-			0.34
+			0.453
 		},
 		CS_swats = {
 			0.4,
@@ -2331,79 +2047,101 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.18
 		},
 		CS_shields = {
-			0.13,
-			0.07,
-			0.13
+			0.15,
+			0.056,
+			0.15
 		},
 		Death_squad = {
 			0,
 			0.08,
-			0.16
+			0.2
 		},
 		FBI_spoocs = {
 			0,
 			0.1,
-			0.2
+			0.266
 		},
 		single_spooc = {
 			0,
 			0.05,
-			0.1
+			0.133
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		Undead = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
 		}
 	}
 
 	self.besiege.reenforce.groups = {
-		FBI_defend_a = {
-			0.6,
-			0.6,
-			0.6
-		},
-		FBI_defend_b = {
-			0.6,
-			0.6,
-			0.6
-		},
-		CS_defend_a = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_b = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_c = {
-			0.2,
-			0.2,
-			0.2
+		FBI_defence_squad = {
+			1,
+			1,
+			1
 		}
 	}
 
-	self.besiege.recon.groups.FBI_stealth_a = {
-		0.3,
-		0.3,
-		0.3
-	}
-	self.besiege.recon.groups.FBI_stealth_b = {
-		0.4,
-		0.4,
-		0.4
-	}
-	self.besiege.recon.groups.FBI_stealth_c = {
-		0.4,
-		0.4,
-		0.4
+	self.besiege.recon.groups = {
+		FBI_HRT_squad = {
+			1,
+			1,
+			1
+		},
+		single_spooc = {
+			0,
+			0,
+			0
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
+		}
 	}
 end
 
 function GroupAITweakData:init_taskdata_deathwish_4()
 	--120
-	self.besiege.assault.force_balance_mul = {
-		6,
-		6,
-		6,
-		6
+	self.besiege.assault.force = {
+		24,
+		24,
+		24,
+		64
 	}
 	
 	self.besiege.assault.groups = {
@@ -2424,18 +2162,18 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 		},
 		FBI_shields = {
 			0,
-			0.1,
-			0.2
+			0.08,
+			0.213
 		},
 		FBI_tanks = {
 			0,
-			0.18,
-			0.35
+			0.16,
+			0.426
 		},
 		CS_tazers = {
-			0.15,
+			0.1,
 			0.17,
-			0.34
+			0.466
 		},
 		CS_swats = {
 			0.4,
@@ -2448,68 +2186,90 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.18
 		},
 		CS_shields = {
-			0.11,
-			0.06,
-			0.11
+			0.133,
+			0.05,
+			0.133
 		},
 		Death_squad = {
 			0,
-			0.1,
-			0.2
+			0.09,
+			0.24
 		},
 		FBI_spoocs = {
 			0,
 			0.1,
-			0.2
+			0.266
 		},
 		single_spooc = {
 			0,
 			0.05,
-			0.1
+			0.133
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		Undead = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
 		}
 	}
 
 	self.besiege.reenforce.groups = {
-		FBI_defend_a = {
-			0.6,
-			0.6,
-			0.6
-		},
-		FBI_defend_b = {
-			0.6,
-			0.6,
-			0.6
-		},
-		CS_defend_a = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_b = {
-			0.2,
-			0.2,
-			0.2
-		},
-		CS_defend_c = {
-			0.2,
-			0.2,
-			0.2
+		FBI_defence_squad = {
+			1,
+			1,
+			1
 		}
 	}
 
-	self.besiege.recon.groups.FBI_stealth_a = {
-		0.3,
-		0.3,
-		0.3
-	}
-	self.besiege.recon.groups.FBI_stealth_b = {
-		0.4,
-		0.4,
-		0.4
-	}
-	self.besiege.recon.groups.FBI_stealth_c = {
-		0.4,
-		0.4,
-		0.4
+	self.besiege.recon.groups = {
+		FBI_HRT_squad = {
+			1,
+			1,
+			1
+		},
+		single_spooc = {
+			0,
+			0,
+			0
+		},
+		Phalanx = {
+			0,
+			0,
+			0
+		},
+		marshal_squad = {
+			0,
+			0,
+			0
+		},
+		snowman_boss = {
+			0,
+			0,
+			0
+		},
+		piggydozer = {
+			0,
+			0,
+			0
+		}
 	}
 end
