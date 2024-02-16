@@ -117,6 +117,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 		end
 	})
 	
+	-- if you are dicking around in here, it wouldnt take you long to figure out what this does, might as well save you 3 minutes of time
+	-- this prints host's mods for clients who request them, but only once per client
+	-- this command is hidden if host doesnt have a hidden mod list, but still can be activated, tho there's no reason for that, since you can see mods under player list tab
+	-- however, if host's mod list is hidden, at the end of the welcome message clients will be informed of the hidden mod list, and would be given instruction on how to use this command
+	-- if host uses this command, they will just recieve a random quote from the list bellow, to keep slimy mod hiders guessing what's happening
 	DWP.CM:add_command("hostmods", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
@@ -142,11 +147,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 					"Space. Space. I'm in space. SPAAAAAAACE!",
 					"Grass grows, birds fly, sun shines, and brother, I hurt people.",
 					"It's a-me, Mario!",
-					"It's time to chew ass and kick bubblegum... and I'm all outta ass.",
+					"It's time to chew ass and kick bubblegum... and I'm all outta bubblegum.",
 					"This is a bucket.",
 					"There is nothing. Only warm, primordial blackness. Your conscience ferments in it — no larger than a single grain of malt. You don't have to do anything anymore. Ever. Never ever.",
 					"The man does not know the bullet has entered his brain. He never will. Death comes faster than the realization.",
-					-- is this a bit too dark of a quote for a small troll command that only host can see? probably.
+					-- is this a bit too dark of a quote for a small troll command that only host can see? maybe, but who cares?
 					"This is real darkness. It's not death, or war, or child molestation. Real darkness has love for a face. The first death is in the heart, Harry.",
 					"The pain of your absence is sharp and haunting, and I would give anything not to know it; anything but never knowing you at all (which would be worse).",
 					"Science compels us to explode the sun.",
@@ -178,11 +183,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 					"Space. Space. I'm in space. SPAAAAAAACE!",
 					"Grass grows, birds fly, sun shines, and brother, I hurt people.",
 					"It's a-me, Mario!",
-					"It's time to chew ass and kick bubblegum... and I'm all outta ass.",
+					"It's time to chew ass and kick bubblegum... and I'm all outta bubblegum.",
 					"This is a bucket.",
 					"There is nothing. Only warm, primordial blackness. Your conscience ferments in it — no larger than a single grain of malt. You don't have to do anything anymore. Ever. Never ever.",
 					"The man does not know the bullet has entered his brain. He never will. Death comes faster than the realization.",
-					-- is this a bit too dark of a quote for a small troll command that only host can see? probably.
+					-- is this a bit too dark of a quote for a small troll command that only host can see? maybe, but who cares?
 					"This is real darkness. It's not death, or war, or child molestation. Real darkness has love for a face. The first death is in the heart, Harry.",
 					"The pain of your absence is sharp and haunting, and I would give anything not to know it; anything but never knowing you at all (which would be worse).",
 					"Science compels us to explode the sun.",
@@ -191,6 +196,9 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			end
 		end
 	})
+	
+	-- as for the constant checks bellow: they are requred in lobby/menu since user can move between contract difficultied while there, which affects what
+	-- certain commands will do/print. if we are in game however, contract difficulty is set in stone, so we don't have to update our command list
 	
 	-- if we are a host, but not in game yet, check every 0.5 seconds that we still are a host - in case we leave our lobby
 	if not Utils:IsInGameState() then

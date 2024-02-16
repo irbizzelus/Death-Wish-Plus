@@ -1382,12 +1382,12 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		
 		-- heist duration, smaller values are only used on no mercy for first 2 waves
 		self.besiege.assault.sustain_duration_min = {
-			20,
+			25,
 			335,
 			335
 		}
 		self.besiege.assault.sustain_duration_max = {
-			35,
+			30,
 			365,
 			365
 		}
@@ -1475,11 +1475,11 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				-- note: default is 2.5
 				
 				------ BAIN
+				-- diamonds
+				family = 2.3,
 				-- tarantino
 				rvd1 = 2,
 				rvd2 = 2,
-				-- diamonds
-				family = 2.3,
 				-- alesso-хуессо
 				arena = 2.125,
 				-- TRANSPORT
@@ -1501,12 +1501,14 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				glace = 2.25,
 				-- dodge street
 				run = 2.25,
+				-- mercy r34
+				nmh = 1.8,
+				-- calm tent
+				flat = 2.25,
 				-- slaughterbuilding
 				dinner = 2.187,
 				-- overcover
 				man = 2.125,
-				-- mercy r34
-				nmh = 1.8,
 				
 				------ EVENTS
 				-- lab rats. ah yes, lets make a map that has no cover, horrible pathing, with zip lines as your main method of moving (things that make you as vulnerable as an ictv rogue on DS) oh and lets place headless dozers there. oh and yeah, lets keep the cops vanilla american faction instead of the zombies one. sooooo cooooooool
@@ -1525,11 +1527,12 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				wwh = 1.97,
 				-- beneath the everest
 				pbr = 1.9,
+				-- STIL BREATHIIIIIIIIIIINGGG
+				pbr2 = 2.3,
 				-- "WE NEED TO BUILD A WALL!" - most popular child molester of 2017
-				mex = 1.8,
+				mex = 1.7,
 				-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
-				-- personal note: lab's location at the smaller warehouse is much better, if you get the big one, you should just restart. applies to vanilla as well tbh
-				mex_cooking = 1.95,
+				mex_cooking = 1.75,
 				-- almir breakout - suprisingly the first in this list that is actually increased
 				pex = 2.65,
 				-- brooklyn the bank
@@ -1543,7 +1546,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				
 				------ BUTCHER
 				-- Sosa сосёт ХААХААААААААААААААААААААА я смешной
-				friend = 2.25,
+				friend = 2.2,
 				-- world of warships
 				crojob2 = 2.15,
 				
@@ -1558,7 +1561,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				mia_1 = 2,
 				mia_2 = 2,
 				-- hox_1, duh
-				hox_1 = 2.25,
+				hox_1 = 2.2,
 				
 				------ ELEPHANT
 				-- wtf is this id lmao
@@ -1586,16 +1589,15 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				escape_cafe = 2,
 			}
 			
-			for level, multiplier in pairs(level_balance_data) do
-				if Global.level_data.level_id == tostring(level) then
-					self.besiege.assault.force_balance_mul = {
-						multiplier,
-						multiplier,
-						multiplier,
-						multiplier
-					}
-					break
-				end
+			local lvl_id = Global.level_data.level_id
+			if level_balance_data[lvl_id] then
+				local mul = level_balance_data[lvl_id]
+				self.besiege.assault.force_balance_mul = {
+					mul,
+					mul,
+					mul,
+					mul
+				}
 			end
 			
 		end
@@ -1615,7 +1617,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	end
 	
 	-- crashes NGBTO if host runs it and somehow manages to get into a match. This mod is for assholes/elitists, so screw them
-	-- if you are reading this and disagree look up Lobby settings by TDLQ
+	-- if you are reading this and disagree look up 'Lobby settings' by TDLQ
 	DelayedCalls:Add("DWP_clear_NGBTO", 10, function()
 		if NoobJoin then
 			NoobJoin = {}
@@ -1860,11 +1862,11 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 end
 
 function GroupAITweakData:init_taskdata_deathwish_2()
-	--66
+	--64
 	self.besiege.assault.force = {
-		13.2,
-		13.2,
-		35.2
+		12.8,
+		12.8,
+		34.13
 	}
 	
 	self.besiege.assault.groups = {

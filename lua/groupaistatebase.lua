@@ -2,7 +2,7 @@ if not DWP then
 	dofile(ModPath .. "lua/DWPbase.lua")
 end
 
--- Gameover now happens after ~32 seconds instead of 10 seconds, allowing Stockholm Syndrome to function correctly
+-- Gameover now happens after ~31 seconds instead of 10 seconds, allowing Stockholm Syndrome to function correctly
 function GroupAIStateBase:check_gameover_conditions()
 	if not Network:is_server() or managers.platform:presence() ~= "Playing" or setup:has_queued_exec() then
 		return false
@@ -120,9 +120,9 @@ function GroupAIStateBase:_add_drama(amount)
 	-- at the end of assault 2 on no mercy, play an overly dramatic warning in chat and a voice line from bain, cause why not
 	if (Global.level_data and Global.level_data.level_id == "nmh") and self._assault_number == 2 and (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and not DWP.NoMercyThirdAssaultWarning then
 		DWP.NoMercyThirdAssaultWarning = true
-		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 40, function()
+		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 30, function()
 			DWP.nmh_2nd_assault_complete = true
-			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] Reinforcements from other agencies are coming your way. Prepare yourselves.")
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] Reinforcements from other agencies are regrouping outside.")
 			DelayedCalls:Add("NoMercyThirdAssaultWarningCall2", 55, function()
 				if managers.player:player_unit() then -- avoid crash if host is dead somehow after 2 pathetic waves
 					managers.player:local_player():sound():say("Play_ban_p01",true,true)
@@ -153,11 +153,14 @@ function GroupAIStateBase:set_difficulty(value)
 		orig_diff(self, value)
 		return
 	end
-
+	
+	-- everything here updated the diff value which affects the following in DW+: special enemy squad spawn chances, max amount of cops on the map at the same time, and enemy respawn speed
+	-- no mercy uses lowest values for assault 1 and 2, but not break in between assault 2 and 3, thus the nmh_2nd_assault_complete value
 	if Global.level_data and Global.level_data.level_id == "nmh" and self._assault_number <= 2 and not DWP.nmh_2nd_assault_complete then
 		if value ~= 0.001 then
 			value = 0.001
 		end
+	-- without hostage control enabled diff always stays at 0.8, groupaitweak data values look really weird because of it
 	elseif not DWP.settings_config.hostage_control and value ~= 0.8 then
 		value = 0.8
 	elseif DWP.settings_config.hostage_control then
@@ -238,20 +241,19 @@ Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function
 	end
 	DWP.HostageControl.globalkillcount = DWP.HostageControl.globalkillcount + 1
 	
-	if DWP.HostageControl.globalkillcount < 6 or (DWP.HostageControl.globalkillcount < 11 and (DWP.HostageControl.globalkillcount ~= 6 or DWP.HostageControl.globalkillcount == 6.5 and DWP.CloakerReinforceEnabled)) then
+	if DWP.HostageControl.globalkillcount < 9 and DWP.HostageControl.globalkillcount ~= 6 then
 		if peer == 1 then
 			managers.hud:show_hint({text = "[DW+] You killed a civilian! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		else
 			DWP.HostageControl:warn_peer(peer, killer_id, true)
 			managers.hud:show_hint({text = "[DW+] "..tostring(killer_name).." killed a civilian! Hostages killed: "..tostring(DWP.HostageControl.globalkillcount)})
 		end
-	elseif DWP.HostageControl.globalkillcount == 6 or DWP.HostageControl.globalkillcount == 6.5 and not DWP.CloakerReinforceEnabled then
-		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 6 hostages killed. Enemy respawn rates are almost maxed out. Also cloakers learned how to teleport?..")
+	elseif DWP.HostageControl.globalkillcount == 6 then
+		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 6 hostages killed. Enemy forces are almost maxed out. Also cloakers learned how to teleport?..")
 		DWP.CloakerReinforce(killer_id)
-		DWP.CloakerReinforceEnabled = true
-	elseif DWP.HostageControl.globalkillcount == 11 or DWP.HostageControl.globalkillcount == 11.5 and not DWP.HC11killpenalty then
-		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 11 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
+	elseif DWP.HostageControl.globalkillcount == 9 then
+		managers.chat:send_message(ChatManager.GAME, nil, "[DW+] 9 hostages are now dead. You can all blame "..killer_name.." for what's to come.")
 		DWP:ActivateHostageControlDozerPenalty()
-		DWP.HC11killpenalty = true
 	end
+	
 end)

@@ -11,6 +11,7 @@ if not DWP.CM then
 		commands = {}
 	}
 	
+	-- noone actually knows that ! is a valid prefix, because this would make welcome message longer but its allready ridiculously long
 	function DWP.CM:validPrefix(prefix)
 		return self.prefixes[prefix]
 	end
@@ -18,7 +19,8 @@ if not DWP.CM then
 	function DWP.CM:add_command(command_name, cmd_data)
 		self.commands[command_name] = cmd_data
 	end
-
+	
+	-- unlike that utiliy (from BLT?) function, returns actuall status of being in game, where breifing screen still counts as 'not in game'
 	function DWP.CM:is_playing()
 		if BaseNetworkHandler then
 			return BaseNetworkHandler._gamestate_filter.any_ingame_playing[game_state_machine:last_queued_state_name()]

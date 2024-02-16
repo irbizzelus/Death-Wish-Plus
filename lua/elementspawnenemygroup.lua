@@ -98,7 +98,7 @@ Hooks:PostHook(ElementSpawnEnemyGroup, "_finalize_values", "DWP_replacespawngrou
 			log("[DW+] ElementSpawnEnemyGroup attempts to load the 'no enemy spawns on custom maps' fix.")
 		end
 		if #self._values.preferred_spawn_groups == #groupsOLD_marshal_less and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_marshal_less) then
-			log("[DW+] ElementSpawnEnemyGroup used a marshal free group list.")
+			log("[DW+] ElementSpawnEnemyGroup used a marshal-free group list.")
 		end
 		self._values.preferred_spawn_groups = {}
 		for name,_ in pairs(tweak_data.group_ai.enemy_spawn_groups) do

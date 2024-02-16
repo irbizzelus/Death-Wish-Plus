@@ -92,7 +92,7 @@ function DWP.CloakerReinforce(killer_id)
 	local next_spawn_min = 50
 	local next_spawn_max = 130
 	
-	if DWP.HostageControl.globalkillcount >= 9 then
+	if DWP.HostageControl.globalkillcount >= 8 then
 		next_spawn_min = 30
 		next_spawn_max = 80
 	end
