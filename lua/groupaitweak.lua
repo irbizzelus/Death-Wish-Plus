@@ -1484,11 +1484,13 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				arena = 2.125,
 				-- TRANSPORT
 				-- crossroads
-				arm_cro = 2.062,
+				arm_cro = 2,
 				-- downtown
-				arm_hcm = 2.15,
+				arm_hcm = 2.1,
 				-- harbor
-				arm_fac = 2.25,
+				arm_fac = 2.1,
+				-- park
+				arm_par = 2,
 				-- train
 				arm_for = 2.125,
 				-- underpass
@@ -1496,19 +1498,19 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				
 				------ CLASSICS
 				-- FWB is good. in theory
-				red2 = 2.187,
+				red2 = 2.15,
 				-- blue bridge
 				glace = 2.25,
 				-- dodge street
 				run = 2.25,
 				-- mercy r34
-				nmh = 1.8,
+				nmh = 1.85,
 				-- calm tent
 				flat = 2.25,
 				-- slaughterbuilding
-				dinner = 2.187,
+				dinner = 2.15,
 				-- overcover
-				man = 2.125,
+				man = 2.1,
 				
 				------ EVENTS
 				-- lab rats. ah yes, lets make a map that has no cover, horrible pathing, with zip lines as your main method of moving (things that make you as vulnerable as an ictv rogue on DS) oh and lets place headless dozers there. oh and yeah, lets keep the cops vanilla american faction instead of the zombies one. sooooo cooooooool
@@ -1524,11 +1526,11 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				
 				------ LOCKE
 				-- polar bear's home
-				wwh = 1.97,
+				wwh = 2,
 				-- beneath the everest
 				pbr = 1.9,
 				-- STIL BREATHIIIIIIIIIIINGGG
-				pbr2 = 2.3,
+				pbr2 = 2.25,
 				-- "WE NEED TO BUILD A WALL!" - most popular child molester of 2017
 				mex = 1.7,
 				-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
@@ -1536,7 +1538,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				-- almir breakout - suprisingly the first in this list that is actually increased
 				pex = 2.65,
 				-- brooklyn the bank
-				brb = 2.187,
+				brb = 2.15,
 				-- henry's cock
 				des = 1.85,
 				-- black tablet
@@ -1565,28 +1567,28 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				
 				------ ELEPHANT
 				-- wtf is this id lmao
-				welcome_to_the_jungle_2 = 1.875,
+				welcome_to_the_jungle_2 = 1.85,
 				
-				election_day_1 = 2.125,
-				election_day_2 = 2.125,
+				election_day_1 = 2.1,
+				election_day_2 = 2.1,
 				
 				------ VLAD
 				-- SAFES BABY WHOOOOOO
-				jolly = 2.187,
+				jolly = 2.1,
 				-- buluc's clusterfuck of objectives
-				fex = 2.125,
+				fex = 2.1,
 				-- goat sim day 2. day 1 is also really bad, but mostly because of snipers, not the other squads, so its ok.
-				peta2 = 1.875,
+				peta2 = 1.85,
 				-- at least i dont have to shave pubes anymore
 				shoutout_raid = 2,
 				-- san martin
 				bex = 2.25,
 				-- santa's workshop. holy shit is this bad
-				cane = 1.687,
+				cane = 1.65,
 				
 				------ ESCAPES
 				-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-				escape_cafe = 2,
+				escape_cafe = 1.9,
 			}
 			
 			local lvl_id = Global.level_data.level_id

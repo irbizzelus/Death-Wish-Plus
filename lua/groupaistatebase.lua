@@ -122,8 +122,8 @@ function GroupAIStateBase:_add_drama(amount)
 		DWP.NoMercyThirdAssaultWarning = true
 		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 30, function()
 			DWP.nmh_2nd_assault_complete = true
-			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] Reinforcements from other agencies are regrouping outside.")
-			DelayedCalls:Add("NoMercyThirdAssaultWarningCall2", 55, function()
+			managers.chat:send_message(ChatManager.GAME, nil, "[DW+] Reinforcements from other agencies are regrouping outside...")
+			DelayedCalls:Add("NoMercyThirdAssaultWarningCall2", 65, function()
 				if managers.player:player_unit() then -- avoid crash if host is dead somehow after 2 pathetic waves
 					managers.player:local_player():sound():say("Play_ban_p01",true,true)
 				end
