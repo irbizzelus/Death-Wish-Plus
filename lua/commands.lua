@@ -52,10 +52,10 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 		callback = function(sender)
 			if sender:id() ~= 1 then
 				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
-				DWP.CM:private_chat_message(sender:id(), "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 11 total casualties, new enemies will come to finish the job.")
+				DWP.CM:private_chat_message(sender:id(), "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
 			else
 				DWP.CM:public_chat_message("Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
-				DWP.CM:public_chat_message("In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 11 total casualties, new enemies will come to finish the job.")
+				DWP.CM:public_chat_message("In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
 			end
 		end
 	})
