@@ -43,9 +43,9 @@
 	"DWP_infamy_desc": "Player playtime chat message will include player's infamy level. Does not work if player playtime is disabled."
 	
 	"DWP_endstat_header": "---- GAME COMPLETION SCOREBOARD ----",
-	"DWP_endstat_header_desc": "Settings for the scoreboard that appears after heist is completed. (Available only as host)",
+	"DWP_endstat_header_desc": "Settings for the scoreboard that appears after heist is completed. (Available only if you are the host)",
 	"DWP_endstattoggle": "Enable scoreboard",
-	"DWP_endstattoggle_desc": "Kill/death ratio of all players will be printed in chat after heist is completed. Only available as host.",
+	"DWP_endstattoggle_desc": "Kill/death ratio of all players will be printed in chat after heist is completed. (Available only if you are the host)",
 	"DWP_statsmsgpublic": "Public scoreboard",
 	"DWP_statsmsgpublic_desc": "Scoreboard will be printed as a public message for all players in the lobby to see",
 	"DWP_endstatSPkills": "Specials killcount",

@@ -165,7 +165,7 @@ function DWP:changelog_message()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.5 Changelog:\n- TBA."
+			local message = "2.5 Changelog:\n\n    Big patch big changes. Mostly code-sided though. Optimization everywhere, some bugs were fixed (new ones probably were added as well), rebalances, and hostage control mechanic overhaul. Some of your settings were reset - it is recommended you remove your old DW+ save (mods/saves/DWPsave_new.txt) and restart the game. The shortest patch TLDR i could make:\n\n -Updated over 2/3 of the code for better performance\n -Added gameplay option to automatically highlight 'Death Squad' snipers, to improve their visibility\n -(almost) COMPLETE OVERHAUL for the hostage control mechanic\n -Gameplay changes (too many to note here)\n\nIf you enjoy playing with this mod(especially hosting pub's), i'd recommended checking out full patch notes via the link.\nGL HF!"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
 			DWP.settings.changelog_msg_shown = 2.5
