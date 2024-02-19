@@ -5,7 +5,7 @@ Hooks:PostHook(CopDamage, "die", "DWP_copdie" , function(self,attack_data)
 		return
 	end
 	
-	if not DWP.settings_config.hostage_control or not DWP.DWdifficultycheck then
+	if not DWP.DWdifficultycheck or not DWP.settings_config.hostage_control then
 		return
 	end
 	

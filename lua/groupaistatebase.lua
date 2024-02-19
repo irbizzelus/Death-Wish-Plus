@@ -191,7 +191,7 @@ end
 -- hostage control - on civi death 
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_hostageKilled", function(self, killer_unit)
 	
-	if not DWP.settings_config.hostage_control or not DWP.DWdifficultycheck then
+	if not DWP.DWdifficultycheck or not DWP.settings_config.hostage_control then
 		return
 	end
 	
