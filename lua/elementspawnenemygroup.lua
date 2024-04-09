@@ -117,6 +117,4 @@ Hooks:PostHook(ElementSpawnEnemyGroup, "_finalize_values", "DWP_replacespawngrou
 		end
 	end
 	
-	--PrintTable(self._values.preferred_spawn_groups)
-	
 end)
