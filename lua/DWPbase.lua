@@ -301,25 +301,26 @@ if not DWP then
 	
 	function DWP:welcomemsg1(peer_id) -- welcome message for clients
 		if Network:is_server() and DWP.DWdifficultycheck == true then
-			local peer = managers.network:session():peer(peer_id)
-			
-			if peer == managers.network:session():local_peer() then
-				DWP.players[peer_id].welcome_msg1_shown = true
-				return
-			end
-			
-			if not DWP.players[peer_id].welcome_msg1_shown then
-				DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 0.3, function()
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5) with some gameplay changes:"
-					if managers.network:session() and managers.network:session():peers() then
-						if peer then
-							peer:send("request_player_name_reply", "DW+")
-							peer:send("send_chat_message", ChatManager.GAME, message)
-							DWP.players[peer_id].welcome_msg1_shown = true
-						end
+			DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 0.3, function()
+				local peer = managers.network:session():peer(peer_id)
+				
+				if peer == managers.network:session():local_peer() then
+					DWP.players[peer_id].welcome_msg1_shown = true
+					return
+				end
+				
+				if not DWP.players[peer_id].welcome_msg1_shown then
+					if not peer then
+						return
 					end
-				end)
-			end
+					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.02) with some gameplay changes:"
+					if managers.network:session() and managers.network:session():peers() then
+						peer:send("request_player_name_reply", "DW+")
+						peer:send("send_chat_message", ChatManager.GAME, message)
+						DWP.players[peer_id].welcome_msg1_shown = true
+					end
+				end
+			end)
 		end
 	end
 
@@ -334,6 +335,9 @@ if not DWP then
 				end
 				
 				if not DWP.players[peer_id].welcome_msg2_shown then
+					if not peer then
+						return
+					end
 					if managers.network:session() and managers.network:session():peers() then
 						local diff = "'DW+ Classic'"
 						if DWP.settings_config and DWP.settings_config.difficulty == 2 then
@@ -350,26 +354,24 @@ if not DWP then
 						elseif DWP.settings.difficulty == 4 then
 							diff = "'Suicidal'"
 						end
-						if peer then
-							peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
-							peer:send("send_chat_message", ChatManager.GAME, "Enemies are harder to intimidate: /dom")
-							peer:send("send_chat_message", ChatManager.GAME, "Police assault tweaks: /assault")
-							peer:send("send_chat_message", ChatManager.GAME, "Enemy variety tweaks: /cops")
-							if DWP.settings_config and DWP.settings_config.hostage_control then
-								local hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage"
-								if DWP.HostageControl and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 1 then
-									hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage. "..tostring(DWP.HostageControl.globalkillcount).." hostages were killed allready."
-								end
-								peer:send("send_chat_message", ChatManager.GAME, hostage_control_msg)
+						peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
+						peer:send("send_chat_message", ChatManager.GAME, "Enemies are harder to intimidate: /dom")
+						peer:send("send_chat_message", ChatManager.GAME, "Police assault tweaks: /assault")
+						peer:send("send_chat_message", ChatManager.GAME, "Enemy variety tweaks: /cops")
+						if DWP.settings_config and DWP.settings_config.hostage_control then
+							local hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage"
+							if DWP.HostageControl and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 1 then
+								hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage. "..tostring(DWP.HostageControl.globalkillcount).." hostages were killed allready."
 							end
-							peer:send("send_chat_message", ChatManager.GAME, "Current mod difficulty: "..diff..": /diff")
-							peer:send("send_chat_message", ChatManager.GAME, "Use chat commands above to recieve personal messages with more info on said gameplay changes. You can also use /med and /ammo to ask for help.")
-							if DWP and not MenuCallbackHandler:is_modded_client() then
-								peer:send("send_chat_message", ChatManager.GAME, "Lastly, "..managers.network.account:username().." seems to have a hidden mod list, you can request their modlist using /hostmods.")
-							end
-							peer:send("request_player_name_reply", managers.network.account:username())
-							DWP.players[peer_id].welcome_msg2_shown = true
+							peer:send("send_chat_message", ChatManager.GAME, hostage_control_msg)
 						end
+						peer:send("send_chat_message", ChatManager.GAME, "Current mod difficulty: "..diff..": /diff")
+						peer:send("send_chat_message", ChatManager.GAME, "Use chat commands above to recieve personal messages with more info on said gameplay changes. You can also use /med and /ammo to ask for help.")
+						if DWP and not MenuCallbackHandler:is_modded_client() then
+							peer:send("send_chat_message", ChatManager.GAME, "Lastly, "..managers.network.account:username().." seems to have a hidden mod list, you can request their modlist using /hostmods.")
+						end
+						peer:send("request_player_name_reply", managers.network.account:username())
+						DWP.players[peer_id].welcome_msg2_shown = true
 					end
 				end
 				
@@ -399,7 +401,7 @@ if not DWP then
 			return
 		end
 		
-		if peer and peer:skills() ~= nil then
+		if peer and peer:skills() then
 			local skills = string.split(string.split(peer:skills(), "-")[1], "_")
 			local perk_deck = string.split(string.split(peer:skills(), "-")[2], "_")
 			local perk_deck_id = tonumber(perk_deck[1])

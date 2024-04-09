@@ -118,7 +118,7 @@ function GroupAIStateBase:_add_drama(amount)
 		end
 	end
 	-- at the end of assault 2 on no mercy, play an overly dramatic warning in chat and a voice line from bain, cause why not
-	if (Global.level_data and Global.level_data.level_id == "nmh") and self._assault_number == 2 and (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and not DWP.NoMercyThirdAssaultWarning then
+	if DWP.DWdifficultycheck and (Global.level_data and Global.level_data.level_id == "nmh") and self._assault_number == 2 and (self._task_data and self._task_data.assault and self._task_data.assault.phase == "fade") and not DWP.NoMercyThirdAssaultWarning then
 		DWP.NoMercyThirdAssaultWarning = true
 		DelayedCalls:Add("NoMercyThirdAssaultWarningCall", 30, function()
 			DWP.nmh_2nd_assault_complete = true

@@ -155,7 +155,7 @@ Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", functio
 end)
 
 function DWP_linkchangelog()
-	managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases/latest")
+	managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases")
 end
 
 -- only pops up once in the main menu

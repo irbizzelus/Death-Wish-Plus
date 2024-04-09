@@ -6,7 +6,7 @@ end
 -- Allows this mod to add custom squads and spawn groups.
 
 -- If a spawngroup matches this list exactly, it's a "default" one and we can add our own spawngroups to it
-local groupsOLD = {
+local groupsNormal = {
 	"tac_shield_wall_charge",
 	"FBI_spoocs",
 	"tac_tazer_charge",
@@ -20,7 +20,7 @@ local groupsOLD = {
 	"piggydozer"
 }
 
-local groupsOLD_marshal_less = {
+local groupsNoMarshal = {
 	"tac_shield_wall_charge",
 	"FBI_spoocs",
 	"tac_tazer_charge",
@@ -33,7 +33,7 @@ local groupsOLD_marshal_less = {
 	"piggydozer"
 }
 
-local groupsOLD_custom = {
+local groupsCustomMaps = {
 	"tac_shield_wall_charge",
 	"FBI_spoocs",
 	"tac_tazer_charge",
@@ -48,7 +48,7 @@ local groupsOLD_custom = {
 	"piggydozer"
 }
 
--- hardware store cutsom heist fix
+-- hardware store cutsom heist 'fix'
 if Global.level_data and (Global.level_data.level_id == "hardware_store" or Global.level_data.level_id == "tj_htsb") then
 	-- i deem these maps too hard due to scripted spawns (at least that's why i think there is so many more cops (85+ on dw+))
 	
@@ -93,18 +93,30 @@ local disallowed_groups = {
 
 -- Will break custom heists that dont have standard spawngroups. Replaces spawn groups to our own
 Hooks:PostHook(ElementSpawnEnemyGroup, "_finalize_values", "DWP_replacespawngroups", function(self)
-	if (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD and table.contains_all(self._values.preferred_spawn_groups, groupsOLD)) or (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom)) or (self._values.preferred_spawn_groups and #self._values.preferred_spawn_groups == #groupsOLD_marshal_less and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_marshal_less)) then
-		if #self._values.preferred_spawn_groups == #groupsOLD_custom and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_custom) then
-			log("[DW+] ElementSpawnEnemyGroup attempts to load the 'no enemy spawns on custom maps' fix.")
-		end
-		if #self._values.preferred_spawn_groups == #groupsOLD_marshal_less and table.contains_all(self._values.preferred_spawn_groups, groupsOLD_marshal_less) then
-			log("[DW+] ElementSpawnEnemyGroup used a marshal-free group list.")
-		end
-		self._values.preferred_spawn_groups = {}
-		for name,_ in pairs(tweak_data.group_ai.enemy_spawn_groups) do
-			if not table.contains(self._values.preferred_spawn_groups, name) and not disallowed_groups[name] then
-				table.insert(self._values.preferred_spawn_groups, name)
-			end
+	
+	if not self._values.preferred_spawn_groups then
+		return
+	end
+	
+	local currentSpawnGroups = self._values.preferred_spawn_groups
+	
+	if #currentSpawnGroups == #groupsNormal and table.contains_all(currentSpawnGroups, groupsNormal) then
+		-- standard groups, good.
+	elseif #currentSpawnGroups == #groupsCustomMaps and table.contains_all(currentSpawnGroups, groupsCustomMaps) then
+		log("[DW+] 'ElementSpawnEnemyGroup' detected and used a custom maps spawn groups list.")
+	elseif #currentSpawnGroups == #groupsNoMarshal and table.contains_all(currentSpawnGroups, groupsNoMarshal) then
+		log("[DW+] 'ElementSpawnEnemyGroup' detected and used a marshal-free spawn groups list.")
+	else
+		return
+	end
+	
+	self._values.preferred_spawn_groups = {}
+	for name,_ in pairs(tweak_data.group_ai.enemy_spawn_groups) do
+		if not table.contains(self._values.preferred_spawn_groups, name) and not disallowed_groups[name] then
+			table.insert(self._values.preferred_spawn_groups, name)
 		end
 	end
+	
+	--PrintTable(self._values.preferred_spawn_groups)
+	
 end)

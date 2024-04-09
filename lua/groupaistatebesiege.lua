@@ -97,7 +97,7 @@ function DWP.CloakerReinforce(killer_id)
 		next_spawn_max = 80
 	end
 	
-	-- put delayedcall on top so killing 6 hostages in stealth doesnt disable cloaker respawns, it will just loop untill stealth is broken
+	-- put delayedcall that resets this loop on top so killing 6 hostages in stealth doesnt disable cloaker respawns, it will just loop untill stealth is broken
 	DelayedCalls:Add("DWP_respawn_cloaker", math.random(next_spawn_min,next_spawn_max) , function()
 		DWP.CloakerReinforce()
 	end)
@@ -121,38 +121,54 @@ function DWP.CloakerReinforce(killer_id)
 	local player_3_range = {player_2_range[2], player_2_range[2] + player_3_chance}
 	local player_4_range = {player_3_range[2], 1}
 	
-	-- decide which player cloaker will spawn on
 	local spawntarget_id = 1
 	
 	-- decide the winner for cloaker spawn, can call itself in case winner is dead/somehow else unavailable
 	local function roll_the_dice()
+		
+		local valid_players = {peer_1 = false,peer_2 = false,peer_3 = false,peer_4 = false}
+		if managers.player:player_unit() and managers.player:player_unit():position() then
+			valid_players.peer_1 = true
+		end
+		for i=2,4 do
+			local peer = managers.network:session():peer(i)
+			local unit = peer and peer:unit() or nil
+			if (unit and alive(unit)) then
+				valid_players["peer_"..tostring(i)] = true
+			end
+		end
+		
+		-- cancel this spawn if everyone is dead, loop continues tho
+		if not valid_players.peer_1 and not valid_players.peer_2 and not valid_players.peer_3 and not valid_players.peer_4 then
+			return
+		end
+		
 		local winner = math.random()
 		
-		if winner <= player_1_range[2] then
-			spawntarget_id = 1
-		elseif winner <= player_2_range[2] then
-			spawntarget_id = 2
-		elseif winner <= player_3_range[2] then
-			spawntarget_id = 3
-		elseif winner <= player_4_range[2] then
+		if winner <= player_4_range[2] and valid_players.peer_4 then
 			spawntarget_id = 4
+		end
+		if winner <= player_3_range[2] and valid_players.peer_3 then
+			spawntarget_id = 3
+		end
+		if winner <= player_2_range[2] and valid_players.peer_2 then
+			spawntarget_id = 2
+		end
+		if winner <= player_1_range[2] and valid_players.peer_1 then
+			spawntarget_id = 1
 		end
 		
 		-- on first call for this function we spawn cloaker on whoever killed the 5th hostage if possible, later it's random with higher priorities towards hostage killers
 		if killer_id then
 			spawntarget_id = killer_id
 			killer_id = nil
-		end
-		
-		if spawntarget_id == 1 and not (managers.player:player_unit() and managers.player:player_unit():position()) then
-			roll_the_dice()
-		else
-			local peer = managers.network:session():peer(spawntarget_id)
-			local unit = peer and peer:unit() or nil
-			if not (unit and alive(unit)) then
+			
+			-- failsafe in case our first target managed to somehow die at the same tick they triggered this func
+			if not valid_players["peer_"..tostring(spawntarget_id)] then
 				roll_the_dice()
 			end
 		end
+		
 	end
 	roll_the_dice()
 	
