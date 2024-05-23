@@ -65,8 +65,13 @@ function GroupAIStateBase:check_gameover_conditions()
 	if gameover then
 		if not self._gameover_clbk then
 			self._gameover_clbk = callback(self, self, "_gameover_clbk_func")
-
-			managers.enemy:add_delayed_clbk("_gameover_clbk", self._gameover_clbk, Application:time() + 31.5)
+			
+			if DWP and DWP.DWdifficultycheck then
+				managers.enemy:add_delayed_clbk("_gameover_clbk", self._gameover_clbk, Application:time() + 32)
+			else
+				managers.enemy:add_delayed_clbk("_gameover_clbk", self._gameover_clbk, Application:time() + 10)
+			end
+			
 		end
 	elseif self._gameover_clbk then
 		managers.enemy:remove_delayed_clbk("_gameover_clbk")

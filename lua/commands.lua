@@ -11,9 +11,9 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("cops", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "All tactical units from other difficulties (like green FBI or blue SWAT) are included. Field snipers and Cpt. Winters' shileds can spawn along other units. Specials are more common. Green bulldozer is replaced by a medic bulldozer.")
+				DWP.CM:private_chat_message(sender:id(), "More enemies added: FBI and SWAT units from lower difficulties, field snipers, Cpt. Winters' shields and medic bulldozers. Specials spawn more often. All enemies have a wider variety of weapons. Green bulldozers can sometimes wield a stun shotgun.")
 			else
-				DWP.CM:public_chat_message("All tactical units from other difficulties (like green FBI or blue SWAT) are included. Field snipers and Cpt. Winters' shileds can spawn along other units. Specials are more common. Green bulldozer is replaced by a medic bulldozer.")
+				DWP.CM:public_chat_message("More enemies added: FBI and SWAT units from lower difficulties, field snipers, Cpt. Winters' shields and medic bulldozers. Specials spawn more often. All enemies have a wider variety of weapons. Green bulldozers can sometimes wield a stun shotgun.")
 			end
 		end
 	})
@@ -41,9 +41,9 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("assault", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Police assaults last almost 2x as long, but breaks in-between assaults also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:private_chat_message(sender:id(), "Police assaults last about 2x as long, but breaks in-between assaults also last longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
 			else
-				DWP.CM:public_chat_message("Police assaults last almost 2x as long, but breaks in-between assaults also last 3x longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:public_chat_message("Police assaults last about 2x as long, but breaks in-between assaults also last longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
 			end
 		end
 	})
@@ -51,10 +51,10 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("hostage", {
 		callback = function(sender)
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
+				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
 				DWP.CM:private_chat_message(sender:id(), "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
 			else
-				DWP.CM:public_chat_message("Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
+				DWP.CM:public_chat_message("Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
 				DWP.CM:public_chat_message("In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
 			end
 		end
@@ -76,7 +76,7 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
 				fou = " (Current)"
 			end
-			local msg = string.format("DW+ difficulty affects amount of cops on the map, their respawn speed, and amount of special units. Higher difficulty = harder parameters. List of all 4 difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
+			local msg = string.format("DW+ difficulty affects enemies' respawn speed, amount on the map, amount of special units, and used weapons. Higher difficulty = harder parameters. List of all 4 difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
 			if sender:id() ~= 1 then
 				DWP.CM:private_chat_message(sender:id(), msg)
 			else

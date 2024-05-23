@@ -221,7 +221,7 @@ if not DWP.CopUtils then
 							end
 						end
 					end
-					local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 140, managers.slot:get_mask("enemies"))
+					local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 100, managers.slot:get_mask("enemies"))
 					if enemies and #enemies >= 1 then
 						-- Check every enemy in radius, make sure its actually an enemy
 						for i, enemy in pairs(enemies) do

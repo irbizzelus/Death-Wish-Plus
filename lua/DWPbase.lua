@@ -154,20 +154,22 @@ if not DWP then
 	dofile(ModPath .. "lua/coputils.lua")
 
 	-- Change the surrender presets to harder ones
-	function DWP:setnewdoms()
+	function DWP:update_tweak_data()
 		if not tweak_data then
 			DelayedCalls:Add("updateDomsAfterTweakdataHasLoaded", 0.2, function()
-				DWP:setnewdoms()
+				DWP:update_tweak_data()
 			end)
 		else
+			if not Network:is_server() then
+				return
+			end
 			-- Easy surrender preset, used for guards and cops
 			local surrender_preset_easy = {
-				base_chance = 0.8,
-				--significant_chance = 0.15,
-				--violence_timeout = 2,
+				base_chance = 0.85,
+				significant_chance = 0,
 				reasons = {
 					health = {
-						[1] = 0.19,
+						[1] = 0,
 						[0.99] = 0.2
 					},
 					weapon_down = 0,
@@ -187,38 +189,37 @@ if not DWP then
 			-- Normal preset, used for light swats
 			local surrender_preset_normal = {
 				base_chance = 0.3,
-				--significant_chance = 0.15,
-				--violence_timeout = 2,
+				significant_chance = 0,
 				reasons = {
 					health = {
 						[1] = 0,
-						[0.4] = 0.35
+						[0.4] = 0.3
 					},
-					weapon_down = 0.35,
-					pants_down = 0.35
+					weapon_down = 0.3,
+					pants_down = 0.3
 				},
 				factors = {
 					isolated = 0,
-					flanked = 0.35,
+					flanked = 0.3,
 					unaware_of_aggressor = 0,
 					enemy_weap_cold = 0,
 					aggressor_dis = {
 						[500] = 0,
-						[150] = 0.1
+						[150] = 0.2
 					}
 				}
 			}
 			-- Hardest preset, used for heavy swats
 			local surrender_preset_hard = {
 				base_chance = 0.1,
-				--significant_chance = 0.12,
+				significant_chance = 0,
 				reasons = {
 					health = {
 						[1] = 0,
-						[0.40] = 0.2
+						[0.40] = 0.1
 					},
-					weapon_down = 0.2,
-					pants_down = 0.2
+					weapon_down = 0.1,
+					pants_down = 0.1
 				},
 				factors = {
 					isolated = 0,
@@ -227,7 +228,7 @@ if not DWP then
 					enemy_weap_cold = 0,
 					aggressor_dis = {
 						[500] = 0,
-						[150] = 0.1
+						[150] = 0.05
 					}
 				}
 			}
@@ -244,6 +245,10 @@ if not DWP then
 			-- Give heavy assault units the "hard" preset
 			tweak_data.character.heavy_swat.surrender = surrender_preset_hard
 			tweak_data.character.fbi_heavy_swat.surrender = surrender_preset_hard
+			
+			tweak_data.weapon.swat_van_turret_module.AUTO_REPAIR = false
+			tweak_data.weapon.aa_turret_module.AUTO_REPAIR = false
+			tweak_data.weapon.crate_turret_module.AUTO_REPAIR = false
 		end
 	end
 	
@@ -251,49 +256,49 @@ if not DWP then
 		if DWP.settings_config and DWP.settings_config.difficulty == 1 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
 				0,
-				0.25,
-				0.25
+				0.18,
+				0.18
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
 				0,
-				0.05,
-				0.05
+				0,
+				0
 			}
 			tweak_data.group_ai.special_unit_spawn_limits.tank = 7
 		elseif DWP.settings_config and DWP.settings_config.difficulty == 2 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
 				0,
-				0.3,
-				0.3
+				0.22,
+				0.22
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
 				0,
-				0.04,
-				0.04
+				0,
+				0
 			}
 			tweak_data.group_ai.special_unit_spawn_limits.tank = 9
 		elseif DWP.settings_config and DWP.settings_config.difficulty == 3 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
 				0,
-				0.28,
-				0.28
+				0.32,
+				0.32
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
 				0,
-				0.02,
-				0.02
+				0,
+				0
 			}
 			tweak_data.group_ai.special_unit_spawn_limits.tank = 11
 		elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
 			tweak_data.group_ai.besiege.assault.groups.Undead = {
 				0,
-				0.34,
-				0.34
+				0.42,
+				0.42
 			}
 			tweak_data.group_ai.besiege.assault.groups.FBI_tanks = {
 				0,
-				0.01,
-				0.01
+				0,
+				0
 			}
 			tweak_data.group_ai.special_unit_spawn_limits.tank = 13
 		end
@@ -313,7 +318,7 @@ if not DWP then
 					if not peer then
 						return
 					end
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.02) with some gameplay changes:"
+					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.1) with some gameplay changes:"
 					if managers.network:session() and managers.network:session():peers() then
 						peer:send("request_player_name_reply", "DW+")
 						peer:send("send_chat_message", ChatManager.GAME, message)
@@ -356,8 +361,8 @@ if not DWP then
 						end
 						peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
 						peer:send("send_chat_message", ChatManager.GAME, "Enemies are harder to intimidate: /dom")
-						peer:send("send_chat_message", ChatManager.GAME, "Police assault tweaks: /assault")
 						peer:send("send_chat_message", ChatManager.GAME, "Enemy variety tweaks: /cops")
+						peer:send("send_chat_message", ChatManager.GAME, "Police assault tweaks: /assault")
 						if DWP.settings_config and DWP.settings_config.hostage_control then
 							local hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage"
 							if DWP.HostageControl and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 1 then
@@ -401,7 +406,7 @@ if not DWP then
 			return
 		end
 		
-		if peer and peer:skills() then
+		if peer and peer:skills() and type(peer:skills()) == "string" then
 			local skills = string.split(string.split(peer:skills(), "-")[1], "_")
 			local perk_deck = string.split(string.split(peer:skills(), "-")[2], "_")
 			local perk_deck_id = tonumber(perk_deck[1])
