@@ -130,23 +130,21 @@
 			
 			-- BEAT COPS
 			-- same as american
-			-- LIGHT BLUE SWAT
-			[("units/pd2_dlc_bph/characters/ene_murkywater_light/ene_murkywater_light"):key()] = {"s552","m4"},
+			-- LIGHT BLUE SWAT + LIGHT FBI GREEN riflemen
+			[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"m4_yellow","scar_murky","s552","m4"},
+			-- LIGHT BLUE SWAT shotgunner
 			[("units/pd2_dlc_bph/characters/ene_murkywater_light_r870/ene_murkywater_light_r870"):key()] = {"r870"},
-			-- HEAVY BLUE SWAT m4 + HEAVY FBI GREEN m4
-			[("units/pd2_dlc_bph/characters/ene_murkywater_heavy/ene_murkywater_heavy"):key()] = {"g36","s552","scar_murky","sg417"},
-			-- HEAVY BLUE SWAT r870 + HEAVY FBI GREEN r870 + HEAVY GENSEC GREY r870
-			[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_shotgun/ene_murkywater_heavy_shotgun"):key()] = {"saiga","benelli"},
-			-- LIGHT FBI GREEN
-			[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"m4_yellow","scar_murky"},
+			-- LIGHT FBI GREEN shotgunner
 			[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi_r870/ene_murkywater_light_fbi_r870"):key()] = {"r870"},
 			-- LIGHT GENSEC GREY
 			-- g36 (but more) + ump
 			[("units/pd2_dlc_bph/characters/ene_murkywater_light_city/ene_murkywater_light_city"):key()] = {"g36","g36","raging_bull","ump",},
 			-- r870 + benelli
 			[("units/pd2_dlc_bph/characters/ene_murkywater_light_city_r870/ene_murkywater_light_city_r870"):key()] = {"benelli"},
-			-- HEAVY GENSEC GREY
-			[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36"):key()] = {"g36","m249"},
+			-- HEAVY BLUE SWAT + HEAVY FBI GREEN + HEAVY GENSEC GREY riflemen
+			[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36"):key()] = {"g36","g36","s552","scar_murky","sg417","m249"},
+			-- HEAVY BLUE SWAT r870 + HEAVY FBI GREEN r870 + HEAVY GENSEC GREY r870
+			[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_shotgun/ene_murkywater_heavy_shotgun"):key()] = {"saiga","benelli"},
 			-- FBI SUITS
 			-- same as american
 			-- HRT'S
@@ -214,7 +212,7 @@
 			weapon_mapping[("units/pd2_dlc_mad/characters/ene_akan_fbi_heavy_r870/ene_akan_fbi_heavy_r870"):key()] = {"svdsil_snp","r870","benelli"}
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_fbi_swat_hvh_1/ene_fbi_swat_hvh_1"):key()] = {"s552","g36","raging_bull"}
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_fbi_heavy_hvh_r870/ene_fbi_heavy_hvh_r870"):key()] = {"benelli","heavy_zeal_sniper"}
-			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"ak47_ass","scar_murky"}
+			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"ak47_ass","scar_murky","s552"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi_r870/ene_murkywater_light_fbi_r870"):key()] = {"r870","heavy_zeal_sniper"}
 			weapon_mapping[("units/pd2_dlc_bex/characters/ene_swat_policia_federale_fbi/ene_swat_policia_federale_fbi"):key()] = {"ak47_ass"}
 			weapon_mapping[("units/pd2_dlc_bex/characters/ene_swat_heavy_policia_federale_fbi_r870/ene_swat_heavy_policia_federale_fbi_r870"):key()] = {"r870","r870","heavy_zeal_sniper"}
@@ -299,13 +297,13 @@
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_shield_hvh_1/ene_shield_hvh_1"):key()] = {"raging_bull"}
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_shield_hvh_2/ene_shield_hvh_2"):key()] = {"raging_bull"}
 			-- MURK
-			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light/ene_murkywater_light"):key()] = {"s552","g36"}
+			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"ak47_ass","s552","g36"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_r870/ene_murkywater_light_r870"):key()] = {"raging_bull"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy/ene_murkywater_heavy"):key()] = {"g36","scar_murky"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_shotgun/ene_murkywater_heavy_shotgun"):key()] = {"m14_sniper_npc","benelli"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_city/ene_murkywater_light_city"):key()] = {"g36","g36","raging_bull"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_city_r870/ene_murkywater_light_city_r870"):key()] = {"heavy_zeal_sniper"}
-			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36"):key()] = {"g36"}
+			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36"):key()] = {"g36","scar_murky"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_medic/ene_murkywater_medic"):key()] = {"g36"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_medic_r870/ene_murkywater_medic_r870"):key()] = {"heavy_zeal_sniper"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_cloaker/ene_murkywater_cloaker"):key()] = {"r870","deagle"}
@@ -342,7 +340,8 @@
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_swat_heavy_hvh_r870/ene_swat_heavy_hvh_r870"):key()] = {"m14_sniper_npc"}
 			weapon_mapping[("units/pd2_dlc_hvh/characters/ene_fbi_swat_hvh_2/ene_fbi_swat_hvh_2"):key()] = {"m14_sniper_npc"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light/ene_murkywater_light"):key()] = {"g36"}
-			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy/ene_murkywater_heavy"):key()] = {"g36"}
+			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi"):key()] = {"ak47_ass","g36"}
+			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36"):key()] = {"ak47_ass","g36"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_heavy_shotgun/ene_murkywater_heavy_shotgun"):key()] = {"m14_sniper_npc"}
 			weapon_mapping[("units/pd2_dlc_bph/characters/ene_murkywater_cloaker/ene_murkywater_cloaker"):key()] = {"r870"}
 			weapon_mapping[("units/pd2_dlc_bex/characters/ene_swat_heavy_policia_federale_g36/ene_swat_heavy_policia_federale_g36"):key()] = {"g36","ak47_ass"}

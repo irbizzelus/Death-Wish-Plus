@@ -114,7 +114,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 			access = access_type_all
 		}
 
-		-- Blue light mp5 - only overrides federales for a seemingly unused unit
+		-- Blue light mp5 - overrides federales for a seemingly unused unit, and murkywater because previous units dealt stupid high DS levels damage
 		self.unit_categories.CS_swat_MP5 = {
 			unit_types = {
 				america = {
@@ -127,10 +127,32 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 					Idstring("units/pd2_dlc_hvh/characters/ene_swat_hvh_1/ene_swat_hvh_1")
 				},
 				murkywater = {
-					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_light/ene_murkywater_light")
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_light_fbi/ene_murkywater_light_fbi")
 				},
 				federales = {
 					Idstring("units/pd2_dlc_bex/characters/ene_swat_heavy_policia_federale_g36/ene_swat_heavy_policia_federale_g36")
+				}
+			},
+			access = access_type_all
+		}
+		
+		-- Blue heavy m4 - overrides murkywater because previous units dealt stupid high DS levels damage
+		self.unit_categories.CS_heavy_M4 = {
+			unit_types = {
+				america = {
+					Idstring("units/payday2/characters/ene_swat_heavy_1/ene_swat_heavy_1")
+				},
+				russia = {
+					Idstring("units/pd2_dlc_mad/characters/ene_akan_cs_heavy_ak47_ass/ene_akan_cs_heavy_ak47_ass")
+				},
+				zombie = {
+					Idstring("units/pd2_dlc_hvh/characters/ene_swat_heavy_hvh_1/ene_swat_heavy_hvh_1")
+				},
+				murkywater = {
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36")
+				},
+				federales = {
+					Idstring("units/pd2_dlc_bex/characters/ene_swat_heavy_policia_federale/ene_swat_heavy_policia_federale")
 				}
 			},
 			access = access_type_all
@@ -193,7 +215,7 @@ Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcate
 					Idstring("units/pd2_dlc_hvh/characters/ene_fbi_heavy_hvh_1/ene_fbi_heavy_hvh_1")
 				},
 				murkywater = {
-					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_heavy/ene_murkywater_heavy")
+					Idstring("units/pd2_dlc_bph/characters/ene_murkywater_heavy_g36/ene_murkywater_heavy_g36")
 				},
 				federales = {
 					Idstring("units/pd2_dlc_bex/characters/ene_swat_heavy_policia_federale_fbi/ene_swat_heavy_policia_federale_fbi")
@@ -1555,7 +1577,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				
 				------ JIMMY
 				-- boiling wawtuh with stupid ak's
-				mad = 1.5,
+				mad = 1.75,
 				
 				------ JIU FENG
 				-- vlad breakout
@@ -1577,7 +1599,7 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				-- brooklyn the bank
 				brb = 2.15,
 				-- henry's cock
-				des = 1.85,
+				des = 2,
 				-- black tablet
 				sah = 1.8,
 				-- the end

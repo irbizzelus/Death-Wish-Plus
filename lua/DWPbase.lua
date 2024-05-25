@@ -318,7 +318,7 @@ if not DWP then
 					if not peer then
 						return
 					end
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.1) with some gameplay changes:"
+					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.11) with some gameplay changes:"
 					if managers.network:session() and managers.network:session():peers() then
 						peer:send("request_player_name_reply", "DW+")
 						peer:send("send_chat_message", ChatManager.GAME, message)

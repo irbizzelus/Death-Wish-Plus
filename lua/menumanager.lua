@@ -160,15 +160,15 @@ end
 
 -- only pops up once in the main menu
 function DWP:changelog_message()
-	if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.51 then
+	if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.511 then
 		DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
 			local menu_options = {}
 			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
 			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.5.1 Changelog:\n\nWelcome to the weapon variety patch! All enemies across all DW+ difficulties were granted new weapons. I recommend going through the full changelog for more info on all difficulty updates, since new weapons is not the only thing that was changed. Some highlights:\n\n -Green dozer is back! Now he can wield a stunning shotgun, to be more annoying then deadly\n -Turrets will no longer auto-repair themselves on all DW+ difficulties\n -Enemy intimidations were made slighlty harder\n -All enemy squads were re-done to ensure equal spread of enemy units"
+			local message = "2.5.11 fix: Removed 2 units from murkywater spawn pools that dealt Death Sentence levels of damage with any weapon.\n\n2.5.1 Changelog:\n\nWelcome to the weapon variety patch! All enemies across all DW+ difficulties were granted new weapons. I recommend going through the full changelog for more info on all difficulty updates, since new weapons is not the only thing that was changed. Some highlights:\n\n -Green dozer is back! Now he can wield a stunning shotgun, to be more annoying then deadly\n -Turrets will no longer auto-repair themselves on all DW+ difficulties\n -Enemy intimidations were made slighlty harder\n -All enemy squads were re-done to ensure equal spread of enemy units"
 			local menu = QuickMenu:new("Death Wish +", message, menu_options)
 			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.51
+			DWP.settings.changelog_msg_shown = 2.511
 			DWP:Save()
 		end)
 	end
