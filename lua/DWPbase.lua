@@ -318,7 +318,7 @@ if not DWP then
 					if not peer then
 						return
 					end
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.11) with some gameplay changes:"
+					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.12) with some gameplay changes:"
 					if managers.network:session() and managers.network:session():peers() then
 						peer:send("request_player_name_reply", "DW+")
 						peer:send("send_chat_message", ChatManager.GAME, message)
@@ -406,9 +406,27 @@ if not DWP then
 			return
 		end
 		
-		if peer and peer:skills() and type(peer:skills()) == "string" then
-			local skills = string.split(string.split(peer:skills(), "-")[1], "_")
-			local perk_deck = string.split(string.split(peer:skills(), "-")[2], "_")
+		if peer and peer:skills() then
+			
+			local skills_func_string = peer:skills()
+			
+			if type(skills_func_string) ~= "string" or skills_func_string == "" then
+				return
+			end
+			
+			local skills = string.split(string.split(skills_func_string, "-")[1], "_")
+			local skill_count = 0
+			for k,v in pairs(skills) do
+				skill_count = skill_count + 1
+				if skill_count > 15 or not v or type(tonumber(v)) ~= "number" then
+					return
+				end
+			end
+			if skill_count < 15 then
+				return
+			end
+			
+			local perk_deck = string.split(string.split(skills_func_string, "-")[2], "_")
 			local perk_deck_id = tonumber(perk_deck[1])
 			local perk_deck_completion = tonumber(perk_deck[2])
 			
