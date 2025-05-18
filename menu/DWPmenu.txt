@@ -63,6 +63,20 @@
 			"default_value" : true
 		},
 		{
+			"type" : "multiple_choice",
+			"id" : "ecm_feedback_mute",
+			"title" : "DWP_ecm_feedback_mute",
+			"description" : "DWP_ecm_feedback_mute_desc",
+			"callback" : "DWPcb_ecm_feedback_mute",
+			"items" : [
+				"DWP_ecm_feedback_mute_1",
+				"DWP_ecm_feedback_mute_2",
+				"DWP_ecm_feedback_mute_3"
+			],
+			"value" : "ecm_feedback_mute",
+			"default_value" : 2
+		},
+		{
 			"type" : "button",
 			"id" : "gameplay_defaults",
 			"title" : "DWP_gameplay_defaults",

@@ -7,7 +7,16 @@ Hooks:PostHook(GroupAIStateBesiege, "init", "DWP_spawngroups", function(self)
 	if not DWP.DWdifficultycheck then
 		return
 	end
-	self._MAX_SIMULTANEOUS_SPAWNS = 4
+	self._MAX_SIMULTANEOUS_SPAWNS = 3
+	if DWP.settings_config and DWP.settings_config.difficulty then
+		if DWP.settings_config.difficulty == 2 then
+			self._MAX_SIMULTANEOUS_SPAWNS = 4
+		elseif DWP.settings_config.difficulty == 3 then
+			self._MAX_SIMULTANEOUS_SPAWNS = 5
+		elseif DWP.settings_config.difficulty == 4 then
+			self._MAX_SIMULTANEOUS_SPAWNS = 6
+		end
+	end
 	-- add headless dozers to the tank limit so they dont spawn indefinetly
 	if DWP.settings_config and DWP.settings_config.hostage_control then
 		self._special_unit_types.tank_hw = true
@@ -19,6 +28,19 @@ end)
 Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)
 	if not DWP.DWdifficultycheck then
 		return
+	end
+	
+	-- check tweak data surrender values, and update them if they dont match what we want. still got no clue why it sometimes resets, so just check for it ingame
+	if DWP.settings_config and DWP.settings_config.difficulty then
+		local surr_val_to_check = 0.2
+		if DWP.settings_config.difficulty == 2 or DWP.settings_config.difficulty == 3 then
+			surr_val_to_check = 0.15
+		elseif DWP.settings_config.difficulty == 4 then
+			surr_val_to_check = 0.1
+		end
+		if tweak_data.character.heavy_swat.surrender.base_chance ~= surr_val_to_check then
+			DWP:update_dom_values(DWP.settings_config.difficulty)
+		end
 	end
 
 	-- respawn rate multipliers
@@ -44,7 +66,7 @@ Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", funct
 	if DWP.settings_config.difficulty == 2 then
 		delay = 3
 	elseif DWP.settings_config.difficulty == 3 then
-		delay = 1.75
+		delay = 1.5
 	elseif DWP.settings_config.difficulty == 4 then
 		delay = 0.25
 	end
@@ -52,12 +74,42 @@ Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", funct
 	if self._spawning_groups and #self._spawning_groups >= 1 then
 		for i=1, #self._spawning_groups do
 			for _, sp in ipairs(self._spawning_groups[i].spawn_group.spawn_pts) do
-				if sp.interval then
-					-- because of the way this is calculated and invididual hostage multipliers above, killing hostages will always outweight kept hostages if #killed=#kept
-					sp.interval = delay * active_hostages_mul * killed_hostages_mul
-				end
-				if sp.delay_t then
-					sp.delay_t = sp.delay_t - (DWP.settings_config.difficulty * 7.5)
+				if self._assault_number then
+					if Global.level_data and Global.level_data.level_id == "nmh" and self._assault_number <= 2 then
+						if self._task_data.assault.phase == "anticipation" then
+							if sp.interval then
+								sp.interval = 0
+							end
+							if sp.delay_t then
+								sp.delay_t = 0
+							end
+						end
+					else
+						if self._hunt_mode then -- make cpt. Winters and scripted endless assaults more painful
+							if sp.interval and sp.interval > 1 then
+								sp.interval = delay * active_hostages_mul * killed_hostages_mul * 0.25
+							end
+						elseif not self._task_data.assault.phase or self._task_data.assault.phase == "fade" then -- disable spawns during fade and pre-anticipation nil phases
+							if sp.interval and sp.interval < 10 then
+								sp.interval = 10
+							end
+							if sp.delay_t then
+								sp.delay_t = sp.delay_t + 20
+							end
+						elseif self._task_data.assault.phase == "anticipation" then -- spawn as much stuff as we can during anticipation
+							if sp.interval and sp.interval > 1 then
+								sp.interval = 0.5
+							end
+							if sp.delay_t then
+								sp.delay_t = 0
+							end
+						else -- otherwise use standard delay calculations
+							if sp.interval then
+								-- because of the way this is calculated and invididual hostage multipliers above, killing hostages will always outweight kept hostages if #killed=#kept
+								sp.interval = delay * active_hostages_mul * killed_hostages_mul
+							end
+						end
+					end
 				end
 			end
 		end

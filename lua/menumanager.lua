@@ -44,6 +44,11 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
+	MenuCallbackHandler.DWPcb_ecm_feedback_mute = function(this, item)
+		DWP.settings.ecm_feedback_mute = tonumber(item:value())
+		DWP:Save()
+	end
+	
 	MenuCallbackHandler.DWPcb_gameplay_defaults = function(this, item)
 		DWP.menu_node._items_list[3]._current_index = 1
 		DWP.settings.difficulty = 1
@@ -59,6 +64,9 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		
 		DWP.menu_node._items_list[6].selected = 1
 		DWP.settings.deathSquadSniperHighlight = true
+		
+		DWP.menu_node._items_list[7]._current_index = 2
+		DWP.settings.ecm_feedback_mute = 2
 		
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()
@@ -154,30 +162,10 @@ Hooks:PostHook(MenuCallbackHandler, "start_job", "DWP_oncontractbought", functio
 	end
 end)
 
-function DWP_linkchangelog()
-	managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases")
-end
-
--- only pops up once in the main menu
-function DWP:changelog_message()
-	if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < 2.511 then
-		DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
-			local menu_options = {}
-			menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP_linkchangelog}
-			menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-			local message = "2.5.11 fix: Removed 2 units from murkywater spawn pools that dealt Death Sentence levels of damage with any weapon.\n\n2.5.1 Changelog:\n\nWelcome to the weapon variety patch! All enemies across all DW+ difficulties were granted new weapons. I recommend going through the full changelog for more info on all difficulty updates, since new weapons is not the only thing that was changed. Some highlights:\n\n -Green dozer is back! Now he can wield a stunning shotgun, to be more annoying then deadly\n -Turrets will no longer auto-repair themselves on all DW+ difficulties\n -Enemy intimidations were made slighlty harder\n -All enemy squads were re-done to ensure equal spread of enemy units"
-			local menu = QuickMenu:new("Death Wish +", message, menu_options)
-			menu:Show()
-			DWP.settings.changelog_msg_shown = 2.511
-			DWP:Save()
-		end)
-	end
-end
-
 Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node)
 	-- clear peer's vars if we quit to main menu
 	if type(node) == "table" and node._parameters.name == "main" then
-		DWP.changelog_message()
+		DWP:changelog_popup()
 		for i=1,4 do
 			DWP.players[i] = {
 				skills_shown = false,
@@ -192,19 +180,14 @@ Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_na
 				}
 			}
 		end
-		-- clear and warn about NGBTO incompatibility
-		if NoobJoin then
-			local plyrs = deep_clone(NoobJoin.Players)
-			NoobJoin = {}
-			NoobJoin.Players = plyrs
-			function NoobJoin:Show_Update_message()
-				DelayedCalls:Add("DWP_show_NGBTO_warning", 0.3, function()
-					local menu_options = {}
-					menu_options[1] = {text = "Ok", is_cancel_button = true}
-					local menu = QuickMenu:new("Death Wish +", "Death Wish + is incompatible with NGBTO (newbies go back to overkill) and will cause crashes mid game. Remove NGBTO to avoid crashes and this message.\n\nIf you want to limit access to your lobby use TDLQ's 'Lobby settings' mod. You can find it on their web site, NOT modworkshop.", menu_options)
-					menu:Show()
-				end)
-			end
+		if NoobJoin or BLT.Mods:GetModByName("Newbies go back to overkill") then
+			DWP:yoink_ngbto()
+			DelayedCalls:Add("DWP_show_NGBTO_warning", 0.8, function()
+				local menu_options = {}
+				menu_options[1] = {text = "Ok", is_cancel_button = true}
+				local menu = QuickMenu:new("Death Wish +", "Death Wish + is incompatible with NGBTO (newbies go back to overkill) and will cause crashes mid game. Remove NGBTO to avoid crashes and this message.\n\nIf you want to limit access to your lobby use TDLQ's 'Lobby settings' mod. You can find it on their web site, NOT modworkshop.", menu_options)
+				menu:Show()
+			end)
 		end
 	end
 	if type(node) == "table" and node._parameters.menu_id == "DWPmenu" then

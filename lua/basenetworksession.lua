@@ -3,7 +3,6 @@ if not DWP then
 	dofile(ModPath .. "lua/DWPbase.lua")
 end
 
--- its a bit better if we dont have duplication of our name in endstats to avoid this kind of shit: "player: player: 240(50)/2", tho clients will still see it, sadly there's no good way around it
 local function DWP_statsmessage(message)
 	if Network:is_server() then
 		-- msg ourselves first, with a nice looking prefix
@@ -49,7 +48,7 @@ Hooks:PostHook(BaseNetworkSession, "on_statistics_recieved", "DWP_endgamestats",
 				if DWP.settings.endstats_specials then specials = "(" .. peer_specials_kills .. ")" end
 				if DWP.settings.endstats_headshots then headshoots = " " .. peer_head_shots .. " |" end
 				if DWP.settings.endstats_accuracy then acc = " " .. accuracy .. "%" .. " |" end
-				local message = peer:name()..": | "..peer_kills..specials.." // "..downs.." |"..headshoots..acc
+				local message = "| "..peer_kills..specials.." // "..downs.." |"..headshoots..acc.." <- "..peer:name()
 				DWP_statsmessage(message)
 			end
 		end

@@ -10,52 +10,73 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	
 	DWP.CM:add_command("cops", {
 		callback = function(sender)
+			local msg = "Green FBI, blue SWAT, field sniper, Cpt. Winters' shields and medic bulldozer units were added to the mix. Special units spawn more often. All enemies have a wider variety of weapons. Bulldozers can sometimes wield the VD12 stun shotgun."
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "More enemies added: FBI and SWAT units from lower difficulties, field snipers, Cpt. Winters' shields and medic bulldozers. Specials spawn more often. All enemies have a wider variety of weapons. Green bulldozers can sometimes wield a stun shotgun.")
+				DWP.CM:private_chat_message(sender:id(), msg)
 			else
-				DWP.CM:public_chat_message("More enemies added: FBI and SWAT units from lower difficulties, field snipers, Cpt. Winters' shields and medic bulldozers. Specials spawn more often. All enemies have a wider variety of weapons. Green bulldozers can sometimes wield a stun shotgun.")
+				DWP.CM:public_chat_message(msg)
 			end
 		end
 	})
 
 	DWP.CM:add_command("cuffs", {
 		callback = function(sender)	
+			local msg = "After you begin an inteaction, any enemy that gets close enough to you can handcuff you. All enemies are able do this. You have 2 ways to get out if you are cuffed: get uncuffed by a teammate, or uncuff yourself after 60 seconds."
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "After you begin an inteaction, any enemy that gets close enough to you can handcuff you. All enemies are able do this. You have 2 ways to get out if you are cuffed: get uncuffed by a teammate, or uncuff yourself after 60 seconds.")
+				DWP.CM:private_chat_message(sender:id(), msg)
 			else
-				DWP.CM:public_chat_message("After you begin an inteaction, any enemy that gets close enough to you can handcuff you. All enemies are able do this. You have 2 ways to get out if you are cuffed: get uncuffed by a teammate, or uncuff yourself after 60 seconds.") 
+				DWP.CM:public_chat_message(msg) 
 			end
 		end
 	})
 
 	DWP.CM:add_command("dom", {
 		callback = function(sender)
+			local light_stats = {base = 0.35, factors = 0.2}
+			local heavy_stats = {base = 0.2, factors = 0.15}
+			if (Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.difficulty == 2) or (not Utils:IsInGameState() and DWP.settings.difficulty == 2) then
+				light_stats = {base = 0.25, factors = 0.2}
+				heavy_stats = {base = 0.15, factors = 0.15}
+			elseif (Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.difficulty == 3) or (not Utils:IsInGameState() and DWP.settings.difficulty == 3) then
+				light_stats = {base = 0.2, factors = 0.1}
+				heavy_stats = {base = 0.15, factors = 0}
+			elseif (Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.difficulty == 4) or (not Utils:IsInGameState() and DWP.settings.difficulty == 4) then
+				light_stats = {base = 0.15, factors = 0.1}
+				heavy_stats = {base = 0.1, factors = 0}
+			end
+			local msg_1 = "Street cops always give up instantly. Light swat surrender chances are set to "..tostring(light_stats.base * 100).."%. If you stun, flank or catch them during a reload, your chances are increased by "..tostring(light_stats.factors * 100).."% for each factor."
+			local msg_2 = "Heavy swat surrender chances are set to "..tostring(heavy_stats.base * 100).."%. If you stun, flank or catch them during a reload, your chances are increased by "..tostring(heavy_stats.factors * 100).."% for each factor. Getting enemies to <40% hp doubles your intimidation chances."
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "All cops are harder to intimidate, but weaker enemies like street cops, will be intimidated easier then heavily armored units. Enemies also give up easier if you:\n- Get them to less then 40% hp\n- Catch them during a reload, or when they are incapacitated")
+				DWP.CM:private_chat_message(sender:id(), msg_1)
+				DWP.CM:private_chat_message(sender:id(), msg_2)
 			else
-				DWP.CM:public_chat_message("All cops are harder to intimidate, but weaker enemies like street cops, will be intimidated easier then heavily armored units. Enemies also give up easier if you:\n- Get them to less then 40% hp\n- Catch them during a reload, or when they are incapacitated")
+				DWP.CM:public_chat_message(msg_1)
+				DWP.CM:public_chat_message(msg_2)
 			end
 		end
 	})
 	
 	DWP.CM:add_command("assault", {
 		callback = function(sender)
+			local msg = "Police assaults last longer. Breaks in-between assaults last longer and have lower enemy spawns. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster."
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Police assaults last about 2x as long, but breaks in-between assaults also last longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:private_chat_message(sender:id(), msg)
 			else
-				DWP.CM:public_chat_message("Police assaults last about 2x as long, but breaks in-between assaults also last longer. Amount of enemies that can exist on the map at the same time is lower, but they respawn quicker, so they can hit this limit much faster.")
+				DWP.CM:public_chat_message(msg)
 			end
 		end
 	})
 
 	DWP.CM:add_command("hostage", {
 		callback = function(sender)
+			local msg_1 = "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time."
+			local msg_2 = "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job."
 			if sender:id() ~= 1 then
-				DWP.CM:private_chat_message(sender:id(), "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
-				DWP.CM:private_chat_message(sender:id(), "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
+				DWP.CM:private_chat_message(sender:id(), msg_1)
+				DWP.CM:private_chat_message(sender:id(), msg_2)
 			else
-				DWP.CM:public_chat_message("Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time.")
-				DWP.CM:public_chat_message("In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job.")
+				DWP.CM:public_chat_message(msg_1)
+				DWP.CM:public_chat_message(msg_2)
 			end
 		end
 	})
@@ -76,7 +97,7 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
 				fou = " (Current)"
 			end
-			local msg = string.format("DW+ difficulty affects enemies' respawn speed, amount on the map, amount of special units, and used weapons. Higher difficulty = harder parameters. List of all 4 difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
+			local msg = string.format("DW+ difficulty affects enemy respawn speed, their amounts, special unit spawn frequency, and weapons enemies use. Higher difficulty = harder parameters. List of all 4 difficulties from easiest to hardest: DW+ classic%s; DW++%s; Insanity%s; Suicidal%s.",fir,sec,thir,fou)
 			if sender:id() ~= 1 then
 				DWP.CM:private_chat_message(sender:id(), msg)
 			else
@@ -85,34 +106,19 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 		end
 	})
 	
-	DWP.CM:add_command("med", {
-		in_game_only = true,
-		callback = function(sender)
-			local msg = " needs a MEDIC bag! Help your team."
-			if sender:name() then
-				if sender:id() == 1 then
-					DWP.CM:public_chat_message(msg)
-				else
-					DWP.CM:public_chat_message(sender:name()..msg)
+	DWP.CM:add_command("ecm", {
+		callback = function(sender)	
+			local msg = "ECM vulnerability is using vanilla values, do not worry hacker player, you are okay :)"
+			if (Utils:IsInGameState() and DWP.settings_config.ecm_feedback_mute and DWP.settings_config.ecm_feedback_mute >= 2) or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute >= 2) then
+				msg = "ECM stun effect both for Hacker perk and a standard deployable ECM have 20% chances to stun enemies, instead of vanilla chances of 80-100%. While ECM feedback is active, Hacker perk deck can still recieve dodge/heal bonuses, even if enemies are not stunned."
+				if DWP.settings_config.ecm_feedback_mute == 3 or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute == 3) then
+					msg = "ECM stun effect both for Hacker perk and a standard deployable ECM have 0% chances to stun enemies. While ECM feedback is active, Hacker perk deck can still recieve dodge/heal bonuses, even if enemies are not visually stunned."
 				end
-			else
-				DWP.CM:public_chat_message("Someone"..msg)
 			end
-		end
-	})
-
-	DWP.CM:add_command("ammo", {
-		in_game_only = true,
-		callback = function(sender)
-			local msg = " ran out of AMMO! Help your team."
-			if sender:name() then
-				if sender:id() == 1 then
-					DWP.CM:public_chat_message(msg)
-				else
-					DWP.CM:public_chat_message(sender:name()..msg)
-				end
+			if sender:id() ~= 1 then
+				DWP.CM:private_chat_message(sender:id(), msg)
 			else
-				DWP.CM:public_chat_message("Someone"..msg)
+				DWP.CM:public_chat_message(msg) 
 			end
 		end
 	})

@@ -49,7 +49,7 @@ function ChatManager:receive_message_by_peer(channel_id, peer, message)
 	orig_receive(self, channel_id, peer, message)
 
 	-- proccessing requests if we are hosting
-	if DWP.CM then
+	if DWP.CM and DWP.DWdifficultycheck then
 		if Network:is_server() then
 			if peer:id() ~= DWP.CM:local_peer():id() then
 				if DWP.CM:validPrefix(message:sub(1, 1)) then

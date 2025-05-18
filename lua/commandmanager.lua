@@ -65,7 +65,7 @@ if not DWP.CM then
 		local command = self.commands and self.commands[lower_cmd]
 		
 		if not command then
-			if not Network:is_client() then
+			if Network:is_server() then
 				if DWP.DWdifficultycheck then
 					self:private_chat_message(sender:id(), "Such command doesn't exist.")
 					return

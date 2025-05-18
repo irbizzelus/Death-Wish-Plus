@@ -25,7 +25,6 @@ local access_type_all = {
 Hooks:PostHook(GroupAITweakData, "_init_unit_categories", "DWPtweak_initunitcategories", function(self, difficulty_index)
 	if difficulty_index == 7 then
 		DWP.DWdifficultycheck = true
-		DWP.update_tweak_data()
 		-- snapshot of our settings that are used for the current game
 		if not DWP.settings_config then
 			DWP.settings_config = clone(DWP.settings)
@@ -895,7 +894,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		})
 	}
 	
-	self.enemy_spawn_groups.CS_shields = {
+	self.enemy_spawn_groups.tac_tazer_charge = { -- CS_shields
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
 			{
@@ -924,7 +923,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	}
-	self.enemy_spawn_groups.CS_tazers = {
+	self.enemy_spawn_groups.tac_tazer_flanking = { -- CS_tazers
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
 			{
@@ -1031,7 +1030,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 	
 	-- dozers
 	if DWP.settings.difficulty <= 2 then
-		self.enemy_spawn_groups.FBI_tanks = {
+		self.enemy_spawn_groups.tac_bull_rush = { -- FBI_tanks
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {
 				{
@@ -1053,7 +1052,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	elseif DWP.settings.difficulty == 3 then
-		self.enemy_spawn_groups.FBI_tanks = {
+		self.enemy_spawn_groups.tac_bull_rush = { -- FBI_tanks
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {
 				{
@@ -1075,7 +1074,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	else
-		self.enemy_spawn_groups.FBI_tanks = {
+		self.enemy_spawn_groups.tac_bull_rush = { -- FBI_tanks
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {
 				{
@@ -1231,7 +1230,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 			}
 		}
 	}
-	self.enemy_spawn_groups.GS_heavy_greys = {
+	self.enemy_spawn_groups.tac_swat_rifle_flank = { -- GS_heavy_greys
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
 			{
@@ -1261,7 +1260,7 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	}
 
-	self.enemy_spawn_groups.FBI_shield_green = {
+	self.enemy_spawn_groups.tac_shield_wall = { -- FBI_shield_green
 		amount = {3 * squadmul, 3 * squadmul},
 		spawn = {
 			{
@@ -1462,21 +1461,37 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		}
 		
 		-- self-explanatory
-		self.besiege.assault.delay = {
-			4,
-			35,
-			35
-		}
-		
-		-- if we have hostages increase delay by 15 seconds, tbh barely does anything since cops still respawn, but it does affect squad spawn choises
 		if Global and Global.level_data and Global.level_data.level_id == "nmh" then
-			-- no mercy will be the only map where having hostages with HC enabled does not provide extra long delays, because its usually really easy to clear the map of enemies during the fade period
-			self.besiege.assault.hostage_hesitation_delay = {
-				1,
-				15,
+			self.besiege.assault.delay = {
+				4,
+				10,
 				15
 			}
-		elseif Global and Global.level_data and not Global.level_data.level_id == "nmh" and DWP.settings.hostage_control then
+		else
+			self.besiege.assault.delay = {
+				4,
+				30,
+				30
+			}
+		end
+		
+		-- if we have hostages increase delay by a few seconds. hostage control value here
+		if Global and Global.level_data and Global.level_data.level_id == "nmh" then
+			-- no mercy will be the only map where having hostages with HC enabled does not provide extra long delays, because its usually really easy to clear the map of enemies during the fade period
+			if DWP.settings.hostage_control then
+				self.besiege.assault.hostage_hesitation_delay = {
+					1,
+					17,
+					17
+				}
+			else
+				self.besiege.assault.hostage_hesitation_delay = {
+					1,
+					5,
+					5
+				}
+			end
+		elseif DWP.settings.hostage_control then
 			self.besiege.assault.hostage_hesitation_delay = {
 				35,
 				35,
@@ -1484,9 +1499,9 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 			}
 		else
 			self.besiege.assault.hostage_hesitation_delay = {
-				15,
-				15,
-				15
+				10,
+				10,
+				10
 			}
 		end
 		
@@ -1505,11 +1520,20 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 		}
 		
 		-- Total max cop spawns per each assault
-		self.besiege.assault.force_pool = {
-			math.floor(DWP.settings.assforce_pool),
-			math.floor(DWP.settings.assforce_pool),
-			math.floor(DWP.settings.assforce_pool)
-		}
+		if Global and Global.level_data and Global.level_data.level_id == "nmh" then
+			self.besiege.assault.force_pool = {
+				math.floor(DWP.settings.assforce_pool * 1.25),
+				math.floor(DWP.settings.assforce_pool * 1.25),
+				math.floor(DWP.settings.assforce_pool * 1.25)
+			}
+		else
+			self.besiege.assault.force_pool = {
+				math.floor(DWP.settings.assforce_pool),
+				math.floor(DWP.settings.assforce_pool),
+				math.floor(DWP.settings.assforce_pool)
+			}
+		end
+		
 		self.besiege.assault.force_pool_balance_mul = {
 			1,
 			1,
@@ -1594,8 +1618,6 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 				mex = 1.7,
 				-- this is the worst map design in this game after goat sim, and i am forced to tweak it. great.
 				mex_cooking = 1.75,
-				-- almir breakout - suprisingly the first in this list that is actually increased
-				pex = 2.65,
 				-- brooklyn the bank
 				brb = 2.15,
 				-- henry's cock
@@ -1681,13 +1703,9 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 	
 	end
 	
-	-- crashes NGBTO if host runs it and somehow manages to get into a match. This mod is for assholes/elitists, so screw them
-	-- if you are reading this and disagree look up 'Lobby settings' by TDLQ
-	DelayedCalls:Add("DWP_clear_NGBTO", 10, function()
-		if NoobJoin then
-			NoobJoin = {}
-		end
-	end)	
+	if NoobJoin or BLT.Mods:GetModByName("Newbies go back to overkill") then
+		DWP:yoink_ngbto()
+	end	
 end)
 
 function GroupAITweakData:_init_enemy_spawn_groups_level(tweak_data, difficulty_index)
@@ -1800,6 +1818,9 @@ end
 
 --shields have more heavies then tazers
 function GroupAITweakData:init_taskdata_deathwish_1()
+	
+	DWP:update_dom_values(1)
+	
 	--48
 	self.besiege.assault.force = {
 		9.6,
@@ -1834,18 +1855,18 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			0.0641,
 			0.0641
 		},
-		GS_heavy_greys = {
+		tac_swat_rifle_flank = { -- GS_heavy_greys
 			0,
 			0.0641,
 			0.0641
 		},
 		-- shield: 27.5; tank: 20; tazer: 26; DS: 6.5; spook: 20
-		CS_shields = {
+		tac_tazer_charge = { -- CS_shields
 			0.2,
 			calculate_special_chance(0.04125, 2),
 			calculate_special_chance(0.04125, 3)
 		},
-		FBI_shield_green = {
+		tac_shield_wall = { -- FBI_shield_green
 			0,
 			calculate_special_chance(0.04125, 2),
 			calculate_special_chance(0.04125, 3)
@@ -1855,12 +1876,12 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 			calculate_special_chance(0.04125, 2),
 			calculate_special_chance(0.04125, 3)
 		},
-		FBI_tanks = {
+		tac_bull_rush = { -- FBI_tanks
 			0,
 			calculate_special_chance(0.09, 2),
 			calculate_special_chance(0.09, 3)
 		},
-		CS_tazers = {
+		tac_tazer_flanking = { -- CS_tazers
 			0.1,
 			calculate_special_chance(0.117, 2),
 			calculate_special_chance(0.117, 3)
@@ -1950,6 +1971,9 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 end
 
 function GroupAITweakData:init_taskdata_deathwish_2()
+	
+	DWP:update_dom_values(2)
+	
 	--60
 	self.besiege.assault.force = {
 		12,
@@ -1984,18 +2008,18 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			0.075,
 			0.075
 		},
-		GS_heavy_greys = {
+		tac_swat_rifle_flank = { -- GS_heavy_greys
 			0,
 			0.075,
 			0.075
 		},
 		-- shield: 27.5; tank: 22; tazer: 24; DS: 8.5; spook: 18
-		CS_shields = {
+		tac_tazer_charge = { -- CS_shields
 			0.2,
 			calculate_special_chance(0.04583, 2),
 			calculate_special_chance(0.04583, 3)
 		},
-		FBI_shield_green = {
+		tac_shield_wall = { -- FBI_shield_green
 			0,
 			calculate_special_chance(0.04583, 2),
 			calculate_special_chance(0.04583, 3)
@@ -2005,12 +2029,12 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 			calculate_special_chance(0.04583, 2),
 			calculate_special_chance(0.04583, 3)
 		},
-		FBI_tanks = {
+		tac_bull_rush = { -- FBI_tanks
 			0,
 			calculate_special_chance(0.11, 2),
 			calculate_special_chance(0.11, 3)
 		},
-		CS_tazers = {
+		tac_tazer_flanking = { -- CS_tazers
 			0.1,
 			calculate_special_chance(0.12, 2),
 			calculate_special_chance(0.12, 3)
@@ -2100,6 +2124,9 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 end
 
 function GroupAITweakData:init_taskdata_deathwish_3()
+	
+	DWP:update_dom_values(3)
+	
 	--76
 	self.besiege.assault.force = {
 		15.2,
@@ -2134,18 +2161,18 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.08,
 			0.08
 		},
-		GS_heavy_greys = {
+		tac_swat_rifle_flank = { -- GS_heavy_greys
 			0,
 			0.08,
 			0.08
 		},
 		-- shield: 26; tank: 26; tazer: 20; DS: 11; spook: 17
-		CS_shields = {
+		tac_tazer_charge = { -- CS_shields
 			0.2,
 			calculate_special_chance(0.052, 2),
 			calculate_special_chance(0.052, 3)
 		},
-		FBI_shield_green = {
+		tac_shield_wall = { -- FBI_shield_green
 			0,
 			calculate_special_chance(0.052, 2),
 			calculate_special_chance(0.052, 3)
@@ -2155,12 +2182,12 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			calculate_special_chance(0.052, 2),
 			calculate_special_chance(0.052, 3)
 		},
-		FBI_tanks = {
+		tac_bull_rush = { -- FBI_tanks
 			0,
 			calculate_special_chance(0.156, 2),
 			calculate_special_chance(0.156, 3)
 		},
-		CS_tazers = {
+		tac_tazer_flanking = { -- CS_tazers
 			0.1,
 			calculate_special_chance(0.12, 2),
 			calculate_special_chance(0.12, 3)
@@ -2250,6 +2277,9 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 end
 
 function GroupAITweakData:init_taskdata_deathwish_4()
+	
+	DWP:update_dom_values(4)
+	
 	--100
 	self.besiege.assault.force = {
 		20,
@@ -2284,18 +2314,18 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.08,
 			0.08
 		},
-		GS_heavy_greys = {
+		tac_swat_rifle_flank = { -- GS_heavy_greys
 			0,
 			0.08,
 			0.08
 		},
 		-- shield: 27; tank: 30; tazer: 15; DS: 13; spook: 15
-		CS_shields = {
+		tac_tazer_charge = { -- CS_shields
 			0.2,
 			calculate_special_chance(0.063, 2),
 			calculate_special_chance(0.063, 3)
 		},
-		FBI_shield_green = {
+		tac_shield_wall = { -- FBI_shield_green
 			0,
 			calculate_special_chance(0.063, 2),
 			calculate_special_chance(0.063, 3)
@@ -2305,12 +2335,12 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			calculate_special_chance(0.063, 2),
 			calculate_special_chance(0.063, 3)
 		},
-		FBI_tanks = {
+		tac_bull_rush = { -- FBI_tanks
 			0,
 			calculate_special_chance(0.21, 2),
 			calculate_special_chance(0.21, 3)
 		},
-		CS_tazers = {
+		tac_tazer_flanking = { -- CS_tazers
 			0.1,
 			calculate_special_chance(0.105, 2),
 			calculate_special_chance(0.105, 3)

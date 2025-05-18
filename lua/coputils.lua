@@ -5,9 +5,9 @@ end
 if not DWP.CopUtils then
 	DWP.CopUtils = {}
 	-- Search radius for interacing player
-	DWP.CopUtils._arrest_search_radius = 750
+	DWP.CopUtils._arrest_search_radius = 1200
 	-- How far can unit be to arrest a player 
-	DWP.CopUtils._arrest_action_radius = 150
+	DWP.CopUtils._arrest_action_radius = 175
 	
 	-- Checks if the local player should be arrested
 	function DWP.CopUtils:CheckLocalMeleeDamageArrest(player_unit, attacker_unit, is_melee)
@@ -226,11 +226,16 @@ if not DWP.CopUtils then
 						-- Check every enemy in radius, make sure its actually an enemy
 						for i, enemy in pairs(enemies) do
 							if self:AreUnitsEnemies(player_unit, enemy) then
-								local enemy_chartweak = enemy:base():char_tweak()
-								if enemy_chartweak.access ~= "gangster" then
-									player_unit:movement():on_cuffed()
-									enemy:sound():say("i03", true, false)
-									return
+								-- cast a ray from player's to enemy's unit position, if enviroment is hit on the way, dont cuff. TLDR: LOS Check
+								-- positions are slighlty raised on vertical axis to avoid checks on feet level
+								local world_geometry_raycast = World:raycast( "ray", player_unit:position() + Vector3(0, 0, 50), enemy:position() + Vector3(0, 0, 80), "slot_mask", managers.slot:get_mask( "world_geometry" ))
+								if not world_geometry_raycast then
+									local enemy_chartweak = enemy:base():char_tweak()
+									if enemy_chartweak.access ~= "gangster" then
+										player_unit:movement():on_cuffed()
+										enemy:sound():say("i03", true, false)
+										return
+									end
 								end
 							end
 						end

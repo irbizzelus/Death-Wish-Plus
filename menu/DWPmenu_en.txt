@@ -3,7 +3,7 @@
 	"DWP_blank": "",
 
 	"DWP_gameplay_header": "---- GAMEPLAY OPTIONS ----",
-	"DWP_gameplay_header_desc": "Gameplay changes can only be applied if you are the host.",
+	"DWP_gameplay_header_desc": "Gameplay changes can only be applied if you are the host. To apply changes restart the heist.",
 	"DWP_difficulty": "Difficulty",
 	"DWP_difficulty_desc": "Choose a difficulty preset. For info on exact value differences go to DW+ Modworkshop mod page - gameplay customization.",
 	"DWP_difficulty_1": "DW+ classic",
@@ -16,6 +16,12 @@
 	"DWP_hostage_control_desc": "If enabled, keeping hostages increases assault break duration, slows down enemy respawn speed, reduces chances for special unit spawns and lowers total amount of cops on the map. Killing hostages does the opposite, as well as adds 2 new punishment mechanics after certain amount of kills.",
 	"DWP_deathSquadSniperHighlight": "Sniper highlight",
 	"DWP_deathSquadSniperHighlight_desc": "If enabled, snipers that spawn as part of the 'Death Squad' (Winter's Shield + 2 field snipers) will get a red highlight.",
+	"DWP_ecm_feedback_mute": "ECM feedback",
+	"DWP_ecm_feedback_mute_desc": "Select how ECM feedback stun effect is handled. 'Allowed' is vanilla behaviour, 'Reduced' makes ECM stun chances much lower, and 'Muted' completely disables ECM feedback stun effect.",
+	"DWP_ecm_feedback_mute_1": "Allowed",
+	"DWP_ecm_feedback_mute_2": "Reduced",
+	"DWP_ecm_feedback_mute_3": "Muted",
+	
 	"DWP_gameplay_defaults": "Reset to defaults",
 	"DWP_gameplay_defaults_desc": "Click this button to reset all gameplay options to deafult settings.",
 	

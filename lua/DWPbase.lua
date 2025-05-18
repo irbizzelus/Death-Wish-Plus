@@ -3,12 +3,15 @@ if not DWP then
     _G.DWP = {}
 	DWP._path = ModPath
     DWP.DWdifficultycheck = false
+	DWP.version = "2.6"
+	DWP.version_num = 2.6 -- this one is used for comparing to the current save file. only updated if the pop up message needs to include important patch info
 	DWP.settings = {
 		-- gameplay
 		difficulty = 1,
 		assforce_pool = 400,
 		hostage_control = true,
 		deathSquadSniperHighlight = true,
+		ecm_feedback_mute = 2,
 		-- visuals
 		DSdozer = true,
 		marshal_uniform = 2,
@@ -51,6 +54,26 @@ if not DWP then
 			0
 		},
 	}
+	
+	function DWP:linkchangelog()
+		managers.network.account:overlay_activate("url", "https://github.com/irbizzelus/Death-Wish-Plus/releases")
+	end
+	
+	-- only pops up once in the main menu
+	function DWP:changelog_popup()
+		if not DWP.settings.changelog_msg_shown or DWP.settings.changelog_msg_shown < DWP.version_num then
+			DelayedCalls:Add("DWP_showchangelogmsg_delayed", 1, function()
+				local menu_options = {}
+				menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP.linkchangelog}
+				menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
+				local message = "2.6 Changelog:\nFor the most part this update brings QOL updates from my recent mod 'Death Sentence, but Worse', but a few balance updates are also included. Patch highlights:\n\n- Added new gameplay modifier: ECM stun immunity. Can be tweaked or disabled in mod options.\n- Enemy intimidations now scale with chosen DW+ difficulty. Previous values are used in DW++ difficulty, while others were tweaked. For exact values you can use /dom command.\n- Cuffing mechanic now has a line of sight check to prevent cuffing through walls.\n- DW+ lobbies will be highlighted on CrimeNet for you if you run DW+\n\n There are also a few additional balance updates and fixes for assault pacing and enemy spawns, as well as a few other QOL updates."
+				local menu = QuickMenu:new("Death Wish +", message, menu_options)
+				menu:Show()
+				DWP.settings.changelog_msg_shown = DWP.version_num
+				DWP:Save()
+			end)
+		end
+	end
 	
 	function DWP.HostageControl:warn_peer(peer, peer_id, civilian_killed)
 		local message = ""
@@ -154,23 +177,24 @@ if not DWP then
 	dofile(ModPath .. "lua/coputils.lua")
 
 	-- Change the surrender presets to harder ones
-	function DWP:update_tweak_data()
+	function DWP:update_dom_values(diff)
 		if not tweak_data then
-			DelayedCalls:Add("updateDomsAfterTweakdataHasLoaded", 0.2, function()
-				DWP:update_tweak_data()
+			DelayedCalls:Add("DWP_DomUpdateWaitOnTweakData", 0.2, function()
+				DWP:update_dom_values(diff)
 			end)
 		else
 			if not Network:is_server() then
 				return
 			end
-			-- Easy surrender preset, used for guards and cops
+			
+			-- Instant surrender preset - used by guards and cops
 			local surrender_preset_easy = {
-				base_chance = 0.85,
+				base_chance = 1,
 				significant_chance = 0,
 				reasons = {
 					health = {
 						[1] = 0,
-						[0.99] = 0.2
+						[0.69] = 0
 					},
 					weapon_down = 0,
 					pants_down = 0,
@@ -186,53 +210,103 @@ if not DWP then
 					}
 				}
 			}
-			-- Normal preset, used for light swats
+			
+			-- Light swat preset
 			local surrender_preset_normal = {
-				base_chance = 0.3,
+				base_chance = 0.35,
 				significant_chance = 0,
 				reasons = {
 					health = {
 						[1] = 0,
-						[0.4] = 0.3
+						[0.4] = 0.35
 					},
-					weapon_down = 0.3,
-					pants_down = 0.3
+					weapon_down = 0.2,
+					pants_down = 0.2
 				},
 				factors = {
 					isolated = 0,
-					flanked = 0.3,
+					flanked = 0.2,
 					unaware_of_aggressor = 0,
 					enemy_weap_cold = 0,
 					aggressor_dis = {
 						[500] = 0,
-						[150] = 0.2
+						[150] = 0
 					}
 				}
 			}
-			-- Hardest preset, used for heavy swats
+			
+			-- Heavy swat preset
 			local surrender_preset_hard = {
-				base_chance = 0.1,
+				base_chance = 0.2,
 				significant_chance = 0,
 				reasons = {
 					health = {
 						[1] = 0,
-						[0.40] = 0.1
+						[0.40] = 0.2
 					},
-					weapon_down = 0.1,
-					pants_down = 0.1
+					weapon_down = 0.15,
+					pants_down = 0.15
 				},
 				factors = {
 					isolated = 0,
-					flanked = 0,
+					flanked = 0.15,
 					unaware_of_aggressor = 0,
 					enemy_weap_cold = 0,
 					aggressor_dis = {
 						[500] = 0,
-						[150] = 0.05
+						[150] = 0
 					}
 				}
 			}
-			-- Give the guards and light cops an "easy" preset
+			
+			if diff == 2 then
+				surrender_preset_normal.base_chance = 0.25
+				surrender_preset_normal.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.25
+				}
+				surrender_preset_hard.base_chance = 0.15
+				surrender_preset_hard.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.15
+				}
+			elseif diff == 3 then
+				surrender_preset_normal.base_chance = 0.2
+				surrender_preset_normal.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.2
+				}
+				surrender_preset_normal.reasons.weapon_down = 0.1
+				surrender_preset_normal.reasons.pants_down = 0.1
+				surrender_preset_normal.factors.flanked = 0.1
+				surrender_preset_hard.base_chance = 0.15
+				surrender_preset_hard.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.15
+				}
+				surrender_preset_hard.reasons.weapon_down = 0
+				surrender_preset_hard.reasons.pants_down = 0
+				surrender_preset_hard.factors.flanked = 0
+			elseif diff == 4 then
+				surrender_preset_normal.base_chance = 0.15
+				surrender_preset_normal.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.15
+				}
+				surrender_preset_normal.reasons.weapon_down = 0.1
+				surrender_preset_normal.reasons.pants_down = 0.1
+				surrender_preset_normal.factors.flanked = 0.1
+				surrender_preset_hard.base_chance = 0.1
+				surrender_preset_hard.reasons.health = {
+					[1] = 0,
+					[0.4] = 0.1
+				}
+				surrender_preset_hard.reasons.weapon_down = 0
+				surrender_preset_hard.reasons.pants_down = 0
+				surrender_preset_hard.factors.flanked = 0
+			end
+			
+			-- Give the guards and light cops the "easy" preset
 			tweak_data.character.security.surrender = surrender_preset_easy
 			tweak_data.character.cop.surrender = surrender_preset_easy
 			tweak_data.character.fbi.surrender = surrender_preset_easy
@@ -246,6 +320,7 @@ if not DWP then
 			tweak_data.character.heavy_swat.surrender = surrender_preset_hard
 			tweak_data.character.fbi_heavy_swat.surrender = surrender_preset_hard
 			
+			-- fuck these things
 			tweak_data.weapon.swat_van_turret_module.AUTO_REPAIR = false
 			tweak_data.weapon.aa_turret_module.AUTO_REPAIR = false
 			tweak_data.weapon.crate_turret_module.AUTO_REPAIR = false
@@ -318,7 +393,7 @@ if not DWP then
 					if not peer then
 						return
 					end
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. 2.5.12) with some gameplay changes:"
+					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. "..tostring(DWP.version)..") with some gameplay changes:"
 					if managers.network:session() and managers.network:session():peers() then
 						peer:send("request_player_name_reply", "DW+")
 						peer:send("send_chat_message", ChatManager.GAME, message)
@@ -360,9 +435,16 @@ if not DWP then
 							diff = "'Suicidal'"
 						end
 						peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
-						peer:send("send_chat_message", ChatManager.GAME, "Enemies are harder to intimidate: /dom")
-						peer:send("send_chat_message", ChatManager.GAME, "Enemy variety tweaks: /cops")
-						peer:send("send_chat_message", ChatManager.GAME, "Police assault tweaks: /assault")
+						if DWP.settings_config and DWP.settings_config.ecm_feedback_mute and DWP.settings_config.ecm_feedback_mute >= 2 then
+							if DWP.settings_config.ecm_feedback_mute == 2 then
+								peer:send("send_chat_message", ChatManager.GAME, "ECM feedback stun effect is NERFED: /ecm")
+							elseif DWP.settings_config.ecm_feedback_mute == 3 then
+								peer:send("send_chat_message", ChatManager.GAME, "ECM feedback stun effect is DISABLED: /ecm")
+							end
+						end
+						peer:send("send_chat_message", ChatManager.GAME, "Enemies are now much harder to intimidate: /dom")
+						peer:send("send_chat_message", ChatManager.GAME, "Enemy variety was tweaked: /cops")
+						peer:send("send_chat_message", ChatManager.GAME, "Police assault pace was tweaked: /assault")
 						if DWP.settings_config and DWP.settings_config.hostage_control then
 							local hostage_control_msg = "Penalties(bonuses) for killing(controlling) hostages were added: /hostage"
 							if DWP.HostageControl and DWP.HostageControl.globalkillcount and DWP.HostageControl.globalkillcount >= 1 then
@@ -371,7 +453,7 @@ if not DWP then
 							peer:send("send_chat_message", ChatManager.GAME, hostage_control_msg)
 						end
 						peer:send("send_chat_message", ChatManager.GAME, "Current mod difficulty: "..diff..": /diff")
-						peer:send("send_chat_message", ChatManager.GAME, "Use chat commands above to recieve personal messages with more info on said gameplay changes. You can also use /med and /ammo to ask for help.")
+						peer:send("send_chat_message", ChatManager.GAME, "Use chat commands above to recieve personal messages with more info on said gameplay changes. Good luck and have fun!")
 						if DWP and not MenuCallbackHandler:is_modded_client() then
 							peer:send("send_chat_message", ChatManager.GAME, "Lastly, "..managers.network.account:username().." seems to have a hidden mod list, you can request their modlist using /hostmods.")
 						end
@@ -530,5 +612,12 @@ if not DWP then
 		else
 			DWP.players[peer_id].hours_shown = true
 		end
+	end
+	
+	function DWP:yoink_ngbto()
+		DelayedCalls:Add("DWP_fuckoffngbto", 1, function()
+			BLT.Mods:GetModByName("Newbies go back to overkill"):SetEnabled(false, true)
+			DS_BW:yoink_ngbto()
+		end)
 	end
 end
