@@ -3,8 +3,8 @@ if not DWP then
     _G.DWP = {}
 	DWP._path = ModPath
     DWP.DWdifficultycheck = false
-	DWP.version = "2.6"
-	DWP.version_num = 2.6 -- this one is used for comparing to the current save file. only updated if the pop up message needs to include important patch info
+	DWP.version = "2.7"
+	DWP.version_num = 2.7 -- this one is used for comparing to the current save file. only update if the pop up message needs to include important patch info
 	DWP.settings = {
 		-- gameplay
 		difficulty = 1,
@@ -45,6 +45,7 @@ if not DWP then
 	end
 	DWP.color = Color(255,217,0,217) / 255
 	DWP.end_stats_printed = false
+	DWP.peers_with_mod = {}
 	DWP.HostageControl = {
 		globalkillcount = 0,
 		PeerHostageKillCount = {
@@ -66,7 +67,7 @@ if not DWP then
 				local menu_options = {}
 				menu_options[#menu_options+1] ={text = "Check full changelog", data = nil, callback = DWP.linkchangelog}
 				menu_options[#menu_options+1] = {text = "Cancel", is_cancel_button = true}
-				local message = "2.6 Changelog:\nFor the most part this update brings QOL updates from my recent mod 'Death Sentence, but Worse', but a few balance updates are also included. Patch highlights:\n\n- Added new gameplay modifier: ECM stun immunity. Can be tweaked or disabled in mod options.\n- Enemy intimidations now scale with chosen DW+ difficulty. Previous values are used in DW++ difficulty, while others were tweaked. For exact values you can use /dom command.\n- Cuffing mechanic now has a line of sight check to prevent cuffing through walls.\n- DW+ lobbies will be highlighted on CrimeNet for you if you run DW+\n\n There are also a few additional balance updates and fixes for assault pacing and enemy spawns, as well as a few other QOL updates."
+				local message = "2.7 Changelog - a few QOL updates ported from DSBW:\n\n- Handcuffing mechanic will now be handled by clients if they have DW+ installed, which will allow for better experience for those players if they are playing on high ping.\n- Added preventions for captain Winters, so that his endless assault will properly finish without bugging out if he is \"killed\" too quickly.\n- Captain Winters will no longer be able to spawn during first 4 minutes of an assault, and his overall chances to appear were slightly increased."
 				local menu = QuickMenu:new("Death Wish +", message, menu_options)
 				menu:Show()
 				DWP.settings.changelog_msg_shown = DWP.version_num
@@ -90,7 +91,7 @@ if not DWP then
 					message = "[DW+] Your bloodlust won't make this job any easier."
 				else
 					-- since its a bit rare lol
-					log("[DW+] 'Do you like hurting other people?' was sent to peer "..tostring(peer_id))
+					log("[DW+] \"Do you like hurting other people?\" was sent to peer "..tostring(peer_id))
 					message = "[DW+] Do you like hurting other people?"
 				end
 			end
@@ -139,7 +140,7 @@ if not DWP then
     -- Notify the user if something went wrong
     if not configResult then
         Hooks:Add("MenuManagerOnOpenMenu", "DWP_configcorrupted", function(menu_manager, nodes)            
-            QuickMenu:new("Death With + Error", "Your 'Death With +' options file was corrupted, all the mod options have been reset to defaults.", {
+            QuickMenu:new("Death With + Error", "Your \"Death With +\" options file was corrupted, all the mod options have been reset to defaults.", {
                 [1] = {
                     text = "OK",
                     is_cancel_button = true
@@ -380,8 +381,28 @@ if not DWP then
 	end
 	
 	function DWP:welcomemsg1(peer_id) -- welcome message for clients
+		local diff_id = 1
+		if Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.difficulty then
+			diff_id = DWP.settings_config.difficulty
+		elseif DWP.settings.difficulty then
+			diff_id = DWP.settings.difficulty
+		end
+		local ecm_id = 1
+		if Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.ecm_feedback_mute then
+			ecm_id = DWP.settings_config.ecm_feedback_mute
+		elseif DWP.settings.ecm_feedback_mute then
+			ecm_id = DWP.settings.ecm_feedback_mute
+		end
+		local hostage_control = 1
+		if Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.hostage_control then
+			hostage_control = 2
+		elseif DWP.settings.hostage_control then
+			hostage_control = 2
+		end
+		local settings_string = "|"..tostring(diff_id).."|"..tostring(ecm_id).."|"..tostring(hostage_control).."|"
+		LuaNetworking:SendToPeersExcept(1, "DWP_sync", "Hello_"..tostring(DWP.version)..settings_string)
 		if Network:is_server() and DWP.DWdifficultycheck == true then
-			DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 0.3, function()
+			DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 1.2, function()
 				local peer = managers.network:session():peer(peer_id)
 				
 				if peer == managers.network:session():local_peer() then
@@ -393,11 +414,13 @@ if not DWP then
 					if not peer then
 						return
 					end
-					local message = "Welcome "..peer:name().."! This lobby runs 'Death Wish +' mod (Ver. "..tostring(DWP.version)..") with some gameplay changes:"
+					local message = "Welcome "..peer:name().."! This lobby runs \"Death Wish +\" mod (Ver. "..tostring(DWP.version)..") with some gameplay changes:"
 					if managers.network:session() and managers.network:session():peers() then
-						peer:send("request_player_name_reply", "DW+")
-						peer:send("send_chat_message", ChatManager.GAME, message)
 						DWP.players[peer_id].welcome_msg1_shown = true
+						if not DWP.peers_with_mod[peer_id] then
+							peer:send("request_player_name_reply", "DW+")
+							peer:send("send_chat_message", ChatManager.GAME, message)
+						end
 					end
 				end
 			end)
@@ -406,7 +429,7 @@ if not DWP then
 
 	function DWP:welcomemsg2(peer_id)
 		if Network:is_server() and DWP.DWdifficultycheck == true then
-			DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 0.9, function()
+			DelayedCalls:Add("DWP:DWwelcomemsg2topeer" .. tostring(peer_id), 1.6, function()
 				local peer = managers.network:session():peer(peer_id)
 				
 				if peer == managers.network:session():local_peer() then
@@ -418,23 +441,23 @@ if not DWP then
 					if not peer then
 						return
 					end
-					if managers.network:session() and managers.network:session():peers() then
-						local diff = "'DW+ Classic'"
+					if managers.network:session() and managers.network:session():peers() and not DWP.peers_with_mod[peer_id] then
+						local diff = "\"DW+ Classic\""
 						if DWP.settings_config and DWP.settings_config.difficulty == 2 then
-							diff = "'DW++'"
+							diff = "\"DW++\""
 						elseif  DWP.settings_config and DWP.settings_config.difficulty == 3 then
-							diff = "'Insanity'"
+							diff = "\"Insanity\""
 						elseif DWP.settings_config and DWP.settings_config.difficulty == 4 then
-							diff = "'Suicidal'"
+							diff = "\"Suicidal\""
 						-- if settings config wasnt created yet, take whatever host selected in options, even though its not yet confirmed
 						elseif DWP.settings.difficulty == 2 then
-							diff = "'DW++'"
+							diff = "\"DW++\""
 						elseif DWP.settings.difficulty == 3 then
-							diff = "'Insanity'"
+							diff = "\"Insanity\""
 						elseif DWP.settings.difficulty == 4 then
-							diff = "'Suicidal'"
+							diff = "\"Suicidal\""
 						end
-						peer:send("send_chat_message", ChatManager.GAME, "Enemies CAN HANDCUFF YOU during interactions: /cuffs")
+						peer:send("send_chat_message", ChatManager.GAME, "Enemies can HANDCUFF YOU during interactions: /cuffs")
 						if DWP.settings_config and DWP.settings_config.ecm_feedback_mute and DWP.settings_config.ecm_feedback_mute >= 2 then
 							if DWP.settings_config.ecm_feedback_mute == 2 then
 								peer:send("send_chat_message", ChatManager.GAME, "ECM feedback stun effect is NERFED: /ecm")

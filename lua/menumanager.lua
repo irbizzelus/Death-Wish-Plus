@@ -165,6 +165,7 @@ end)
 Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_name, node)
 	-- clear peer's vars if we quit to main menu
 	if type(node) == "table" and node._parameters.name == "main" then
+		DWP._is_client_in_DWP_lobby = false
 		DWP:changelog_popup()
 		for i=1,4 do
 			DWP.players[i] = {

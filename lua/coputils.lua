@@ -5,9 +5,9 @@ end
 if not DWP.CopUtils then
 	DWP.CopUtils = {}
 	-- Search radius for interacing player
-	DWP.CopUtils._arrest_search_radius = 1200
+	DWP.CopUtils._arrest_search_radius = 1500
 	-- How far can unit be to arrest a player 
-	DWP.CopUtils._arrest_action_radius = 175
+	DWP.CopUtils._arrest_action_radius = 125
 	
 	-- Checks if the local player should be arrested
 	function DWP.CopUtils:CheckLocalMeleeDamageArrest(player_unit, attacker_unit, is_melee)
@@ -99,15 +99,19 @@ if not DWP.CopUtils then
 		for i, enemy in pairs(enemies) do
 			if self:AreUnitsEnemies(player_unit, enemy) then
 				local enemy_chartweak = enemy:base():char_tweak()
-				if enemy_chartweak.access ~= "gangster" then
-					local dist = mvector3.distance(enemy:position(), playerpos)
-					local is_available = enemy:brain():is_available_for_assignment(objective)
-
-					if dist < lowest_distance and is_available then
-						lowest_distance = dist
-						closest_enemy = enemy
+				if enemy_chartweak and enemy_chartweak.access and enemy_chartweak.access ~= "gangster" and enemy_chartweak.access ~= "sniper" and enemy_chartweak.tags and not table.contains(enemy_chartweak.tags, "phalanx_vip") then
+					local ignored_logics = {
+						inactive = true,
+						intimidated = true,
+					}
+					if not ignored_logics[enemy:brain()._current_logic_name] then 
+						local dist = mvector3.distance(enemy:position(), playerpos)
+						local is_available = enemy:brain():is_available_for_assignment(objective)
+						if dist < lowest_distance and is_available then
+							lowest_distance = dist
+							closest_enemy = enemy
+						end
 					end
-
 				end
 			end
 		end
@@ -156,7 +160,8 @@ if not DWP.CopUtils then
 			result = self:CheckClientMeleeDamageArrest(player_unit, cop)
 		end
 
-		if result == "arrested" then
+		local peer_id = managers.network:session():peer_by_unit(player_unit):id()
+		if result == "arrested" and (Application:time() > DWP.CopUtils.allowed_cuffing_time[peer_id]) and not DWP.peers_with_mod[peer_id] then 
 			player_unit:movement():on_cuffed()
 			-- Make cop say a line
 			cop:sound():say("i03", true, false)
@@ -178,8 +183,13 @@ if not DWP.CopUtils then
 
 	function DWP.CopUtils:NearbyCopAutoArrestCheck(player_unit, islocal)
 
+		local is_client_in_dwp_lobby = false
 		if Network and Network:is_client() then
-			return
+			if DWP.peers_with_mod[1] and Global.game_settings and Global.game_settings.difficulty and Global.game_settings.difficulty == "overkill_290" then
+				is_client_in_dwp_lobby = true
+			else
+				return
+			end
 		end
 
 		-- Stealth phase check
@@ -206,7 +216,7 @@ if not DWP.CopUtils then
 			if not is_interacting then
 				return
 			else
-				DelayedCalls:Add("check_for_unit_interaction_and_arrest_unit_"..tostring(player_unit), 0.15, function()
+				DelayedCalls:Add("DWP__check_for_unit_interaction_and_arrest_unit_"..tostring(player_unit), 0.2, function()
 					-- check again that peer is not dead or something, since we have a 0.15 sec delay before this loop starts
 					if not player_unit or not player_unit.alive or not player_unit:alive() or not player_unit.movement or not player_unit:movement() then
 						return
@@ -221,7 +231,7 @@ if not DWP.CopUtils then
 							end
 						end
 					end
-					local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), 100, managers.slot:get_mask("enemies"))
+					local enemies = World:find_units_quick(player_unit, "sphere", player_unit:position(), self._arrest_action_radius, managers.slot:get_mask("enemies"))
 					if enemies and #enemies >= 1 then
 						-- Check every enemy in radius, make sure its actually an enemy
 						for i, enemy in pairs(enemies) do
@@ -230,11 +240,21 @@ if not DWP.CopUtils then
 								-- positions are slighlty raised on vertical axis to avoid checks on feet level
 								local world_geometry_raycast = World:raycast( "ray", player_unit:position() + Vector3(0, 0, 50), enemy:position() + Vector3(0, 0, 80), "slot_mask", managers.slot:get_mask( "world_geometry" ))
 								if not world_geometry_raycast then
-									local enemy_chartweak = enemy:base():char_tweak()
-									if enemy_chartweak.access ~= "gangster" then
-										player_unit:movement():on_cuffed()
-										enemy:sound():say("i03", true, false)
-										return
+									local ignored_logics = {
+										inactive = true,
+										intimidated = true,
+									}
+									if not ignored_logics[enemy:brain()._current_logic_name] then
+										local enemy_chartweak = enemy:base():char_tweak()
+										if enemy_chartweak.access ~= "gangster" then
+											if (Application:time() > DWP.CopUtils.allowed_cuffing_time[managers.network:session():peer_by_unit(player_unit):id()]) or is_client_in_dwp_lobby then
+												player_unit:movement():on_cuffed()
+												if not is_client_in_dwp_lobby then
+													enemy:sound():say("i03", true, false)
+												end
+												return
+											end
+										end
 									end
 								end
 							end

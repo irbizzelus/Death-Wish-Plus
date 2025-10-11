@@ -1697,6 +1697,11 @@ Hooks:PostHook(GroupAITweakData, "_init_task_data", "DWP_taskdata_override", fun
 			log("DWP difficulty setting not found, unit spawn rates were not set correctly.")
 		end
 		
+		-- cpt. Winter checks to spawn in every 40 seconds instead of 120 now, but chance increase per failed attempt reduced from 9% to 3%. overall same chance increase per min, but higher likelyhood of spawns due to more attempts per min
+		self.phalanx.check_spawn_intervall = 40
+		self.phalanx.chance_increase_intervall = 40
+		self.phalanx.spawn_chance.increase = 0.03
+		
 		-- Why tf is it this way?
 		self.street = deep_clone(self.besiege)
 		self.safehouse = deep_clone(self.besiege)

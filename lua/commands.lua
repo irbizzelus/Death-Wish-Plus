@@ -18,6 +18,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			end
 		end
 	})
+	
+	-- re-route to an existing command
+	DWP.CM:add_command("cop", {callback = function(sender)
+		DWP.CM.commands["cops"].callback(sender)
+	end})
 
 	DWP.CM:add_command("cuffs", {
 		callback = function(sender)	
@@ -29,6 +34,11 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 			end
 		end
 	})
+	
+	-- re-route to an existing command
+	DWP.CM:add_command("cuff", {callback = function(sender)
+		DWP.CM.commands["cuffs"].callback(sender)
+	end})
 
 	DWP.CM:add_command("dom", {
 		callback = function(sender)
@@ -71,15 +81,27 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 		callback = function(sender)
 			local msg_1 = "Both civilians and fully intimidated cops count towards this mechanic. Every hostage you kill or keep under control affects: chances for special enemies to appear, enemy respawn speed, and how many cops can exist on the map at the same time."
 			local msg_2 = "In addition, after 6 hostage casualties, cloakers will start to randomly teleport directly to players, prioritizing those that have most amount of hostages killed. After 9 total casualties, new enemies will come to finish the job."
+			local msg_3 = "Current amount of hostage casualties: "..tostring(DWP.HostageControl.globalkillcount).."."
 			if sender:id() ~= 1 then
 				DWP.CM:private_chat_message(sender:id(), msg_1)
 				DWP.CM:private_chat_message(sender:id(), msg_2)
+				if Utils:IsInGameState() then
+					DWP.CM:private_chat_message(sender:id(), msg_3)
+				end
 			else
 				DWP.CM:public_chat_message(msg_1)
 				DWP.CM:public_chat_message(msg_2)
+				if Utils:IsInGameState() then
+					DWP.CM:public_chat_message(msg_3)
+				end
 			end
 		end
 	})
+	
+	-- re-route to an existing command
+	DWP.CM:add_command("hostages", {callback = function(sender)
+		DWP.CM.commands["hostage"].callback(sender)
+	end})
 	
 	DWP.CM:add_command("diff", {
 		callback = function(sender)

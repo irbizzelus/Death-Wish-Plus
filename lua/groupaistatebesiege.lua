@@ -258,3 +258,63 @@ function DWP.CloakerReinforce(killer_id)
 		end
 	end
 end
+
+-- cpt winters endless wave prevention
+Hooks:PostHook(GroupAIStateBesiege, "_upd_police_activity", "DWP_upd_police_activity_post", function(self)
+	
+	-- should this check even exist? last time i checked he can break on any difficulty
+	if not (DWP and DWP.DWdifficultycheck) then
+		return
+	end
+	
+	if self._phalanx_spawn_group and self._phalanx_spawn_group.has_spawned then
+		local phalanx_vip = self:phalanx_vip()
+		if phalanx_vip and alive(phalanx_vip) then
+			self._winters_might_have_dissapeared_at = nil
+			local dist = mvector3.distance(phalanx_vip:position(), self._phalanx_center_pos)
+			if dist < 500 then
+				local phalanx_minion_count = managers.groupai:state():get_phalanx_minion_count()
+				local min_count_minions = tweak_data.group_ai.phalanx.minions.min_count
+				if not (type(phalanx_minion_count) == "number" and phalanx_minion_count > min_count_minions) then
+					managers.groupai:state():unregister_phalanx_vip()
+					managers.groupai:state():set_assault_endless(false)
+				end
+			end
+		else
+			-- for some reason self:phalanx_vip() does not report on winter's unit untill he gets close enough to his objective, so we make manual scans instead
+			local winters_found = false
+			for u_key, u_data in pairs(managers.enemy:all_enemies()) do
+				local unit = u_data.unit
+				if unit and alive(unit) and unit:base() and unit:base():char_tweak() and unit:base():char_tweak().tags and table.contains(unit:base():char_tweak().tags, "phalanx_vip") then
+					winters_found = true
+				end
+			end
+			if not winters_found then
+				if not self._winters_might_have_dissapeared_at then
+					self._winters_might_have_dissapeared_at = Application:time()
+				end
+				if Application:time() - self._winters_might_have_dissapeared_at > 60 then
+					log("[DWP] Force ended cpt. Winters' endless assault, because his unit was not detected during the \"_upd_police_activity\" function update.")
+					managers.groupai:state():unregister_phalanx_vip()
+					managers.groupai:state():set_assault_endless(false)
+					self._winters_might_have_dissapeared_at = nil
+				end
+			end
+		end
+	else
+		self._winters_might_have_dissapeared_at = nil
+	end
+end)
+
+-- prevent cap spawn for the first x seconds of an assault
+local dwp_orig_besiege_phalanx_spawn = GroupAIStateBesiege._spawn_phalanx
+Hooks:OverrideFunction(GroupAIStateBesiege, "_spawn_phalanx", function (self)
+	if DWP and DWP.DWdifficultycheck then
+		if self._task_data and self._task_data.assault and ((self._task_data.assault.phase == "sustain" and DWP.latest_assault_starting_time and (DWP.latest_assault_starting_time + 240) > Application:time()) or (self._task_data.assault.phase == "build")) then
+			return
+		end
+		dwp_orig_besiege_phalanx_spawn(self)
+	else
+		dwp_orig_besiege_phalanx_spawn(self)
+	end
+end)
