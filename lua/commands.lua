@@ -131,9 +131,9 @@ if Network:is_server() and DWP.DWdifficultycheck == true then
 	DWP.CM:add_command("ecm", {
 		callback = function(sender)	
 			local msg = "ECM vulnerability is using vanilla values, do not worry hacker player, you are okay :)"
-			if (Utils:IsInGameState() and DWP.settings_config.ecm_feedback_mute and DWP.settings_config.ecm_feedback_mute >= 2) or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute >= 2) then
+			if (Utils:IsInGameState() and DWP.settings_config and DWP.settings_config.ecm_feedback_mute >= 2) or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute >= 2) then
 				msg = "ECM stun effect both for Hacker perk and a standard deployable ECM have 20% chances to stun enemies, instead of vanilla chances of 80-100%. While ECM feedback is active, Hacker perk deck can still recieve dodge/heal bonuses, even if enemies are not stunned."
-				if DWP.settings_config.ecm_feedback_mute == 3 or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute == 3) then
+				if (DWP.settings_config and DWP.settings_config.ecm_feedback_mute == 3) or (not Utils:IsInGameState() and DWP.settings.ecm_feedback_mute == 3) then
 					msg = "ECM stun effect both for Hacker perk and a standard deployable ECM have 0% chances to stun enemies. While ECM feedback is active, Hacker perk deck can still recieve dodge/heal bonuses, even if enemies are not visually stunned."
 				end
 			end

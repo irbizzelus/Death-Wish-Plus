@@ -1319,10 +1319,22 @@ Hooks:PostHook(GroupAITweakData, "_init_enemy_spawn_groups", "DWP_spawngroupstwe
 		}
 	}
 	
+	local function should_disable_DSsniper()
+		local forbidden_maps = {
+			dinner = true, -- slaughterhouse
+			crojob2 = true, -- bomb:docks
+			pex = true, -- breakfast in tihuana
+			man = true, -- undercover
+		}
+		if Global.level_data and Global.level_data.level_id and forbidden_maps[Global.level_data.level_id] then
+			return true
+		end
+		return false
+	end
+	
 	-- snipers + winters shields aka Death Squad
 	-- on some maps sniper units seem to never move/only make a single move after they spawn, so sniper part of the death squad will be disabled there
-	-- maps affected: slaughterhouse, bomb:docks, breakfast in tihuana
-	if Global.level_data.level_id == "dinner" or Global.level_data.level_id == "crojob2" or Global.level_data.level_id == "pex" then
+	if should_disable_DSsniper() then
 		self.enemy_spawn_groups.Death_squad = {
 			amount = {3 * squadmul, 3 * squadmul},
 			spawn = {

@@ -3,7 +3,7 @@ if not DWP then
     _G.DWP = {}
 	DWP._path = ModPath
     DWP.DWdifficultycheck = false
-	DWP.version = "2.7"
+	DWP.version = "2.7.1"
 	DWP.version_num = 2.7 -- this one is used for comparing to the current save file. only update if the pop up message needs to include important patch info
 	DWP.settings = {
 		-- gameplay
@@ -400,8 +400,8 @@ if not DWP then
 			hostage_control = 2
 		end
 		local settings_string = "|"..tostring(diff_id).."|"..tostring(ecm_id).."|"..tostring(hostage_control).."|"
-		LuaNetworking:SendToPeersExcept(1, "DWP_sync", "Hello_"..tostring(DWP.version)..settings_string)
 		if Network:is_server() and DWP.DWdifficultycheck == true then
+			LuaNetworking:SendToPeersExcept(1, "DWP_sync", "Hello_"..tostring(DWP.version)..settings_string)
 			DelayedCalls:Add("DWP:DWwelcomemsg1topeer" .. tostring(peer_id), 1.2, function()
 				local peer = managers.network:session():peer(peer_id)
 				
