@@ -5,22 +5,16 @@ end
 -- When a client starts interacting, send a cop to arrest them + activate scan to enable cuffing from other units
 Hooks:PostHook(HuskPlayerMovement, "sync_interaction_anim_start", "DWP_cuffing_on_husk_interaction_start", function(self,tweak)
 
-	if not DWP.DWdifficultycheck then
-		return
-	end
-	
-	if Network and Network:is_client() then
+	if not (Network:is_server() and DWP and DWP.DWdifficultycheck) then
 		return
 	end
 	
 	DWP.CopUtils:SendCopToArrestPlayer(self._unit)
 	
-	-- make cuffing checks for clients without DSBW installed only
+	-- make cuffing checks only for clients without DW+ installed
 	if not DWP.peers_with_mod[managers.network:session():peer_by_unit(self._unit):id()] then
 		
 		-- check starts slightly later for connected peers to prevent cuffing on players with high ping
-		DWP.CopUtils.allowed_cuffing_time = DWP.CopUtils.allowed_cuffing_time or {0,0,0,0}
-		
 		if tweak == "revive" then
 			DWP.CopUtils.allowed_cuffing_time[managers.network:session():peer_by_unit(self._unit):id()] = Application:time() + 3.4 -- should cover up to 300 ping, theoretically
 		else

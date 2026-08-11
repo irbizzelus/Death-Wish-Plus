@@ -54,27 +54,16 @@
 			"default_value" : true
 		},
 		{
-			"type" : "toggle",
-			"id" : "deathSquadSniperHighlight",
-			"title" : "DWP_deathSquadSniperHighlight",
-			"description" : "DWP_deathSquadSniperHighlight_desc",
-			"callback" : "DWPcb_deathSquadSniperHighlight",
-			"value" : "deathSquadSniperHighlight",
-			"default_value" : true
-		},
-		{
-			"type" : "multiple_choice",
-			"id" : "ecm_feedback_mute",
-			"title" : "DWP_ecm_feedback_mute",
-			"description" : "DWP_ecm_feedback_mute_desc",
-			"callback" : "DWPcb_ecm_feedback_mute",
-			"items" : [
-				"DWP_ecm_feedback_mute_1",
-				"DWP_ecm_feedback_mute_2",
-				"DWP_ecm_feedback_mute_3"
-			],
-			"value" : "ecm_feedback_mute",
-			"default_value" : 2
+			"type" : "slider",
+			"id" : "ecm_feedback_chance",
+			"title" : "DWP_ecm_feedback_chance",
+			"description" : "DWP_ecm_feedback_chance_desc",
+			"callback" : "DWPcb_ecm_feedback_chance",
+			"value" : "ecm_feedback_chance",
+			"default_value" : 0.5,
+			"min" : 0.2,
+			"max" : 0.8,
+			"step" : 0.01
 		},
 		{
 			"type" : "button",

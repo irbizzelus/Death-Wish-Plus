@@ -1,56 +1,15 @@
--- highlight enemy snipers that spawn as part of the "Death_squad"
-function DWP.sniper_highlighter(npc)
-	if not npc then
-		return
-	end
-	if not alive(npc._unit) then
-		return
-	end
-	-- this one stops highlight loop if enemy is dead, since alive func above checks if unit itself is alive, and a dead body is still an alive unit
-	if not npc:can_request_actions() then
-		return
-	end
-	if not DWP.settings.deathSquadSniperHighlight then
-		return
-	end
-	npc._unit:contour():add( "mark_enemy_damage_bonus_distance" , true )
-	-- loop highlight addition every 2 seconds
-	DelayedCalls:Add("ContinueHighlightForSniper_"..tostring(npc._unit:id()), 2, function()
-		if DWP then
-			DWP.sniper_highlighter(npc)
-		end
-	end)
-end
-
-Hooks:PostHook(CopMovement, "action_request", "DWP_mark_sniper_units_red" , function(self,action_desc)
-	if not Network:is_server() then
-		return
-	end
-	-- idek this is from immortal dommed cops, originaly from converted highlights. stealing from myself, stealing from someone else is barely counted as stealing :)
-	if self._unit:base().mic_is_being_moved then
-		return
-	end
-	if not DWP.DWdifficultycheck then
-		return
-	end
+Hooks:PostHook(CopMovement, "action_request", "DWP_CopMovement_action_request_post" , function(self,action_desc)
 	
-	-- tracking snipers and their highlights
-	if DWP.settings.deathSquadSniperHighlight and self._unit:base():char_tweak().access == "sniper" then
-		-- fucking kill me
-		if self._unit:base()._ext_movement and self._unit:base()._ext_movement._ext_brain and self._unit:base()._ext_movement._ext_brain._logic_data and self._unit:base()._ext_movement._ext_brain._logic_data.group and self._unit:base()._ext_movement._ext_brain._logic_data.group.type and self._unit:base()._ext_movement._ext_brain._logic_data.group.type == "Death_squad" then
-			DWP.sniper_highlighter(self)
-		end
+	if not (Network:is_server() and DWP and DWP.DWdifficultycheck and DWP.settings_config and DWP.settings_config.hostage_control) then
+		return
 	end
 	
 	-- tracking enemies who give up, for hostage control penalties/bonuses
 	if action_desc.variant == "tied_all_in_one" or action_desc.variant == "tied" then
-		if not DWP.cop_hostages then
-			DWP.cop_hostages = {}
-		end
-		DWP.cop_hostages[self._unit:id()] = true
+		DWP.HostageControl.cop_hostages[self._unit:id()] = true
 	else
-		if DWP.cop_hostages and DWP.cop_hostages[self._unit:id()] then
-			DWP.cop_hostages[self._unit:id()] = nil
+		if DWP.HostageControl.cop_hostages[self._unit:id()] then
+			DWP.HostageControl.cop_hostages[self._unit:id()] = nil
 		end
 	end
 end)

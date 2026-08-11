@@ -39,16 +39,12 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP:Save()
 	end
 	
-	MenuCallbackHandler.DWPcb_deathSquadSniperHighlight = function(this, item)
-		DWP.settings[item:name()] = item:value() == 'on'
+	MenuCallbackHandler.DWPcb_ecm_feedback_chance = function(this, item)
+		DWP.settings.ecm_feedback_chance = tonumber(item:value())
 		DWP:Save()
 	end
 	
-	MenuCallbackHandler.DWPcb_ecm_feedback_mute = function(this, item)
-		DWP.settings.ecm_feedback_mute = tonumber(item:value())
-		DWP:Save()
-	end
-	
+	-- manual menu item indexing might be cursed, but who cares aaaayyyy lmao
 	MenuCallbackHandler.DWPcb_gameplay_defaults = function(this, item)
 		DWP.menu_node._items_list[3]._current_index = 1
 		DWP.settings.difficulty = 1
@@ -62,11 +58,8 @@ Hooks:Add('MenuManagerInitialize', 'DWP_init', function(menu_manager)
 		DWP.menu_node._items_list[5].selected = 1
 		DWP.settings.hostage_control = true
 		
-		DWP.menu_node._items_list[6].selected = 1
-		DWP.settings.deathSquadSniperHighlight = true
-		
-		DWP.menu_node._items_list[7]._current_index = 2
-		DWP.settings.ecm_feedback_mute = 2
+		DWP.menu_node._items_list[6]._value = 0.5
+		DWP.settings.ecm_feedback_chance = 0.5
 		
 		managers.menu:active_menu().renderer:active_node_gui():refresh_gui(DWP.menu_node)
 		DWP:Save()
@@ -167,19 +160,21 @@ Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_na
 	if type(node) == "table" and node._parameters.name == "main" then
 		DWP._is_client_in_DWP_lobby = false
 		DWP:changelog_popup()
-		for i=1,4 do
-			DWP.players[i] = {
-				skills_shown = false,
-				hours_shown = false,
-				welcome_msg1_shown = false,
-				welcome_msg2_shown = false,
-				requested_mods_1 = false,
-				requested_mods_2 = false,
-				HC_warning_messages = {
-					civilian = 0,
-					cop = 0
+		if not DWP.end_stats_header_printed then -- idk why, but after heist finishes, this code gets triggered. why do we get to "main" on post-heist screen? lmao
+			for i=1,4 do
+				DWP.players[i] = {
+					skills_shown = false,
+					hours_shown = false,
+					welcome_msg1_shown = false,
+					welcome_msg2_shown = false,
+					requested_mods_1 = false,
+					requested_mods_2 = false,
+					HC_warning_messages = {
+						civilian = 0,
+						cop = 0
+					}
 				}
-			}
+			end
 		end
 		if NoobJoin or BLT.Mods:GetModByName("Newbies go back to overkill") then
 			DWP:yoink_ngbto()
@@ -196,23 +191,19 @@ Hooks:PostHook(MenuManager, "_node_selected", "DWP:Node", function(self, menu_na
 	end
 	if type(node) == "table" and node._parameters.name == "lobby" then
 		-- whenever in the lobby as host make sure to set lobby name to whatever it should be, depending on current contract difficulty and such
-		if DWP.settings.lobbyname then
-			if managers.network.matchmake._lobby_attributes then
-				if Network:is_server() then
-					if managers.network.matchmake._lobby_attributes.job_id == 0 and managers.network.matchmake.lobby_handler then
-						if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
-							DWP.change_lobby_name(false)
-						end
-					else
-						if managers.network.matchmake._lobby_attributes.difficulty == 7 then
-							if managers.network.matchmake._lobby_attributes.owner_name == managers.network.account:username_id() then
-								DWP.change_lobby_name(true)
-							end
-						else
-							if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
-								DWP.change_lobby_name(false)
-							end
-						end
+		if DWP.settings.lobbyname and managers.network.matchmake._lobby_attributes and Network:is_server() then
+			if managers.network.matchmake._lobby_attributes.job_id == 0 and managers.network.matchmake.lobby_handler then
+				if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
+					DWP.change_lobby_name(false)
+				end
+			else
+				if managers.network.matchmake._lobby_attributes.difficulty == 7 then
+					if managers.network.matchmake._lobby_attributes.owner_name == managers.network.account:username_id() then
+						DWP.change_lobby_name(true)
+					end
+				else
+					if managers.network.matchmake._lobby_attributes.owner_name ~= managers.network.account:username_id() then
+						DWP.change_lobby_name(false)
 					end
 				end
 			end

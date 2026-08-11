@@ -48,46 +48,6 @@ local groupsCustomMaps = {
 	"piggydozer"
 }
 
--- hardware store cutsom heist 'fix'
-if Global.level_data and (Global.level_data.level_id == "hardware_store" or Global.level_data.level_id == "tj_htsb") then
-	-- i deem these maps too hard due to scripted spawns (at least that's why i think there is so many more cops (85+ on dw+))
-	
-	if DWP.DWdifficultycheck then
-		if tweak_data and tweak_data.group_ai and tweak_data.group_ai.besiege.assault.force_balance_mul then
-			if DWP.settings.difficulty == 4 then
-				tweak_data.group_ai.besiege.assault.force_balance_mul = {
-					4.5,
-					4.5,
-					4.5,
-					4.5
-				}
-			elseif DWP.settings.difficulty == 3 then
-				tweak_data.group_ai.besiege.assault.force_balance_mul = {
-					2.8,
-					2.8,
-					2.8,
-					2.8
-				}
-			elseif DWP.settings.difficulty == 2 then
-				tweak_data.group_ai.besiege.assault.force_balance_mul = {
-					1.9,
-					1.9,
-					1.9,
-					1.9
-				}
-			else
-				tweak_data.group_ai.besiege.assault.force_balance_mul = {
-					1.4,
-					1.4,
-					1.4,
-					1.4
-				}
-			end
-		end
-	end
-	
-end
-
 -- Make the captain and single cloakers not spawn in weird places
 local disallowed_groups = {
 	Phalanx = true,

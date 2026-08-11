@@ -1,4 +1,4 @@
-Hooks:PostHook(CharacterTweakData, "_set_overkill_290", "DWP_remove_ECM_bullshit", function(self)
+Hooks:PostHook(CharacterTweakData, "_set_overkill_290", "DWP_reduce_ECM_bullshit", function(self)
 	
 	if not Network:is_server() then
 		return
@@ -29,19 +29,14 @@ Hooks:PostHook(CharacterTweakData, "_set_overkill_290", "DWP_remove_ECM_bullshit
 		"phalanx_vip"
 	}
 	
-	if DWP.settings.ecm_feedback_mute and DWP.settings.ecm_feedback_mute >= 2 then
-		for i=1, #enemies do
-			if self[tostring(enemies[i])] and self[tostring(enemies[i])].ecm_vulnerability then
-				if DWP.settings.ecm_feedback_mute == 2 then
-					self[tostring(enemies[i])].ecm_vulnerability = 0.2 -- chance
-					if self[tostring(enemies[i])].ecm_hurts and self[tostring(enemies[i])].ecm_hurts.ears then
-						self[tostring(enemies[i])].ecm_hurts.ears = self[tostring(enemies[i])].ecm_hurts.ears * 0.33 -- stun duration
-					end
-				elseif DWP.settings.ecm_feedback_mute == 3 then
-					self[tostring(enemies[i])].ecm_vulnerability = nil
-					if self[tostring(enemies[i])].ecm_hurts and self[tostring(enemies[i])].ecm_hurts.ears then
-						self[tostring(enemies[i])].ecm_hurts.ears = nil
-					end
+	for i=1, #enemies do
+		local enemy = self[tostring(enemies[i])]
+		if enemy and enemy.ecm_vulnerability then
+			enemy.ecm_vulnerability = DWP.settings.ecm_feedback_chance
+			if enemy.ecm_hurts and enemy.ecm_hurts.ears then
+				enemy.ecm_hurts.ears = enemy.ecm_hurts.ears * 0.5
+				if enemy.ecm_hurts.ears > 0 and enemy.ecm_hurts.ears < 2 then
+					enemy.ecm_hurts.ears = 2
 				end
 			end
 		end

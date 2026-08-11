@@ -20,7 +20,7 @@ if not DWP.CM then
 		self.commands[command_name] = cmd_data
 	end
 	
-	-- unlike that utiliy (from BLT?) function, returns actuall status of being in game, where breifing screen still counts as 'not in game'
+	-- unlike Utils:IsInGameState(), this one returns status of actually being in gameplay, and breifing screen counts as 'not in game'
 	function DWP.CM:is_playing()
 		if BaseNetworkHandler then
 			return BaseNetworkHandler._gamestate_filter.any_ingame_playing[game_state_machine:last_queued_state_name()]
@@ -57,6 +57,17 @@ if not DWP.CM then
 	end
 	
 	function DWP.CM:process_command(input, sender)
+		
+		if not Network:is_server() then -- this func never even should be called if u r not the host, but whatever
+			self:private_chat_message(sender:id(), "[DW+] Commands are disabled if you are not the lobby host.")
+			return
+		end
+		
+		if not DWP.DWdifficultycheck then
+			self:private_chat_message(sender:id(), "[DW+] Chats commands are disabled for non-DW difficulty contracts.")
+			return
+		end
+		
 		sender = sender or self:local_peer()
 		if not input or input == "" then
 			return
@@ -65,18 +76,8 @@ if not DWP.CM then
 		local command = self.commands and self.commands[lower_cmd]
 		
 		if not command then
-			if Network:is_server() then
-				if DWP.DWdifficultycheck then
-					self:private_chat_message(sender:id(), "Such command doesn't exist.")
-					return
-				else
-					self:private_chat_message(sender:id(), "Chats commands are disabled for non-DW difficulty contracts.")
-					return
-				end
-			else
-				self:private_chat_message(sender:id(), "Commands are disabled if you are not the lobby host.")
-				return
-			end
+			self:private_chat_message(sender:id(), "[DW+] Such command doesn't exist.")
+			return
 		end
 		
 		if command.in_game_only and not self:is_playing() then

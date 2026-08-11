@@ -3,6 +3,7 @@ if not DWP then
 end
 
 Hooks:PostHook(NetworkPeer, "set_loading", "DWP_set_loading", function(self, state)
+	
 	if managers.network and managers.network._session and Network:is_server() and Utils:IsInGameState() then
 		
 		local peer_id = self:id()
@@ -62,7 +63,7 @@ Hooks:Add("NetworkManagerOnPeerAdded", "DWP_onpeeradded", function(peer, peer_id
 		DelayedCalls:Add("DWP_updatelobbyname_and_info_for_" .. tostring(peer_id), 0.1, function()
 			local peer2 = managers.network:session() and managers.network:session():peer(peer_id)
 			if peer2 then
-				peer2:send("request_player_name_reply", managers.network.account:username())
+				peer2:send("request_player_name_reply", managers.network.account:username()) -- if only this still worked :c
 			end
 			DelayedCalls:Add("DWP_showstatsfor_" .. tostring(peer_id), 1, function()
 				DWP:returnplayerhours(peer_id)
