@@ -32,6 +32,14 @@ Hooks:OverrideFunction(GroupAIStateBesiege, "_queue_police_upd_task", function (
 		return
 	end
 	
+	if self._police_upd_task_queued then
+		if self._t < self._police_upd_task_queued then
+			return
+		end
+
+		self:_upd_police_activity()
+	end
+	
 	-- respawn rate multipliers
 	local hostage_count = self._police_hostage_headcount + self._hostage_headcount
 	local diff_muls = {
@@ -51,12 +59,10 @@ Hooks:OverrideFunction(GroupAIStateBesiege, "_queue_police_upd_task", function (
 			update_mul = update_mul - (math.clamp(DWP.HostageControl.globalkillcount, 1, 8) * 0.0375)
 		end
 	end
-	
-	if not self._police_upd_task_queued then
-		self._police_upd_task_queued = true
 
-		managers.enemy:queue_task("GroupAIStateBesiege._upd_police_activity", self._upd_police_activity, self, self._t + (next(self._spawning_groups) and 0.4 or 2) * update_mul)
-	end
+	local next_upd_t = next(self._spawning_groups) and GroupAIStateBesiege._POLICE_ACTIVITY_DELAY_FAST or GroupAIStateBesiege._POLICE_ACTIVITY_DELAY
+
+	self._police_upd_task_queued = self._t + (next_upd_t * update_mul)
 end)
 
 Hooks:PostHook(GroupAIStateBesiege, "_upd_assault_task", "DWP_updassault", function(self, ...)

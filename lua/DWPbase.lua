@@ -8,7 +8,7 @@ end
 
 DWP._path = ModPath
 DWP.DWdifficultycheck = false
-DWP.version = "2.8"
+DWP.version = "2.8.01"
 DWP.version_num = 2.8 -- this one is used for comparing to the current save file. only update if the pop up message needs to include important patch info
 DWP.settings = {
 	-- gameplay
@@ -323,7 +323,6 @@ function DWP:welcomemsg2(peer_id)
 					if DWP and not MenuCallbackHandler:is_modded_client() then
 						peer:send("send_chat_message", ChatManager.GAME, "Lastly, "..managers.network.account:username().." seems to have a hidden mod list, you can request their modlist using /hostmods.")
 					end
-					peer:send("request_player_name_reply", managers.network.account:username())
 					DWP.players[peer_id].welcome_msg2_shown = true
 				end
 			end

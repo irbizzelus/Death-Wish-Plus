@@ -52,10 +52,10 @@ local function DWP_update_EnemyManager()
 					i = i + 1
 				end
 
-				local all_clbks = self._delayed_clbks
+				local next_callback = self._delayed_clbks[#self._delayed_clbks]
 
-				if all_clbks[1] and all_clbks[1][2] < t then
-					local clbk = table.remove(all_clbks, 1)[3]
+				if next_callback and t > next_callback[2] then
+					local clbk = table.remove(self._delayed_clbks)[3]
 
 					clbk()
 				end
