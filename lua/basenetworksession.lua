@@ -170,8 +170,10 @@ Hooks:Add("NetworkReceivedData", "DWP_NetworkReceivedData", function(sender, mes
 				
 				local msg_1 = "Host is running \"Death Wish +\" at version \""..tostring(host_version).."\", with following settings:\nDifficulty: "..diff.."\n"..ecm_str.."\nHostage control is "..HC
 				local msg_2 = "If you want a reminder, you could use: /ai; /cops; /cuffs; /dom; /assault; /hostage; /hcstatus; /diff; /ecm; /rng; /hostmods. Good luck."
-				DWP.CM:private_chat_message(managers.network:session():local_peer():id(), msg_1)
-				DWP.CM:private_chat_message(managers.network:session():local_peer():id(), msg_2)
+				DelayedCalls:Add("DWP_notify_self_of_host_running_dwp_delayed", 2, function()
+					DWP.CM:private_chat_message(managers.network:session():local_peer():id(), msg_1)
+					DWP.CM:private_chat_message(managers.network:session():local_peer():id(), msg_2)
+				end)
 			end
 		end
 	end

@@ -27,7 +27,7 @@ end)
 local dwp_orig_besiege_queue_police_upd_task = GroupAIStateBesiege._queue_police_upd_task
 Hooks:OverrideFunction(GroupAIStateBesiege, "_queue_police_upd_task", function (self)
 	
-	if not (Network:is_server() and DWP and DWP.DWdifficultycheck and DWP.settings_config) then
+	if not (self._is_server and DWP and DWP.DWdifficultycheck and DWP.settings_config) then
 		dwp_orig_besiege_queue_police_upd_task(self)
 		return
 	end

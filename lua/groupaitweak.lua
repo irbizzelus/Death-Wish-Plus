@@ -1898,18 +1898,18 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 		-- shield: 27.5; tank: 20; tazer: 26; DS: 6.5; spook: 20
 		tac_tazer_charge = { -- CS_shields
 			0.2,
-			calculate_special_chance(0.04125, 2),
-			calculate_special_chance(0.04125, 3)
+			calculate_special_chance(0.04325, 2),
+			calculate_special_chance(0.04325, 3)
 		},
 		tac_shield_wall = { -- FBI_shield_green
 			0,
-			calculate_special_chance(0.04125, 2),
-			calculate_special_chance(0.04125, 3)
+			calculate_special_chance(0.04325, 2),
+			calculate_special_chance(0.04325, 3)
 		},
 		GS_shield_grey = {
 			0,
-			calculate_special_chance(0.04125, 2),
-			calculate_special_chance(0.04125, 3)
+			calculate_special_chance(0.04325, 2),
+			calculate_special_chance(0.04325, 3)
 		},
 		tac_bull_rush = { -- FBI_tanks
 			0,
@@ -1928,8 +1928,8 @@ function GroupAITweakData:init_taskdata_deathwish_1()
 		},
 		Death_squad = {
 			0,
-			calculate_special_chance(0.02925, 2),
-			calculate_special_chance(0.02925, 3)
+			calculate_special_chance(0.02265, 2),
+			calculate_special_chance(0.02265, 3)
 		},
 		FBI_spoocs = {
 			0,
@@ -2056,18 +2056,18 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		-- shield: 27.5; tank: 22; tazer: 24; DS: 8.5; spook: 18
 		tac_tazer_charge = { -- CS_shields
 			0.2,
-			calculate_special_chance(0.04583, 2),
-			calculate_special_chance(0.04583, 3)
+			calculate_special_chance(0.04883, 2),
+			calculate_special_chance(0.04883, 3)
 		},
 		tac_shield_wall = { -- FBI_shield_green
 			0,
-			calculate_special_chance(0.04583, 2),
-			calculate_special_chance(0.04583, 3)
+			calculate_special_chance(0.04883, 2),
+			calculate_special_chance(0.04883, 3)
 		},
 		GS_shield_grey = {
 			0,
-			calculate_special_chance(0.04583, 2),
-			calculate_special_chance(0.04583, 3)
+			calculate_special_chance(0.04883, 2),
+			calculate_special_chance(0.04883, 3)
 		},
 		tac_bull_rush = { -- FBI_tanks
 			0,
@@ -2086,8 +2086,8 @@ function GroupAITweakData:init_taskdata_deathwish_2()
 		},
 		Death_squad = {
 			0,
-			calculate_special_chance(0.0425, 2),
-			calculate_special_chance(0.0425, 3)
+			calculate_special_chance(0.0335, 2),
+			calculate_special_chance(0.0335, 3)
 		},
 		FBI_spoocs = {
 			0,
@@ -2211,21 +2211,20 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 			0.08,
 			0.08
 		},
-		-- shield: 26; tank: 26; tazer: 20; DS: 11; spook: 17
 		tac_tazer_charge = { -- CS_shields
 			0.2,
-			calculate_special_chance(0.052, 2),
-			calculate_special_chance(0.052, 3)
+			calculate_special_chance(0.056, 2),
+			calculate_special_chance(0.056, 3)
 		},
 		tac_shield_wall = { -- FBI_shield_green
 			0,
-			calculate_special_chance(0.052, 2),
-			calculate_special_chance(0.052, 3)
+			calculate_special_chance(0.056, 2),
+			calculate_special_chance(0.056, 3)
 		},
 		GS_shield_grey = {
 			0,
-			calculate_special_chance(0.052, 2),
-			calculate_special_chance(0.052, 3)
+			calculate_special_chance(0.056, 2),
+			calculate_special_chance(0.056, 3)
 		},
 		tac_bull_rush = { -- FBI_tanks
 			0,
@@ -2244,8 +2243,8 @@ function GroupAITweakData:init_taskdata_deathwish_3()
 		},
 		Death_squad = {
 			0,
-			calculate_special_chance(0.066, 2),
-			calculate_special_chance(0.066, 3)
+			calculate_special_chance(0.054, 2),
+			calculate_special_chance(0.054, 3)
 		},
 		FBI_spoocs = {
 			0,
@@ -2369,21 +2368,20 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 			0.08,
 			0.08
 		},
-		-- shield: 27; tank: 30; tazer: 15; DS: 13; spook: 15
 		tac_tazer_charge = { -- CS_shields
 			0.2,
-			calculate_special_chance(0.063, 2),
-			calculate_special_chance(0.063, 3)
+			calculate_special_chance(0.069, 2),
+			calculate_special_chance(0.069, 3)
 		},
 		tac_shield_wall = { -- FBI_shield_green
 			0,
-			calculate_special_chance(0.063, 2),
-			calculate_special_chance(0.063, 3)
+			calculate_special_chance(0.069, 2),
+			calculate_special_chance(0.069, 3)
 		},
 		GS_shield_grey = {
 			0,
-			calculate_special_chance(0.063, 2),
-			calculate_special_chance(0.063, 3)
+			calculate_special_chance(0.069, 2),
+			calculate_special_chance(0.069, 3)
 		},
 		tac_bull_rush = { -- FBI_tanks
 			0,
@@ -2402,8 +2400,8 @@ function GroupAITweakData:init_taskdata_deathwish_4()
 		},
 		Death_squad = {
 			0,
-			calculate_special_chance(0.091, 2),
-			calculate_special_chance(0.091, 3)
+			calculate_special_chance(0.073, 2),
+			calculate_special_chance(0.073, 3)
 		},
 		FBI_spoocs = {
 			0,

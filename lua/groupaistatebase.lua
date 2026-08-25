@@ -5,7 +5,7 @@ end
 local dwp_orig_drama = GroupAIStateBase._add_drama
 Hooks:OverrideFunction(GroupAIStateBase, "_add_drama", function (self, amount)
 	
-	if not (Network:is_server() and DWP and DWP.DWdifficultycheck) then
+	if not (self._is_server and DWP and DWP.DWdifficultycheck) then
 		dwp_orig_drama(self, amount)
 	end
 	
@@ -52,7 +52,7 @@ end)
 local dwp_orig_diff = GroupAIStateBase.set_difficulty
 Hooks:OverrideFunction(GroupAIStateBase, "set_difficulty", function (self, value)
 	
-	if not (Network:is_server() and DWP and DWP.DWdifficultycheck) then
+	if not (self._is_server and DWP and DWP.DWdifficultycheck) then
 		dwp_orig_diff(self, value)
 		return
 	end
@@ -98,7 +98,7 @@ end)
 
 -- hostage control civs
 Hooks:PostHook(GroupAIStateBase, "hostage_killed", "DWP_civ_hostage_killed", function(self, killer_unit)
-	if Network:is_server() and DWP and DWP.DWdifficultycheck and DWP.settings_config and DWP.settings_config.hostage_control then
+	if self._is_server and DWP and DWP.DWdifficultycheck and DWP.settings_config and DWP.settings_config.hostage_control then
 		DWP.HostageControl:hostage_killed(killer_unit)
 	end
 end)
@@ -106,7 +106,7 @@ end)
 -- max of 2 intimidated cops per map. remove player bonuses because that upgrade is default nowadays, and remove converts from being counted cause thats unimportant
 local dwp_orig_GroupAIStateBase_has_room_for_police_hostage = GroupAIStateBase.has_room_for_police_hostage
 Hooks:OverrideFunction(GroupAIStateBase, "has_room_for_police_hostage", function (self)
-	if not (Network:is_server() and DWP and DWP.DWdifficultycheck) then
+	if not (self._is_server and DWP and DWP.DWdifficultycheck) then
 		return dwp_orig_GroupAIStateBase_has_room_for_police_hostage(self)
 	else
 		return self._police_hostage_headcount < 2
